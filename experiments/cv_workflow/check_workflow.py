@@ -95,5 +95,15 @@ class ContractChecks(unittest.TestCase):
         path=self.temp/self.manifest['records'][0]['model_path'];Image.new('RGB',(120,90),'black').save(path)
         with self.assertRaises(ValueError):wf.verify_sources(self.run)
 
+    def test_noncontiguous_selection_preserves_identity(self):
+        path=self.temp/'selection.json';wf.write_json(path,{'split':'val','samples':[{'model':'lcad','task_idx':i} for i in [6,2,4]]})
+        args=argparse.Namespace(run_id='selected',model='lcad',split='val',start=1,end=12,selection=path)
+        wf.prepare(args,CONFIG);manifest=wf.verify_sources(wf.OUTPUT/'selected')
+        self.assertEqual([r['task_idx'] for r in manifest['records']],[6,2,4])
+        self.assertEqual([r['sample_key'].split('/')[-1] for r in manifest['records']],['000000000005','000000000001','000000000003'])
+        wf.write_json(path,{'split':'val','samples':[{'model':'lcad','task_idx':1,'sample_key':'val/lcad/999999999999'}]})
+        args.run_id='wrong_identity'
+        with self.assertRaises(ValueError):wf.prepare(args,CONFIG)
+
 
 if __name__=='__main__':unittest.main(verbosity=2)

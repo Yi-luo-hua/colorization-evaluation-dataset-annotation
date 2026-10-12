@@ -2,6 +2,8 @@
 
 当前阶段：先优化CV与工作流，再由主人使用Antigravity中的`gemini-3.8-flash-high`进行视觉实验。模型名称按主人指定记录；此仓库没有配置IDE或调用其模型API。
 
+最新待协作包是`LS_lcad_reviewer/intermediate/experiments/real_boundary_pilot_20261012/START_HERE.md`：12个真实边界样本、两张六组看板。给Antigravity执行该文件，回传reviews_gemini.json。详情见[真实边界先导](docs/experiments/real_boundary_pilot_20261012.md)。
+
 ## 目录
 
 | 目录 | 用途 |

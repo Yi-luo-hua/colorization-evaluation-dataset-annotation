@@ -65,14 +65,28 @@ def prepare(args,cfg):
     run=OUTPUT/args.run_id
     if run.exists():raise ValueError(f'Existing run must not be overwritten: {run}')
     records=[];sources={}
+    selection_data=read_json(args.selection) if getattr(args,'selection',None) else None
+    selection=selection_data['samples'] if selection_data is not None else None
+    if selection is not None:
+        if selection_data['split']!=args.split:raise ValueError('Selection split conflicts with --split')
+        keys=[(r['model'],r['task_idx']) for r in selection]
+        if not keys or len(keys)!=len(set(keys)):raise ValueError('Selection must contain unique model/task_idx pairs')
+        if any(m not in ['lcad','unicolor'] or not isinstance(i,int) or i<1 for m,i in keys):raise ValueError('Invalid selection')
+        if args.model!='both' and any(m!=args.model for m,i in keys):raise ValueError('Selection model conflicts with --model')
+        sources[str(Path(args.selection).resolve().relative_to(engine.ROOT))]=engine.sha256(args.selection)
     for model in (['lcad','unicolor'] if args.model=='both' else [args.model]):
         files=list((BASE/'tasks_pool'/args.split).glob(f'*{model}*.json'))
         if len(files)!=1:raise ValueError(f'Expected one task pool for {args.split}/{model}, found {len(files)}')
         tasks=read_json(files[0]);sources[str(files[0].relative_to(engine.ROOT))]=engine.sha256(files[0])
-        if args.end>len(tasks):raise ValueError('Range exceeds task pool')
+        indices=[r['task_idx'] for r in selection if r['model']==model] if selection is not None else list(range(args.start,args.end+1))
+        if indices and max(indices)>len(tasks):raise ValueError('Range exceeds task pool')
         dataset=engine.ROOT/cfg['datasets'][args.split]
-        for index,task in enumerate(tasks[args.start-1:args.end],args.start):
+        for index in indices:
+            task=tasks[index-1]
             original=copy.deepcopy(task['data']['original_record']);stem=Path(original['image_id']).stem
+            if selection is not None:
+                chosen=next(r for r in selection if r['model']==model and r['task_idx']==index)
+                if chosen.get('sample_key',f'{args.split}/{model}/{stem}')!=f'{args.split}/{model}/{stem}':raise ValueError('Selection identity does not match task pool')
             g=dataset/'image'/f'{stem}.jpg';p=model_image(dataset/'model'/model,stem)
             gr=engine.read_rgb(g,cfg['analysis_max_side']);mr=align(gr,engine.read_rgb(p,cfg['analysis_max_side']))
             metrics,flags,maps=engine.measure(engine.lab(gr),engine.lab(mr),cfg)
@@ -222,7 +236,7 @@ def crop(args):
 def main():
     parser=argparse.ArgumentParser(description='Experimental CV → six-group sheets → Antigravity → strict candidate export')
     parser.add_argument('--config',type=Path,default=Path(__file__).with_name('config.json'));sub=parser.add_subparsers(dest='command',required=True)
-    p=sub.add_parser('prepare');p.add_argument('--model',choices=['lcad','unicolor','both'],default='both');p.add_argument('--split',choices=['train','val','test'],default='val');p.add_argument('--start',type=int,default=1);p.add_argument('--end',type=int,default=12);p.add_argument('--run-id',required=True)
+    p=sub.add_parser('prepare');p.add_argument('--model',choices=['lcad','unicolor','both'],default='both');p.add_argument('--split',choices=['train','val','test'],default='val');p.add_argument('--start',type=int,default=1);p.add_argument('--end',type=int,default=12);p.add_argument('--run-id',required=True);p.add_argument('--selection',type=Path,help='JSON samples: model + task_idx, within the workspace; replaces the contiguous range')
     p=sub.add_parser('verify');p.add_argument('--batch',required=True)
     p=sub.add_parser('import-reviews');p.add_argument('--batch',required=True);p.add_argument('--reviews',required=True)
     p=sub.add_parser('export-candidate');p.add_argument('--batch',required=True)

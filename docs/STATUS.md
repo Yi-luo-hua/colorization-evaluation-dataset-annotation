@@ -1,5 +1,13 @@
 # 当前状态（2026-10-12）
 
+## 真实边界先导（最新）
+
+新版CV已扫描真实验证集2,856组：A候选12、D候选508，尚非真实标签。六种数值选样组各3张GT，两模型对应，共36样本/6张六组看板；除已检查的滑雪者锚点外其余17张GT排除之前实验样本。先导取每组1张GT：12样本/2张看板。
+
+下一步需要主人在Antigravity执行`LS_lcad_reviewer/intermediate/experiments/real_boundary_pilot_20261012/START_HERE.md`，保存reviews_gemini.json。严重度可留null，不确定项保留；收到后先做分歧分析，再请主人核对重点A/D参考项。未生成真实审核结果，未改变CV阈值。
+
+选样与回传流程见[真实边界小试报告](experiments/real_boundary_pilot_20261012.md)。review_boundaries.py compare只有收到明确人工参考后才计算相应误报/漏报，未知项不计负例。
+
 ## 第四轮更新（当前有效）
 
 活动配置为cv_workflow_candidate_4，production_ready=false，严重度未校准。下方第三轮内容保留作历史背景。
