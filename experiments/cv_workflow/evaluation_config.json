@@ -1,0 +1,13 @@
+{
+  "seed": 20261012,
+  "development_per_stratum": 8,
+  "fresh_holdout_per_stratum": 16,
+  "global_shift_norms": [4.0, 12.0, 24.0],
+  "global_shift_angles": [0.0, 90.0, 180.0, 270.0],
+  "local_areas": [0.25, 0.75, 0.9],
+  "local_shift_norm": 24.0,
+  "chroma_scales": [0.35, 0.7, 1.3, 1.7],
+  "local_hue_areas": [0.01, 0.05, 0.25, 0.5],
+  "white_balance_gains": [[1.1, 1.0, 0.9], [0.9, 1.0, 1.1]],
+  "pixel_coverage_search": [0.8, 0.9, 0.95, 0.98]
+}

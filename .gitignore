@@ -11,6 +11,7 @@
 /LS_lcad_reviewer/tasks*.json
 /LS_lcad_reviewer/exports/
 /LS_lcad_reviewer/streams/
+/LS_lcad_reviewer/legacy_archive/root_entrypoints_20261012/
 
 # Generated experiment artifacts; scripts and historical reports are versioned.
 /LS_lcad_reviewer/intermediate/audits/
