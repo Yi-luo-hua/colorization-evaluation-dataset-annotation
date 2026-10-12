@@ -62,7 +62,7 @@ def write_start_instructions(run,manifest):
 2. **速度第一：大图单次审查后直接写JSON。禁止查找/打开单张原图，禁止读manifest、任务池、数据目录或源码反查位置，禁止crop、补图、重复复核。小而模糊的细节跳过，标注明确可见的主要缺陷；不要为追求完美拖慢整批。**
 3. A是全图颜色结构失败；C是具体物体相对GT错配；D是多物体/背景共同偏移；E1/E2绑定具体物体；B须看见越界，F须看见常识不自然。不跟随CV数值自动贴标签。
 4. 逐物体写短描述，evidence一句即可，不穷举小物体。A等级=""；非A按临时视觉规则给L1轻微、L2明显、L3强烈且影响主要主体/大面积，允许近似，后续迭代校准。只有主要判断也无法成立时才留uncertain；不因少量细节看不清就让整行待定。needs_crops固定[]。
-5. 从模板另存reviews_gemini.json，保持全部匿名sample_key及七类checked_categories，完成行inspection_complete=true。不要再读脚本、运行--help或自行编写重复校验；后处理由程序一次完成。
+5. 直接填写本地reviews_gemini.json（不存在时从模板创建），保持全部匿名sample_key及七类checked_categories，完成行inspection_complete=true。整批一次保存，不逐条反复修改，不在回复中返回JSON。不要读脚本、运行--help或自行编写重复校验；程序直接读取该文件完成后处理。
 6. 保存JSON后结束，只回复文件已保存。不写长篇报告，不等待人工补图/逐项批准，不修改算法或导出正式数据。
 '''
         (run/'START_HERE.md').write_text(instructions,encoding='utf-8');return

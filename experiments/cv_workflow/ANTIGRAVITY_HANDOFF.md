@@ -21,7 +21,7 @@
 
 ## 输出与自动结束
 
-从模板另存reviews_gemini.json，每个匿名sample_key一条，checked_categories填写七类，完成行inspection_complete=true。主要判断无法成立才用uncertain，不能因少量细节模糊使整行待定。fast模式needs_crops固定[]，默认补图预算0。
+直接填写程序已初始化的本地reviews_gemini.json，每个匿名sample_key一条，checked_categories填写七类，完成行inspection_complete=true。整批一次保存，不逐条反复修改。不要在对话回复中返回标注JSON。主要判断无法成立才用uncertain，不能因少量细节模糊使整行待定。fast模式needs_crops固定[]，默认补图预算0。
 
 保持object/location/gt_color/generated_color/evidence字段简短、具体。允许同类不同物体分别记录。不读历史分数/标签，不修改算法或正式数据。保存JSON后只回复文件已保存，不写长篇总结，不再反复验证，也不等待人工补图或逐项批准。程序完成一次必要的结构检查和后处理。
 

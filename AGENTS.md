@@ -27,7 +27,7 @@ CV提取 → 六组看板 → Gemini单次视觉标注 → 程序检查与实验
 
 ## 模型调用与后处理
 
-主人已授权直接调用本机agy的Gemini 3.8 Flash系列，由本对话控制迭代，无需就已授权调用重复确认。标注模型默认gemini-3.8-flash-high；其他档位实验需记录实际模型。agy_runner.py一次批次调用，内嵌精简元数据，只让模型打开看板并返回JSON；CLI失败/空响应不导入标签。
+主人已授权直接调用本机agy的Gemini 3.8 Flash系列，由本对话控制迭代，无需就已授权调用重复确认。标注模型默认gemini-3.8-flash-high；其他档位实验需记录实际模型。agy_runner.py一次批次调用，内嵌精简元数据；模型自行读本地看板并直接修改指定reviews_gemini.json，只回复文件已保存，不在对话里返回标注JSON。程序读取结果文件后处理，不从模型回复解析标注内容。
 
 必要的样本对应、完整覆盖、A约束和JSON结构检查由程序完成，模型不要再自行写验证脚本。保留原评分/时间戳；candidate和provenance留在实验run，不自动覆盖正式exports/SQLite。外部AI审核员completed_by=0，不冒充真人。
 
