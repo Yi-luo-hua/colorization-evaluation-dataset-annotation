@@ -71,7 +71,7 @@ flowchart TD
     subgraph MAINLINE["🟢 主线流程：CV 全量遥测 + 100% 高清看板视觉直审 (0 自动放行)"]
         direction TB
         A["分批原始任务池 (tasks_*.json)"] --> S1["阶段一: CV 物理特征与底层遥测全量提取"]
-      
+
         subgraph S1_BOX["CV 算法与物理特征遥测引擎"]
             direction TB
             C1["底层色度检测 (饱和度比 R_sat / 色差 Delta_C / 唯一偏色向量确定)"]
@@ -81,10 +81,10 @@ flowchart TD
             C1 --> C2 --> C3 --> C4
         end
         S1 --> S1_BOX
-      
+
         %% 铁律：不再放行任何图片，100% 任务全部直通阶段二
         S1_BOX -->|"100% 任务全量注入遥测标记 (0 自动放行)"| S2["阶段二: 100% 生成并排三联高清看板与多模态视觉直审"]
-      
+
         subgraph S2_BOX["AI 多模态视觉直审与具象定物引擎"]
             direction TB
             V1["自动渲染并排高清看板 (6组/张 · GT + 模型图 + 2x差分热力图 + CV遥测顶栏)"]
@@ -101,7 +101,7 @@ flowchart TD
         %% 汇聚到输出阶段
         V3A --> S3["阶段三: 结果汇聚与格式强校验"]
         V3B --> S3
-      
+
         subgraph S3_BOX["正式交付输出与契约断言"]
             direction TB
             O1["生成标准流式包 (tasks_*_stream.json)"]
