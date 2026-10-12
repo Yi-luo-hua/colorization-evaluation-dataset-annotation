@@ -1,0 +1,22 @@
+{
+  "experiment_id": "cv_workflow_experiment_20261012_01",
+  "lockbox_per_stratum": 16,
+  "boundary_gt_count": 100,
+  "d_search": {
+    "minimum_shift": [2.0, 4.0, 6.0, 8.0],
+    "absolute_tolerance": [1.0, 2.0],
+    "relative_tolerance": [0.2, 0.4],
+    "minimum_coverage": [0.75, 0.875],
+    "activity_floor": [1.0, 2.0],
+    "minimum_active_coverage": [0.875, 1.0],
+    "scale_explanation_ratio": [0.3, 0.5, 0.7]
+  },
+  "a_search": {
+    "minimum_hue_concentration": [0.95, 0.98, 0.995],
+    "minimum_concentration_increase": [0.05, 0.1, 0.2]
+  },
+  "display_deadzone_candidates": [0.0, 1.0, 2.0, 12.251697349548339],
+  "preview_deadzone": 1.0,
+  "preview_gamma": 0.6,
+  "bootstrap_replicates": 500
+}

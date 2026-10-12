@@ -1,0 +1,2833 @@
+{
+  "batch_no": 48,
+  "total_tasks": 120,
+  "qualifies_count": 50,
+  "items": [
+    {
+      "task_id": 9474,
+      "image_id": "lcad/000000549534.png",
+      "orig_score": 4.46,
+      "delta_c": 0.148,
+      "delta_rg": -0.112,
+      "delta_yb": -0.096,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.691,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9479,
+      "image_id": "lcad/000000549650.png",
+      "orig_score": 5.0,
+      "delta_c": 0.034,
+      "delta_rg": 0.032,
+      "delta_yb": -0.012,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 1.083,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9480,
+      "image_id": "lcad/000000549683.png",
+      "orig_score": 5.0,
+      "delta_c": 0.011,
+      "delta_rg": -0.009,
+      "delta_yb": 0.007,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 0.939,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9481,
+      "image_id": "lcad/000000549714.png",
+      "orig_score": 4.46,
+      "delta_c": 0.012,
+      "delta_rg": -0.011,
+      "delta_yb": -0.004,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.866,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略偏暖红，沙发与木地板的棕红色调稍显集中。"
+        }
+      ]
+    },
+    {
+      "task_id": 9484,
+      "image_id": "lcad/000000549910.png",
+      "orig_score": 5.0,
+      "delta_c": 0.065,
+      "delta_rg": -0.052,
+      "delta_yb": -0.039,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.049,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9485,
+      "image_id": "lcad/000000549933.png",
+      "orig_score": 5.0,
+      "delta_c": 0.009,
+      "delta_rg": -0.005,
+      "delta_yb": -0.008,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.662,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9486,
+      "image_id": "lcad/000000549958.png",
+      "orig_score": 2.47,
+      "delta_c": 0.064,
+      "delta_rg": 0.019,
+      "delta_yb": 0.061,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.223,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "天空及海面略带灰绿色调，存在轻微的整体冷绿色偏色。"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "画面整体饱和度偏低，天空、海水与沙滩大面积呈灰暗单调，仅人物保留少量可辨识色彩。"
+        }
+      ]
+    },
+    {
+      "task_id": 9488,
+      "image_id": "lcad/000000550019.png",
+      "orig_score": 2.17,
+      "delta_c": 0.171,
+      "delta_rg": -0.091,
+      "delta_yb": -0.144,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.611,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 饱和度偏高浓艳(E1-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "强烈冷色与局部黄绿色调搭配不够协调，使整体质感和光照表现略显失真。"
+        }
+      ]
+    },
+    {
+      "task_id": 9490,
+      "image_id": "lcad/000000550112.png",
+      "orig_score": 2.73,
+      "delta_c": 0.055,
+      "delta_rg": 0.016,
+      "delta_yb": -0.052,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.499,
+      "qualifies": false,
+      "current_review_note": "核查发现：局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9493,
+      "image_id": "lcad/000000550308.png",
+      "orig_score": 5.0,
+      "delta_c": 0.06,
+      "delta_rg": 0.02,
+      "delta_yb": 0.057,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.12,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9495,
+      "image_id": "lcad/000000550445.png",
+      "orig_score": 5.0,
+      "delta_c": 0.101,
+      "delta_rg": -0.057,
+      "delta_yb": 0.083,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.524,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏草绿黄调(D-L1); 饱和度偏高浓艳(E1-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏草绿黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "高光区域色彩过于浓艳刺眼"
+        }
+      ]
+    },
+    {
+      "task_id": 9496,
+      "image_id": "lcad/000000550452.png",
+      "orig_score": 5.0,
+      "delta_c": 0.055,
+      "delta_rg": 0.047,
+      "delta_yb": -0.027,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.732,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9498,
+      "image_id": "lcad/000000550534.png",
+      "orig_score": 5.0,
+      "delta_c": 0.034,
+      "delta_rg": 0.03,
+      "delta_yb": 0.016,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.663,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9499,
+      "image_id": "lcad/000000550555.png",
+      "orig_score": 4.46,
+      "delta_c": 0.129,
+      "delta_rg": 0.124,
+      "delta_yb": -0.034,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.818,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9500,
+      "image_id": "lcad/000000550747.png",
+      "orig_score": 5.0,
+      "delta_c": 0.074,
+      "delta_rg": -0.03,
+      "delta_yb": -0.068,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.543,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9502,
+      "image_id": "lcad/000000550862.png",
+      "orig_score": 5.0,
+      "delta_c": 0.042,
+      "delta_rg": -0.021,
+      "delta_yb": -0.037,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.864,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：饱和度偏高浓艳(E1-L2)。",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "高光区域色彩过于浓艳刺眼"
+        }
+      ]
+    },
+    {
+      "task_id": 9504,
+      "image_id": "lcad/000000550960.png",
+      "orig_score": 4.55,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": true,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "两根香肠的紫红色略显浓艳，与其余食物较柔和的色彩强度稍不协调。"
+        }
+      ]
+    },
+    {
+      "task_id": 9505,
+      "image_id": "lcad/000000550980.png",
+      "orig_score": 5.0,
+      "delta_c": 0.048,
+      "delta_rg": 0.032,
+      "delta_yb": 0.036,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.012,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9506,
+      "image_id": "lcad/000000551031.png",
+      "orig_score": 5.0,
+      "delta_c": 0.075,
+      "delta_rg": 0.063,
+      "delta_yb": 0.042,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.551,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9507,
+      "image_id": "lcad/000000551036.png",
+      "orig_score": 4.46,
+      "delta_c": 0.019,
+      "delta_rg": -0.016,
+      "delta_yb": 0.01,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.257,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "室内暗部与部分中性色略偏青绿，人物肤色也稍显粉紫（偏草绿黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9512,
+      "image_id": "lcad/000000551427.png",
+      "orig_score": 5.0,
+      "delta_c": 0.07,
+      "delta_rg": -0.052,
+      "delta_yb": -0.047,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.732,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9513,
+      "image_id": "lcad/000000551441.png",
+      "orig_score": 5.0,
+      "delta_c": 0.054,
+      "delta_rg": -0.017,
+      "delta_yb": -0.051,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.666,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9517,
+      "image_id": "lcad/000000551602.png",
+      "orig_score": 5.0,
+      "delta_c": 0.037,
+      "delta_rg": 0.018,
+      "delta_yb": 0.033,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.094,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9522,
+      "image_id": "lcad/000000552148.png",
+      "orig_score": 5.0,
+      "delta_c": 0.009,
+      "delta_rg": 0.008,
+      "delta_yb": 0.003,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.91,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9523,
+      "image_id": "lcad/000000552170.png",
+      "orig_score": 4.55,
+      "delta_c": 0.211,
+      "delta_rg": 0.104,
+      "delta_yb": 0.184,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.995,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "整体色彩略显低饱和，远山、天空与地表区域偏灰暗，但仍保留可辨识的自然色调。"
+        }
+      ]
+    },
+    {
+      "task_id": 9525,
+      "image_id": "lcad/000000552197.png",
+      "orig_score": 5.0,
+      "delta_c": 0.053,
+      "delta_rg": 0.051,
+      "delta_yb": -0.012,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.764,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9527,
+      "image_id": "lcad/000000552221.png",
+      "orig_score": 2.56,
+      "delta_c": 0.106,
+      "delta_rg": -0.076,
+      "delta_yb": -0.075,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.818,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "披萨上的绿色配料饱和度过高，呈现较突兀的亮绿色，明显超出自然食材的色彩强度。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "高饱和绿色配料与偏暗的周围环境在色彩强度上略显割裂，整体自然度稍受影响。"
+        }
+      ]
+    },
+    {
+      "task_id": 9532,
+      "image_id": "lcad/000000552461.png",
+      "orig_score": 4.46,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面受室内暖光影响略微偏黄橙，肤色和白色衬衫呈现轻微暖色偏移（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9534,
+      "image_id": "lcad/000000552503.png",
+      "orig_score": 2.17,
+      "delta_c": 0.052,
+      "delta_rg": 0.046,
+      "delta_yb": -0.025,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.91,
+      "qualifies": false,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L1)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L1",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "左上锅内食物呈明显的洋红偏色，与正常食材色调不协调（偏洋红紫调）。"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "各锅内红、黄及洋红色彩整体过于浓烈，饱和度超出自然观感。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "不同锅内的高强度色彩相互割裂，使整体上色观感不够自然真实。"
+        }
+      ]
+    },
+    {
+      "task_id": 9535,
+      "image_id": "lcad/000000552518.png",
+      "orig_score": 2.47,
+      "delta_c": 0.033,
+      "delta_rg": 0.033,
+      "delta_yb": 0.003,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.001,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面阴影及路面区域带有轻微的棕红色调偏移（偏暖红黄调）。"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩较为灰暗低饱和，建筑、街道与人物服饰的颜色层次偏弱。"
+        }
+      ]
+    },
+    {
+      "task_id": 9536,
+      "image_id": "lcad/000000552571.png",
+      "orig_score": 2.17,
+      "delta_c": 0.132,
+      "delta_rg": 0.079,
+      "delta_yb": -0.105,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.405,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏洋红紫调(D-L1); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏洋红紫调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "绿灰草地与零散粉紫色区域的搭配略显斑驳，整体上色自然度一般。"
+        }
+      ]
+    },
+    {
+      "task_id": 9537,
+      "image_id": "lcad/000000552672.png",
+      "orig_score": 5.0,
+      "delta_c": 0.07,
+      "delta_rg": 0.066,
+      "delta_yb": 0.022,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.614,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9538,
+      "image_id": "lcad/000000552679.png",
+      "orig_score": 2.73,
+      "delta_c": 0.289,
+      "delta_rg": 0.202,
+      "delta_yb": 0.207,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.457,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L2); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9539,
+      "image_id": "lcad/000000552717.png",
+      "orig_score": 4.55,
+      "delta_c": 0.195,
+      "delta_rg": -0.132,
+      "delta_yb": -0.144,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.277,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9543,
+      "image_id": "lcad/000000552852.png",
+      "orig_score": 4.46,
+      "delta_c": 0.016,
+      "delta_rg": 0.012,
+      "delta_yb": 0.01,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.995,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略带黄暖色调，白色衣物和室内墙面呈现轻微偏黄（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9544,
+      "image_id": "lcad/000000552866.png",
+      "orig_score": 1.07,
+      "delta_c": 0.112,
+      "delta_rg": 0.066,
+      "delta_yb": 0.09,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.327,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "天空及高光区域的橙黄色过于浓烈，色彩强度超出自然夕照效果。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "单一的金黄色调削弱了不同材质与区域的真实色彩差异，整体呈现明显的滤镜化观感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9545,
+      "image_id": "lcad/000000552901.png",
+      "orig_score": 4.55,
+      "delta_c": 0.146,
+      "delta_rg": -0.062,
+      "delta_yb": -0.132,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.38,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9547,
+      "image_id": "lcad/000000553025.png",
+      "orig_score": 5.0,
+      "delta_c": 0.051,
+      "delta_rg": -0.049,
+      "delta_yb": 0.015,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.129,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9550,
+      "image_id": "lcad/000000553224.png",
+      "orig_score": 5.0,
+      "delta_c": 0.101,
+      "delta_rg": 0.077,
+      "delta_yb": 0.065,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.315,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9551,
+      "image_id": "lcad/000000553283.png",
+      "orig_score": 5.0,
+      "delta_c": 0.088,
+      "delta_rg": 0.059,
+      "delta_yb": 0.066,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.577,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1); 饱和度偏高浓艳(E1-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "高光区域色彩过于浓艳刺眼"
+        }
+      ]
+    },
+    {
+      "task_id": 9553,
+      "image_id": "lcad/000000553436.png",
+      "orig_score": 2.47,
+      "delta_c": 0.1,
+      "delta_rg": 0.068,
+      "delta_yb": 0.074,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 2.19,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1); 饱和度偏高浓艳(E1-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "暖色覆盖使不同材质与区域的色彩区分略显单一，整体自然度稍有下降。"
+        }
+      ]
+    },
+    {
+      "task_id": 9554,
+      "image_id": "lcad/000000553446.png",
+      "orig_score": 5.0,
+      "delta_c": 0.042,
+      "delta_rg": 0.04,
+      "delta_yb": 0.014,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.885,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9556,
+      "image_id": "lcad/000000553549.png",
+      "orig_score": 2.47,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "熊的黑色毛发及周围枝干呈明显蓝紫色调，画面整体存在偏冷偏紫现象（偏冷青蓝调）。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "冷色高光与夜间闪光照明使主体和环境的色彩协调性略显不自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9557,
+      "image_id": "lcad/000000553576.png",
+      "orig_score": 5.0,
+      "delta_c": 0.061,
+      "delta_rg": -0.013,
+      "delta_yb": -0.06,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.754,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9558,
+      "image_id": "lcad/000000553719.png",
+      "orig_score": 2.47,
+      "delta_c": 0.033,
+      "delta_rg": 0.007,
+      "delta_yb": -0.033,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.759,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "沙发与背景右侧呈明显的紫红色偏移，和左侧偏绿褐的区域形成不自然的色调分裂（偏草绿黄调）。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "画面局部色调与强烈明暗反差略显割裂，整体真实感受到轻微影响。"
+        }
+      ]
+    },
+    {
+      "task_id": 9559,
+      "image_id": "lcad/000000553773.png",
+      "orig_score": 4.46,
+      "delta_c": 0.063,
+      "delta_rg": -0.024,
+      "delta_yb": -0.058,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.842,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略偏暖黄，木桌与披萨的橙黄色调稍显统一（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9561,
+      "image_id": "lcad/000000553812.png",
+      "orig_score": 2.47,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体明显偏黄褐色，墙面、地板及犬只浅色毛发均受到暖色调污染（偏暖红黄调）。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "整体配色略显陈旧浑浊，浅色区域的色彩与质感不够自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9563,
+      "image_id": "lcad/000000553954.png",
+      "orig_score": 2.32,
+      "delta_c": 0.181,
+      "delta_rg": -0.074,
+      "delta_yb": -0.166,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.505,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "两侧人物肤色色调与强度不够统一，使整体观感略显不自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9566,
+      "image_id": "lcad/000000554138.png",
+      "orig_score": 5.0,
+      "delta_c": 0.067,
+      "delta_rg": 0.05,
+      "delta_yb": -0.045,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.844,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9568,
+      "image_id": "lcad/000000554207.png",
+      "orig_score": 4.55,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": true,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "整体色彩较为淡雅偏灰，草地与背景的绿色、棕色色调饱和度略低。"
+        }
+      ]
+    },
+    {
+      "task_id": 9569,
+      "image_id": "lcad/000000554275.png",
+      "orig_score": 2.56,
+      "delta_c": 0.037,
+      "delta_rg": 0.013,
+      "delta_yb": 0.034,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.064,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "前景衣物、手套及果实的橙红和绿色饱和度偏高，色彩显得过于浓烈并削弱了部分纹理层次。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "高饱和的前景与较灰淡的背景存在轻微割裂感，整体自然度略受影响。"
+        }
+      ]
+    },
+    {
+      "task_id": 9571,
+      "image_id": "lcad/000000554367.png",
+      "orig_score": 2.17,
+      "delta_c": 0.199,
+      "delta_rg": -0.047,
+      "delta_yb": -0.194,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.349,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "整体光照与色彩质感较原图缺乏自然的暖阳感，画面呈现偏冷、低饱和的割裂观感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9572,
+      "image_id": "lcad/000000554699.png",
+      "orig_score": 2.17,
+      "delta_c": 0.199,
+      "delta_rg": -0.113,
+      "delta_yb": -0.164,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.442,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "高亮反光与浓重粉色搭配略显生硬，使食材质感和整体色彩观感不够自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9573,
+      "image_id": "lcad/000000554783.png",
+      "orig_score": 4.3,
+      "delta_c": 0.037,
+      "delta_rg": 0.018,
+      "delta_yb": -0.032,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.688,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "个别禽类头部、腿部及局部羽毛颜色较鲜艳，黄色、红色和蓝色饱和度略显突出。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "整体场景基本自然，但局部高饱和色块与周围草地及羽毛质感略有割裂感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9575,
+      "image_id": "lcad/000000554982.png",
+      "orig_score": 4.55,
+      "delta_c": 0.052,
+      "delta_rg": -0.041,
+      "delta_yb": -0.032,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.712,
+      "qualifies": true,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "画面整体色彩略显灰暗低饱和，墙面、沙发及装饰物的色彩层次稍弱。"
+        }
+      ]
+    },
+    {
+      "task_id": 9576,
+      "image_id": "lcad/000000555015.png",
+      "orig_score": 5.0,
+      "delta_c": 0.092,
+      "delta_rg": -0.037,
+      "delta_yb": -0.084,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.602,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏冷青蓝调(D-L1); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9577,
+      "image_id": "lcad/000000555062.png",
+      "orig_score": 5.0,
+      "delta_c": 0.084,
+      "delta_rg": 0.07,
+      "delta_yb": 0.045,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.889,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9579,
+      "image_id": "lcad/000000555299.png",
+      "orig_score": 5.0,
+      "delta_c": 0.044,
+      "delta_rg": -0.035,
+      "delta_yb": -0.027,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.973,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9580,
+      "image_id": "lcad/000000555361.png",
+      "orig_score": 2.61,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "人物面部肤色明显偏红紫，受逆光影响呈现不够自然的色调偏移（偏洋红紫调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9583,
+      "image_id": "lcad/000000555590.png",
+      "orig_score": 5.0,
+      "delta_c": 0.101,
+      "delta_rg": 0.058,
+      "delta_yb": 0.082,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.792,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9584,
+      "image_id": "lcad/000000555669.png",
+      "orig_score": 2.61,
+      "delta_c": 0.034,
+      "delta_rg": 0.005,
+      "delta_yb": 0.033,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.442,
+      "qualifies": false,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L1)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L1",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "人物肤色明显偏红橙，画面整体带有轻微暖黄色调（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9585,
+      "image_id": "lcad/000000555701.png",
+      "orig_score": 5.0,
+      "delta_c": 0.026,
+      "delta_rg": 0.025,
+      "delta_yb": 0.004,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.133,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9587,
+      "image_id": "lcad/000000555797.png",
+      "orig_score": 2.43,
+      "delta_c": 0.206,
+      "delta_rg": -0.076,
+      "delta_yb": -0.191,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.502,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9588,
+      "image_id": "lcad/000000555861.png",
+      "orig_score": 4.55,
+      "delta_c": 0.069,
+      "delta_rg": 0.066,
+      "delta_yb": 0.018,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.306,
+      "qualifies": true,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L2)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L2",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "长椅的红色略显浓烈，部分高光区域的色彩强度稍高于自然观感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9589,
+      "image_id": "lcad/000000555915.png",
+      "orig_score": 2.43,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩偏灰且较为平淡，孔雀羽毛尤其是颈部和尾羽缺乏应有的蓝绿色层次与鲜活度。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "孔雀主体的羽毛色彩较浑浊、层次不足，与真实羽毛的光泽和质感存在明显差距。"
+        }
+      ]
+    },
+    {
+      "task_id": 9591,
+      "image_id": "lcad/000000556012.png",
+      "orig_score": 1.08,
+      "delta_c": 0.102,
+      "delta_rg": 0.098,
+      "delta_yb": 0.028,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.132,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L3",
+          "description": "路面与两侧灯光的红橙黄色过度浓烈，明显超出自然夜景的色彩强度。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "强烈暖色与高对比使夜景显得过度加工，部分车辆和街道质感不够自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9594,
+      "image_id": "lcad/000000556230.png",
+      "orig_score": 5.0,
+      "delta_c": 0.069,
+      "delta_rg": 0.036,
+      "delta_yb": 0.058,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.909,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9595,
+      "image_id": "lcad/000000556279.png",
+      "orig_score": 2.17,
+      "delta_c": 0.132,
+      "delta_rg": 0.015,
+      "delta_yb": 0.131,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.859,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1); 饱和度偏高浓艳(E1-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "人物肤色与服饰、背景的色彩强度不一致，使整体上色呈现较明显的旧照片人工着色感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9597,
+      "image_id": "lcad/000000556462.png",
+      "orig_score": 4.46,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略带偏黄偏红的暖色调，白色餐盘和浅色区域的色彩表现不够中性（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9598,
+      "image_id": "lcad/000000556986.png",
+      "orig_score": 2.47,
+      "delta_c": 0.069,
+      "delta_rg": -0.017,
+      "delta_yb": -0.066,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.716,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面背景与水泥区域略带黄褐色调，存在轻微整体暖色偏移（偏暖红黄调）。"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩较为灰暗低饱和，背景、人物肤色及环境材质的色彩表现不够鲜活。"
+        }
+      ]
+    },
+    {
+      "task_id": 9599,
+      "image_id": "lcad/000000557021.png",
+      "orig_score": 4.46,
+      "delta_c": 0.071,
+      "delta_rg": -0.062,
+      "delta_yb": 0.033,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 0.713,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "人物面部肤色略偏红橙，与颈部及周围区域的色调有轻微不一致（偏暖红黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9601,
+      "image_id": "lcad/000000557191.png",
+      "orig_score": 5.0,
+      "delta_c": 0.03,
+      "delta_rg": 0.009,
+      "delta_yb": 0.029,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.438,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9602,
+      "image_id": "lcad/000000557200.png",
+      "orig_score": 5.0,
+      "delta_c": 0.033,
+      "delta_rg": -0.032,
+      "delta_yb": 0.009,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.351,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9603,
+      "image_id": "lcad/000000557344.png",
+      "orig_score": 1.2,
+      "delta_c": 0.181,
+      "delta_rg": -0.101,
+      "delta_yb": -0.149,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.613,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "手机上高饱和品红与亮绿色的强烈反差和周围低饱和环境不协调，整体观感较为突兀。"
+        }
+      ]
+    },
+    {
+      "task_id": 9605,
+      "image_id": "lcad/000000557768.png",
+      "orig_score": 2.73,
+      "delta_c": 0.131,
+      "delta_rg": -0.128,
+      "delta_yb": -0.025,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.582,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9606,
+      "image_id": "lcad/000000557907.png",
+      "orig_score": 5.0,
+      "delta_c": 0.118,
+      "delta_rg": 0.09,
+      "delta_yb": -0.076,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.669,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9607,
+      "image_id": "lcad/000000557965.png",
+      "orig_score": 5.0,
+      "delta_c": 0.051,
+      "delta_rg": 0.046,
+      "delta_yb": 0.021,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.17,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9610,
+      "image_id": "lcad/000000558104.png",
+      "orig_score": 2.36,
+      "delta_c": 0.077,
+      "delta_rg": 0.055,
+      "delta_yb": 0.054,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.765,
+      "qualifies": false,
+      "current_review_note": "核查发现：饱和度偏高浓艳(E1-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "面部肤色明显偏红褐且较为浑浊，与白色衬衫及周围色调不够协调（偏暖红黄调）。"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "人物皮肤、深色帽服与绿色背景的综合色彩过渡较生硬，整体呈现较明显的人工上色感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9613,
+      "image_id": "lcad/000000558278.png",
+      "orig_score": 5.0,
+      "delta_c": 0.086,
+      "delta_rg": 0.012,
+      "delta_yb": 0.085,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.868,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9614,
+      "image_id": "lcad/000000558365.png",
+      "orig_score": 5.0,
+      "delta_c": 0.041,
+      "delta_rg": -0.022,
+      "delta_yb": -0.035,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.33,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9615,
+      "image_id": "lcad/000000558616.png",
+      "orig_score": 2.47,
+      "delta_c": 0.054,
+      "delta_rg": -0.006,
+      "delta_yb": 0.054,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.261,
+      "qualifies": false,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L1)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L1",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略带黄绿色调，墙面与窗帘区域尤为明显（偏草绿黄调）。"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩较灰暗低饱和，床铺、墙面和家具的颜色层次不够鲜明。"
+        }
+      ]
+    },
+    {
+      "task_id": 9617,
+      "image_id": "lcad/000000558700.png",
+      "orig_score": 5.0,
+      "delta_c": 0.056,
+      "delta_rg": -0.017,
+      "delta_yb": -0.053,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.792,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9618,
+      "image_id": "lcad/000000558845.png",
+      "orig_score": 2.36,
+      "delta_c": 0.064,
+      "delta_rg": -0.064,
+      "delta_yb": -0.005,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 4.909,
+      "qualifies": false,
+      "current_review_note": "核查发现：饱和度偏高浓艳(E1-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "天空呈明显的青绿色偏色，人物肤色也略显红褐，色调不够自然（偏草绿黄调）。"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "人物、天空与地面的色彩层次较为平板且带有旧式人工上色感，整体真实感一般。"
+        }
+      ]
+    },
+    {
+      "task_id": 9619,
+      "image_id": "lcad/000000558900.png",
+      "orig_score": 5.0,
+      "delta_c": 0.042,
+      "delta_rg": 0.012,
+      "delta_yb": -0.041,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 1.076,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9621,
+      "image_id": "lcad/000000558942.png",
+      "orig_score": 5.0,
+      "delta_c": 0.081,
+      "delta_rg": 0.013,
+      "delta_yb": -0.08,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.571,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏洋红紫调(D-L1); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏洋红紫调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9624,
+      "image_id": "lcad/000000559132.png",
+      "orig_score": 5.0,
+      "delta_c": 0.034,
+      "delta_rg": 0.01,
+      "delta_yb": 0.032,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.771,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9625,
+      "image_id": "lcad/000000559151.png",
+      "orig_score": 5.0,
+      "delta_c": 0.028,
+      "delta_rg": -0.026,
+      "delta_yb": 0.008,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 0.989,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9627,
+      "image_id": "lcad/000000559294.png",
+      "orig_score": 2.73,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩较为灰淡，草地与斑马鬃毛的自然绿色、棕色表现不足。"
+        }
+      ]
+    },
+    {
+      "task_id": 9628,
+      "image_id": "lcad/000000559364.png",
+      "orig_score": 5.0,
+      "delta_c": 0.025,
+      "delta_rg": 0.018,
+      "delta_yb": -0.017,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 1.766,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9629,
+      "image_id": "lcad/000000559474.png",
+      "orig_score": 5.0,
+      "delta_c": 0.083,
+      "delta_rg": -0.002,
+      "delta_yb": -0.083,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.005,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9632,
+      "image_id": "lcad/000000559618.png",
+      "orig_score": 2.36,
+      "delta_c": 0.163,
+      "delta_rg": -0.144,
+      "delta_yb": -0.076,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.706,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "整体色彩较浑浊，暖色环境与偏绿机身之间不够协调，削弱了真实感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9635,
+      "image_id": "lcad/000000559760.png",
+      "orig_score": 5.0,
+      "delta_c": 0.033,
+      "delta_rg": -0.026,
+      "delta_yb": -0.02,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 1.047,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9636,
+      "image_id": "lcad/000000559768.png",
+      "orig_score": 4.55,
+      "delta_c": 0.03,
+      "delta_rg": 0.004,
+      "delta_yb": -0.03,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 1.104,
+      "qualifies": true,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "饮料的红色、玻璃边缘的绿色及牛角包的橙色略显浓艳，但未明显破坏整体观感。"
+        }
+      ]
+    },
+    {
+      "task_id": 9637,
+      "image_id": "lcad/000000559950.png",
+      "orig_score": 5.0,
+      "delta_c": 0.079,
+      "delta_rg": 0.057,
+      "delta_yb": 0.055,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.581,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9639,
+      "image_id": "lcad/000000560037.png",
+      "orig_score": 4.55,
+      "delta_c": 0.057,
+      "delta_rg": 0.057,
+      "delta_yb": -0.007,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.736,
+      "qualifies": true,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "画面整体色彩较为淡薄，人物、街景和鸽群略显灰暗，饱和度稍低。"
+        }
+      ]
+    },
+    {
+      "task_id": 9641,
+      "image_id": "lcad/000000560180.png",
+      "orig_score": 1.04,
+      "delta_c": 0.152,
+      "delta_rg": -0.15,
+      "delta_yb": -0.026,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.67,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L3",
+          "description": "球拍、网面与地面的黄绿和蓝色饱和度过高，呈现刺眼的荧光效果。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L3",
+          "description": "强烈色偏与高饱和色块使物体材质、光照和场景配色明显不自然，整体真实感较差。"
+        }
+      ]
+    },
+    {
+      "task_id": 9642,
+      "image_id": "lcad/000000560361.png",
+      "orig_score": 5.0,
+      "delta_c": 0.035,
+      "delta_rg": 0.016,
+      "delta_yb": 0.031,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.09,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9643,
+      "image_id": "lcad/000000560372.png",
+      "orig_score": 4.46,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "海水与浪花区域略带青绿色调，中性色呈现轻微冷色偏移（偏草绿黄调）。"
+        }
+      ]
+    },
+    {
+      "task_id": 9644,
+      "image_id": "lcad/000000560373.png",
+      "orig_score": 5.0,
+      "delta_c": 0.046,
+      "delta_rg": 0.03,
+      "delta_yb": -0.035,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.986,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9645,
+      "image_id": "lcad/000000560466.png",
+      "orig_score": 2.73,
+      "delta_c": 0.016,
+      "delta_rg": -0.011,
+      "delta_yb": -0.012,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.975,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "画面中部及右侧植被呈现偏荧光的亮绿色，饱和度明显高于周围场景，观感略显突兀。"
+        }
+      ]
+    },
+    {
+      "task_id": 9652,
+      "image_id": "lcad/000000560794.png",
+      "orig_score": 2.3,
+      "delta_c": 0.238,
+      "delta_rg": -0.118,
+      "delta_yb": -0.207,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.299,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9653,
+      "image_id": "lcad/000000560934.png",
+      "orig_score": 2.61,
+      "delta_c": 0.158,
+      "delta_rg": -0.078,
+      "delta_yb": -0.138,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.676,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9655,
+      "image_id": "lcad/000000560992.png",
+      "orig_score": 5.0,
+      "delta_c": 0.118,
+      "delta_rg": -0.098,
+      "delta_yb": -0.066,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.705,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9656,
+      "image_id": "lcad/000000561033.png",
+      "orig_score": 5.0,
+      "delta_c": 0.032,
+      "delta_rg": -0.021,
+      "delta_yb": -0.024,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.938,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏冷青蓝调"
+        }
+      ]
+    },
+    {
+      "task_id": 9657,
+      "image_id": "lcad/000000561047.png",
+      "orig_score": 5.0,
+      "delta_c": 0.036,
+      "delta_rg": 0.036,
+      "delta_yb": 0.001,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.165,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9658,
+      "image_id": "lcad/000000561054.png",
+      "orig_score": 5.0,
+      "delta_c": 0.048,
+      "delta_rg": -0.048,
+      "delta_yb": 0.002,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.177,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9661,
+      "image_id": "lcad/000000561121.png",
+      "orig_score": 2.73,
+      "delta_c": 0.032,
+      "delta_rg": -0.019,
+      "delta_yb": 0.026,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.104,
+      "qualifies": false,
+      "current_review_note": "核查发现：色彩微调。",
+      "current_defects": [
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "整体色彩较为灰暗低饱和，水面、地面及背景建筑等区域的色调表现偏淡，彩色层次不足。"
+        }
+      ]
+    },
+    {
+      "task_id": 9663,
+      "image_id": "lcad/000000561270.png",
+      "orig_score": 4.01,
+      "delta_c": 0.059,
+      "delta_rg": -0.059,
+      "delta_yb": -0.009,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.908,
+      "qualifies": false,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L1)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L1",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体略带黄绿色调，天空、水面及前景植被的综合色温不够中性（偏草绿黄调）。"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "主船甲板的橙色与船身蓝色局部偏浓艳，相较远景显得稍突兀。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "局部色彩呈涂抹和斑驳感，主船与低饱和背景之间略有割裂。"
+        }
+      ]
+    },
+    {
+      "task_id": 9665,
+      "image_id": "lcad/000000561406.png",
+      "orig_score": 5.0,
+      "delta_c": 0.079,
+      "delta_rg": 0.064,
+      "delta_yb": 0.046,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.086,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9668,
+      "image_id": "lcad/000000561523.png",
+      "orig_score": 2.23,
+      "delta_c": 0.109,
+      "delta_rg": 0.074,
+      "delta_yb": 0.08,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 2.087,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1); 饱和度偏高浓艳(E1-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "高光区域色彩过于浓艳刺眼"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L1",
+          "description": "统一的褐色调削弱了材质与肤色的真实感，整体观感略显陈旧和不够自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9671,
+      "image_id": "lcad/000000561647.png",
+      "orig_score": 2.73,
+      "delta_c": 0.029,
+      "delta_rg": 0.028,
+      "delta_yb": -0.005,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.767,
+      "qualifies": false,
+      "current_review_note": "核查发现：主体轮廓边缘溢色(B-L2)。",
+      "current_defects": [
+        {
+          "id": "B",
+          "name": "溢色",
+          "severity": "L2",
+          "description": "主体轮廓边缘色差突变出现扩散溢色"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "画面整体色彩偏灰且饱和度不足，路面、植被与天空尤其显得平淡，红色标牌也不够鲜明。"
+        }
+      ]
+    },
+    {
+      "task_id": 9672,
+      "image_id": "lcad/000000561673.png",
+      "orig_score": 2.17,
+      "delta_c": 0.184,
+      "delta_rg": -0.114,
+      "delta_yb": -0.145,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.188,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L2); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "由于环境暖色和材质色彩被削弱，结果图整体观感偏冷淡，空间的自然质感和原图的真实氛围有所下降。"
+        }
+      ]
+    },
+    {
+      "task_id": 9674,
+      "image_id": "lcad/000000561750.png",
+      "orig_score": 4.46,
+      "delta_c": 0.141,
+      "delta_rg": 0.134,
+      "delta_yb": 0.043,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.534,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L1); 局部色彩欠饱和褪色(E2-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L1",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        }
+      ]
+    },
+    {
+      "task_id": 9675,
+      "image_id": "lcad/000000561766.png",
+      "orig_score": 1.08,
+      "delta_c": 0.24,
+      "delta_rg": 0.19,
+      "delta_yb": 0.146,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.316,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏暖红黄调(D-L2); 局部色彩欠饱和褪色(E2-L2)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E2",
+          "name": "欠饱和",
+          "severity": "L2",
+          "description": "局部细节色彩欠饱和发灰脱色"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "整体配色灰黄浑浊，水体与植被的色彩层次和质感明显弱于原图，观感不够自然。"
+        }
+      ]
+    },
+    {
+      "task_id": 9677,
+      "image_id": "lcad/000000561849.png",
+      "orig_score": 5.0,
+      "delta_c": 0.029,
+      "delta_rg": 0.002,
+      "delta_yb": -0.029,
+      "bias_direction": "偏洋红紫调",
+      "sat_ratio": 0.947,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏洋红紫调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏洋红紫调"
+        }
+      ]
+    },
+    {
+      "task_id": 9678,
+      "image_id": "lcad/000000561907.png",
+      "orig_score": 5.0,
+      "delta_c": 0.111,
+      "delta_rg": 0.101,
+      "delta_yb": 0.047,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 1.569,
+      "qualifies": false,
+      "current_review_note": "原5.0满分严重漏检，核查发现：画面色彩偏暖红黄调(D-L1); 饱和度偏高浓艳(E1-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏暖红黄调"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L1",
+          "description": "高光区域色彩过于浓艳刺眼"
+        }
+      ]
+    },
+    {
+      "task_id": 9682,
+      "image_id": "lcad/000000562113.png",
+      "orig_score": 2.36,
+      "delta_c": 0.094,
+      "delta_rg": -0.089,
+      "delta_yb": -0.032,
+      "bias_direction": "偏冷青蓝调",
+      "sat_ratio": 0.689,
+      "qualifies": false,
+      "current_review_note": "核查发现：画面色彩偏冷青蓝调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体色彩明显偏冷青蓝调"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "整体青蓝色调与偏硬的明暗反差使画面呈现不自然的处理感，真实感有所下降。"
+        }
+      ]
+    },
+    {
+      "task_id": 9683,
+      "image_id": "lcad/000000562162.png",
+      "orig_score": 5.0,
+      "delta_c": 0.045,
+      "delta_rg": -0.017,
+      "delta_yb": 0.041,
+      "bias_direction": "偏草绿黄调",
+      "sat_ratio": 1.12,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏草绿黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏草绿黄调"
+        }
+      ]
+    },
+    {
+      "task_id": 9684,
+      "image_id": "lcad/000000562247.png",
+      "orig_score": 2.17,
+      "delta_c": 0.0,
+      "delta_rg": 0.0,
+      "delta_yb": 0.0,
+      "bias_direction": "",
+      "sat_ratio": 1.0,
+      "qualifies": false,
+      "current_review_note": "核查发现局部缺陷",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L2",
+          "description": "人物手臂和手部整体偏红偏橙，肤色与白色衣物及昏暗环境的色调协调性不足（偏暖红黄调）。"
+        },
+        {
+          "id": "E1",
+          "name": "过饱和",
+          "severity": "L2",
+          "description": "手臂局部红橙色较浓烈，并呈现不自然的条带状强化效果。"
+        },
+        {
+          "id": "F",
+          "name": "视觉自然度",
+          "severity": "L2",
+          "description": "人物肤色的条带状色彩与画面其他区域衔接不自然，整体观感略显割裂和不真实。"
+        }
+      ]
+    },
+    {
+      "task_id": 9685,
+      "image_id": "lcad/000000562253.png",
+      "orig_score": 5.0,
+      "delta_c": 0.016,
+      "delta_rg": 0.003,
+      "delta_yb": 0.016,
+      "bias_direction": "偏暖红黄调",
+      "sat_ratio": 0.991,
+      "qualifies": true,
+      "current_review_note": "原5.0满分严重漏检，核查发现：全图轻微偏暖红黄调(D-L1)。",
+      "current_defects": [
+        {
+          "id": "D",
+          "name": "偏色",
+          "severity": "L1",
+          "description": "画面整体轻微偏暖红黄调"
+        }
+      ]
+    }
+  ]
+}

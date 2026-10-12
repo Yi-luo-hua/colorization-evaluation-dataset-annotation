@@ -1,0 +1,337 @@
+[
+  {
+    "category_key": "pass",
+    "category_title": "01_高保真放行 (0缺陷/Pass)",
+    "task_id": 6887,
+    "image_id": "lcad/000000396768.png",
+    "basename": "000000396768.png",
+    "image_stem": "000000396768",
+    "gpt_score": 5.0,
+    "original_gpt_score": 5.0,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "审查通过",
+    "defects": [],
+    "gt_relative_path": "images/000000396768_gt.jpg",
+    "lcad_relative_path": "images/000000396768_lcad.png",
+    "diff_relative_path": "images/000000396768_diff.png"
+  },
+  {
+    "category_key": "A_missing",
+    "category_title": "02_严重缺色 (熔断项 A)",
+    "task_id": 6106,
+    "image_id": "lcad/000000350748.png",
+    "basename": "000000350748.png",
+    "image_stem": "000000350748",
+    "gpt_score": 1.0,
+    "original_gpt_score": 1.0,
+    "reviewed_score": 1.0,
+    "review_status": "已核验",
+    "review_note": "全图彻底上色失败，海滩沙滩、手抱冲浪板奔跑的冲浪者、海浪水花及背景天空均未渲染任何色彩，呈现彻底的纯灰阶黑白状态(A)。",
+    "defects": [
+      {
+        "id": "A",
+        "name": "缺色",
+        "severity": "",
+        "description": "全图彻底上色失败，海滩沙滩、手抱冲浪板奔跑的冲浪者、海浪水花及背景天空均未渲染任何色彩，呈现彻底的纯灰阶黑白状态(A)。"
+      }
+    ],
+    "gt_relative_path": "images/000000350748_gt.jpg",
+    "lcad_relative_path": "images/000000350748_lcad.png",
+    "diff_relative_path": "images/000000350748_diff.png"
+  },
+  {
+    "category_key": "C_wrong_color",
+    "category_title": "03_常识错色 (严重错色 C-L3)",
+    "task_id": 2973,
+    "image_id": "lcad/000000172361.png",
+    "basename": "000000172361.png",
+    "image_stem": "000000172361",
+    "gpt_score": 5.0,
+    "original_gpt_score": 5.0,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "双层观光敞篷巴士醒目的鲜绿色下层车体被常识性严重错涂为亮橙黄色，公共交通标识色彩严重错配（严重常识错色 C-L3，轻度偏色 D-L1，视觉自然度受损 F-L2）。",
+    "defects": [
+      {
+        "id": "C",
+        "name": "错色",
+        "severity": "L3",
+        "description": "双层观光敞篷巴士醒目的鲜绿色下层车体被常识性严重错涂为亮橙黄色，公共交通标识色彩严重错配（严重常识错色 C-L3，轻度偏色 D-L1，视觉自然度受损 F-L2）。"
+      },
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L1",
+        "description": "双层观光敞篷巴士醒目的鲜绿色下层车体被常识性严重错涂为亮橙黄色，公共交通标识色彩严重错配（严重常识错色 C-L3，轻度偏色 D-L1，视觉自然度受损 F-L2）。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L2",
+        "description": "双层观光敞篷巴士醒目的鲜绿色下层车体被常识性严重错涂为亮橙黄色，公共交通标识色彩严重错配（严重常识错色 C-L3，轻度偏色 D-L1，视觉自然度受损 F-L2）。"
+      }
+    ],
+    "gt_relative_path": "images/000000172361_gt.jpg",
+    "lcad_relative_path": "images/000000172361_lcad.png",
+    "diff_relative_path": "images/000000172361_diff.png"
+  },
+  {
+    "category_key": "B_bleed",
+    "category_title": "04_边缘溢色 (轮廓扩散 B-L2)",
+    "task_id": 6032,
+    "image_id": "lcad/000000347121.png",
+    "basename": "000000347121.png",
+    "image_stem": "000000347121",
+    "gpt_score": 1.01,
+    "original_gpt_score": 1.01,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。",
+    "defects": [
+      {
+        "id": "B",
+        "name": "溢色",
+        "severity": "L2",
+        "description": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。"
+      },
+      {
+        "id": "C",
+        "name": "错色",
+        "severity": "L3",
+        "description": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。"
+      },
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L1",
+        "description": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。"
+      },
+      {
+        "id": "E1",
+        "name": "过饱和",
+        "severity": "L2",
+        "description": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L3",
+        "description": "庭院木栅栏与背景墙体颠覆性大面积错涂为极其刺目的亮天蓝色假色，且蓝色色料严重溢出侵染芭蕉树叶(B-L2, C-L3, D-L1, E1-L2, F-L3)。"
+      }
+    ],
+    "gt_relative_path": "images/000000347121_gt.jpg",
+    "lcad_relative_path": "images/000000347121_lcad.png",
+    "diff_relative_path": "images/000000347121_diff.png"
+  },
+  {
+    "category_key": "D_color_cast",
+    "category_title": "05_系统性偏色 (色温偏差 D-L2)",
+    "task_id": 6607,
+    "image_id": "lcad/000000377983.png",
+    "basename": "000000377983.png",
+    "image_stem": "000000377983",
+    "gpt_score": 2.47,
+    "original_gpt_score": 2.47,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "人物面部和手臂肤色明显偏紫红，呈现不自然的冷色调偏移。；人物肤色与周围中性环境的色彩协调性稍差，轻微影响整体真实感。",
+    "defects": [
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L2",
+        "description": "人物面部和手臂肤色明显偏紫红，呈现不自然的冷色调偏移。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L1",
+        "description": "人物肤色与周围中性环境的色彩协调性稍差，轻微影响整体真实感。"
+      }
+    ],
+    "gt_relative_path": "images/000000377983_gt.jpg",
+    "lcad_relative_path": "images/000000377983_lcad.png",
+    "diff_relative_path": "images/000000377983_diff.png"
+  },
+  {
+    "category_key": "E1_oversat",
+    "category_title": "06_过饱和假色 (浓艳刺眼 E1-L2)",
+    "task_id": 5871,
+    "image_id": "lcad/000000338478.png",
+    "basename": "000000338478.png",
+    "image_stem": "000000338478",
+    "gpt_score": 2.43,
+    "original_gpt_score": 2.43,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "棒球场后方防护挡墙与草坪过饱和泛刺目电光青蓝假色(E1-L2, D-L1, F-L2)。",
+    "defects": [
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L1",
+        "description": "棒球场后方防护挡墙与草坪过饱和泛刺目电光青蓝假色(E1-L2, D-L1, F-L2)。"
+      },
+      {
+        "id": "E1",
+        "name": "过饱和",
+        "severity": "L2",
+        "description": "棒球场后方防护挡墙与草坪过饱和泛刺目电光青蓝假色(E1-L2, D-L1, F-L2)。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L2",
+        "description": "棒球场后方防护挡墙与草坪过饱和泛刺目电光青蓝假色(E1-L2, D-L1, F-L2)。"
+      }
+    ],
+    "gt_relative_path": "images/000000338478_gt.jpg",
+    "lcad_relative_path": "images/000000338478_lcad.png",
+    "diff_relative_path": "images/000000338478_diff.png"
+  },
+  {
+    "category_key": "E2_undersat",
+    "category_title": "07_严重欠饱和 (脱色泛灰 E2-L3)",
+    "task_id": 9430,
+    "image_id": "lcad/000000546864.png",
+    "basename": "000000546864.png",
+    "image_stem": "000000546864",
+    "gpt_score": 1.02,
+    "original_gpt_score": 1.02,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "棒球击球手黑白历史照片整幅画面大面积浸染暗灰红褐偏色，严重干瘪(D-L2, E2-L3, F-L2)。",
+    "defects": [
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L2",
+        "description": "棒球击球手历史黑白照片整幅画面大面积浸染暗灰红褐偏色。"
+      },
+      {
+        "id": "E2",
+        "name": "欠饱和",
+        "severity": "L3",
+        "description": "历史黑白照片全图严重欠饱和干瘪发灰。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L2",
+        "description": "灰红褐色调覆盖使黑白人物照片浑浊不自然。"
+      }
+    ],
+    "gt_relative_path": "images/000000546864_gt.jpg",
+    "lcad_relative_path": "images/000000546864_lcad.png",
+    "diff_relative_path": "images/000000546864_diff.png"
+  },
+  {
+    "category_key": "F_naturalness",
+    "category_title": "08_视觉自然度 (色斑违和 F-L2)",
+    "task_id": 7803,
+    "image_id": "lcad/000000448574.png",
+    "basename": "000000448574.png",
+    "image_stem": "000000448574",
+    "gpt_score": 2.47,
+    "original_gpt_score": 2.47,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "古典卧室木质四柱大床周围的暖黄光墙面与窗台大面积欠饱和褪色为阴冷死灰色，室内温馨氛围完全失真(D-L2, E2-L2, F-L2)。",
+    "defects": [
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L2",
+        "description": "古典卧室木质四柱大床周围的暖黄光墙面与窗台大面积欠饱和褪色为阴冷死灰色，室内温馨氛围完全失真(D-L2, E2-L2, F-L2)。"
+      },
+      {
+        "id": "E2",
+        "name": "欠饱和",
+        "severity": "L2",
+        "description": "古典卧室木质四柱大床周围的暖黄光墙面与窗台大面积欠饱和褪色为阴冷死灰色，室内温馨氛围完全失真(D-L2, E2-L2, F-L2)。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L2",
+        "description": "古典卧室木质四柱大床周围的暖黄光墙面与窗台大面积欠饱和褪色为阴冷死灰色，室内温馨氛围完全失真(D-L2, E2-L2, F-L2)。"
+      }
+    ],
+    "gt_relative_path": "images/000000448574_gt.jpg",
+    "lcad_relative_path": "images/000000448574_lcad.png",
+    "diff_relative_path": "images/000000448574_diff.png"
+  },
+  {
+    "category_key": "multi_defects",
+    "category_title": "09_复合多重受损 (多维缺陷并发)",
+    "task_id": 3430,
+    "image_id": "lcad/000000197624.png",
+    "basename": "000000197624.png",
+    "image_stem": "000000197624",
+    "gpt_score": 2.73,
+    "original_gpt_score": 2.73,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "浴室温馨暖黄瓷砖全图严重偏冷青蓝调完全失色褪为冰冷灰白水泥色(D-L2偏冷青蓝调, E2-L2, C-L1)。",
+    "defects": [
+      {
+        "id": "C",
+        "name": "错色",
+        "severity": "L1",
+        "description": "温馨暖黄瓷砖浴室采光氛围被彻底剥夺"
+      },
+      {
+        "id": "D",
+        "name": "偏色",
+        "severity": "L2",
+        "description": "全图严重偏冷青蓝调，完全失色退化为冰冷灰白水泥色"
+      },
+      {
+        "id": "E2",
+        "name": "欠饱和",
+        "severity": "L2",
+        "description": "墙面与陶瓷严重欠饱和"
+      }
+    ],
+    "gt_relative_path": "images/000000197624_gt.jpg",
+    "lcad_relative_path": "images/000000197624_lcad.png",
+    "diff_relative_path": "images/000000197624_diff.png"
+  },
+  {
+    "category_key": "fine_grounding",
+    "category_title": "10_精细具象定物 (消灭抽象代词)",
+    "task_id": 5895,
+    "image_id": "lcad/000000340354.png",
+    "basename": "000000340354.png",
+    "image_stem": "000000340354",
+    "gpt_score": 4.23,
+    "original_gpt_score": 4.23,
+    "reviewed_score": null,
+    "review_status": "已核验",
+    "review_note": "沙滩上空翱翔的菱形风筝原本极度醒目的鲜艳明黄色颠覆性彻底脱色错涂为苍白水冷青灰(C-L3, E2-L3, F-L2)。",
+    "defects": [
+      {
+        "id": "C",
+        "name": "错色",
+        "severity": "L3",
+        "description": "沙滩上空翱翔的菱形风筝原本极度醒目的鲜艳明黄色颠覆性彻底脱色错涂为苍白水冷青灰(C-L3, E2-L3, F-L2)。"
+      },
+      {
+        "id": "E2",
+        "name": "欠饱和",
+        "severity": "L3",
+        "description": "沙滩上空翱翔的菱形风筝原本极度醒目的鲜艳明黄色颠覆性彻底脱色错涂为苍白水冷青灰(C-L3, E2-L3, F-L2)。"
+      },
+      {
+        "id": "F",
+        "name": "视觉自然度",
+        "severity": "L2",
+        "description": "沙滩上空翱翔的菱形风筝原本极度醒目的鲜艳明黄色颠覆性彻底脱色错涂为苍白水冷青灰(C-L3, E2-L3, F-L2)。"
+      }
+    ],
+    "gt_relative_path": "images/000000340354_gt.jpg",
+    "lcad_relative_path": "images/000000340354_lcad.png",
+    "diff_relative_path": "images/000000340354_diff.png"
+  }
+]

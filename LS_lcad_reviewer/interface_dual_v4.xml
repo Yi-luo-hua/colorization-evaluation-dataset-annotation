@@ -1,0 +1,180 @@
+<View className="review-root">
+  <Style>
+  .lsf-label-view__content:has(.review-root) .lsf-label-view__table { display: none !important; }
+  .lsf-sidepanels:has(.review-root) { padding-right: 0 !important; }
+  .lsf-sidepanels:has(.review-root) .lsf-sidepanels__wrapper_align_right { display: none !important; }
+  .review-root { width: 100%; box-sizing: border-box; padding: 2px 6px 12px; }
+  .review-root .review-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 10px; margin-bottom: 4px; }
+  .review-root .review-meta h4 { margin: 0; font-size: 15px; line-height: 20px; }
+  .review-root .review-meta p { margin: 0; font-size: 12px; }
+  .review-root .review-images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-items: start; margin-bottom: 7px; }
+  .review-root .image-card { min-width: 0; text-align: center; }
+  .review-root .image-card h4 { margin: 0 0 3px; font-size: 14px; line-height: 18px; }
+  .review-root .image-card .lsf-object { position: relative; max-width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; }
+  .review-root .image-card .lsf-object &gt; div:first-child { margin: 0 auto; outline: 1px solid rgba(127,127,127,.45); }
+  .review-root .image-card .lsf-toolbar { position: absolute !important; top: 5px !important; right: 5px !important; z-index: 2; }
+  
+  .review-root .review-info-banner { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
+  @media (max-width: 850px) { .review-root .review-info-banner { grid-template-columns: 1fr; } }
+  .review-root .info-card { min-width: 0; padding: 6px 10px; border-radius: 6px; font-size: 12px; line-height: 18px; color: inherit; box-sizing: border-box; }
+  .review-root .info-card h4 { margin: 0 0 3px; font-size: 13px; line-height: 18px; font-weight: 600; }
+  .review-root .info-card p { margin: 0; font-size: 12px; line-height: 18px; white-space: pre-wrap; word-break: break-word; }
+  .review-root .info-card.gpt-card { background: rgba(80, 130, 240, 0.12); border: 1px solid rgba(80, 130, 240, 0.42); }
+  .review-root .info-card.review-card-note { background: rgba(245, 140, 30, 0.13); border: 1px solid rgba(245, 140, 30, 0.45); }
+
+  .review-root .review-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; align-items: start; }
+  @media (max-width: 850px) { .review-root .review-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .review-root .review-card { min-width: 0; padding: 4px 6px; border: 1px solid rgba(127,127,127,.4); border-radius: 7px; }
+  .review-root .review-card h4 { margin: 0 0 2px; font-size: 13px; line-height: 18px; }
+  .review-root .review-card .lsf-choices { margin: 0 0 2px; }
+  .review-root .review-card .ant-radio-wrapper { margin-right: 0; font-size: 11px; }
+  .review-root .review-card .lsf-hint { display: none; }
+  .review-root .review-card .ant-collapse { background: rgba(127,127,127,.12); color: inherit; border: 0; border-radius: 4px; }
+  .review-root .review-card .ant-collapse-header { padding: 3px 0 !important; font-size: 11px; }
+  .review-root .review-card .ant-collapse-header { color: inherit !important; }
+  .review-root .review-card .ant-collapse-content-box { padding: 3px 0 !important; }
+  .review-root .review-card textarea { min-height: 42px; font-size: 12px; }
+</Style>
+  <View className="review-meta">
+    <Header value="$sample_title" size="5" />
+    <Text name="source_info" value="$source_info" />
+  </View>
+  <View className="review-images">
+    <View className="image-card">
+      <Header value="参考 GT（原始彩色图）" size="5" />
+      <Image name="reference" value="$reference" zoom="true" zoomControl="true" rotateControl="false" width="100%" maxWidth="260px" defaultZoom="fit" />
+    </View>
+    <View className="image-card">
+      <Header value="待核验上色图" size="5" />
+      <Image name="colorized" value="$image" zoom="true" zoomControl="true" rotateControl="false" width="100%" maxWidth="260px" defaultZoom="fit" />
+    </View>
+  </View>
+  <View className="review-info-banner">
+    <View className="info-card gpt-card">
+      <Header value="🤖 原 GPT 标注与推理说明" size="5" />
+      <Text name="original_gpt_info" value="$original_gpt_info" />
+    </View>
+    <View className="info-card review-card-note">
+      <Header value="🛡️ 初审复核状态与改判备注 (Review Note)" size="5" />
+      <Text name="review_note_display" value="$review_note_display" />
+    </View>
+  </View>
+  <View className="review-options">
+    <View className="review-card">
+      <Header value="A · 缺色" size="5" />
+      <Choices name="severity_A" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="未命中" />
+        <Choice value="命中" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_A" value="全域上色失败，无任何有效色彩信息（灰阶/单色/未渲染）。不分级，命中即总分=1，覆盖其余判断。" />
+          <TextArea name="description_A" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="B · 溢色" size="5" />
+      <Choices name="severity_B" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_B" value="颜色越过物体边缘。L1：边缘轻微溢出，可接受；L2：明显溢出到相邻物体；L3：大面积扩散至整个场景。" />
+          <TextArea name="description_B" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="C · 错色" size="5" />
+      <Choices name="severity_C" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_C" value="颜色语义与内容不符。L1：局部与光照/时间/天气冲突；L2：多区域或整体组合不协调，但非常识性错误；L3：违反固有色常识（蓝香蕉/绿天空）。" />
+          <TextArea name="description_C" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="D · 偏色" size="5" />
+      <Choices name="severity_D" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_D" value="区域或全图色调系统性偏移。L1：单一区域轻微偏移，可接受；L2：单一区域明显偏移，不可接受；L3：全图统一偏移，图像不可信。" />
+          <TextArea name="description_D" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="E1 · 过饱和" size="5" />
+      <Choices name="severity_E1" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_E1" value="过饱和，与欠饱和独立判断。L1：局部轻微，不影响周边；L2：明显刺眼，或范围扩大影响邻近区域；L3：全图整体异常，感官极差。" />
+          <TextArea name="description_E1" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="E2 · 欠饱和" size="5" />
+      <Choices name="severity_E2" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_E2" value="欠饱和，与过饱和独立判断。L1：局部轻微，不影响周边；L2：明显发灰，或范围扩大影响邻近区域；L3：全图整体异常，感官极差。" />
+          <TextArea name="description_E2" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="F · 视觉自然度" size="5" />
+      <Choices name="severity_F" toName="colorized" choice="single-radio" showInline="true" required="true">
+        <Choice value="无此缺陷" />
+        <Choice value="L1" />
+        <Choice value="L2" />
+        <Choice value="L3" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与描述">
+          <Text name="guide_F" value="判断整体观感是否自然真实。L1：需仔细观察才发现；L2：一眼可见，局部质量受影响；L3：整体配色完全不像真实照片，可信度破坏。" />
+          <TextArea name="description_F" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="缺陷描述（可修改）；无此缺陷时导出不保留描述" />
+        </Panel>
+      </Collapse>
+    </View>
+    <View className="review-card">
+      <Header value="审核状态" size="5" />
+      <Choices name="review_status" toName="colorized" choice="single-radio" required="true" showInline="true">
+        <Choice value="已核验" />
+        <Choice value="待复核" />
+      </Choices>
+      <Collapse accordion="false">
+        <Panel value="规则与备注">
+          <Header value="A 命中时，导出只保留 A 并记 1 分；其余界面字段不会自动清空。" size="6" />
+          <TextArea name="review_note" toName="colorized" editable="true" transcription="true" maxSubmissions="1" rows="2" placeholder="核验备注（可选）" />
+        </Panel>
+      </Collapse>
+    </View>
+  </View>
+</View>

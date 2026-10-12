@@ -1,0 +1,28 @@
+# Image datasets and original labels remain local, outside the code repository.
+/9_14_10000GT_V1/
+/10_5_val_V1/
+/10_5_test_V1/
+
+# Local runtimes, Label Studio state, task pools and delivered datasets.
+/LS_lcad_reviewer/.python/
+/LS_lcad_reviewer/.venv/
+/LS_lcad_reviewer/data/
+/LS_lcad_reviewer/tasks_pool/
+/LS_lcad_reviewer/tasks*.json
+/LS_lcad_reviewer/exports/
+/LS_lcad_reviewer/streams/
+
+# Generated experiment artifacts; scripts and historical reports are versioned.
+/LS_lcad_reviewer/intermediate/audits/
+/LS_lcad_reviewer/intermediate/inspection_sheets/
+/LS_lcad_reviewer/intermediate/scratch/
+/LS_lcad_reviewer/intermediate/experiments/
+/showcase/images/
+*.pdf
+*.bak
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.env
+.env.*
+!.env.example
