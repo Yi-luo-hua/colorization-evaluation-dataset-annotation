@@ -146,7 +146,7 @@ def main():
     seen={i for i,_,_ in read_json(old/'v2_manifest.json')['samples']}|{i for i,_,_ in previous['samples']}
     for manifest in (root/'experiments').glob('*/manifest.json'):
         data=read_json(manifest)
-        if data.get('schema_version')=='cv_handoff_v1':seen.update(r['sample_key'].split('/')[-1] for r in data['records'])
+        if data.get('schema_version') in ['cv_handoff_v1','cv_handoff_v2']:seen.update(r.get('source_sample_key',r['sample_key']).split('/')[-1] for r in data['records'])
     with (old/'gt_profiles.csv').open(encoding='utf-8-sig') as f:profiles=list(csv.DictReader(f))
     cuts=read_json(old/'synthetic_sample_manifest.json')['gt_chroma_stratum_boundaries'];samples=[]
     for s in range(3):

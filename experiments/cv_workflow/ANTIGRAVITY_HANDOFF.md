@@ -1,42 +1,28 @@
-# Antigravity 视觉审核交接协议 v1
+# Antigravity 快速轻量标注协议 v3
 
-模型由主人在 Antigravity 中选择 `gemini-3.8-flash-high`。本工具不调用模型、不改 IDE 配置。`reviewer` 字段是过程自报元数据，不构成模型身份验证。
+默认fast_single_pass，速度第一，允许微量不完美，逐批迭代。模型按主人指定gemini-3.8-flash-high。
 
-## 输入和六组看板
+## 只读看板，一次完成
 
-只读取本批次 `review_request.json` 和其列出的 `sheets/sheet_*.png`。每张大图六行，每行依次为 GT、生成图、双向彩度差；尾张可少于六组。根据行首完整 sample_key 逐一记录，禁止跨行配对或用上一组观察代替下一组。不要读取 manifest.json 中用于导出继承的旧评分/旧缺陷，也不要读取历史标注作为答案。
+只读START_HERE.md、review_request.json、review_template.json和请求列出的六组大看板。行首S001等是批次内匿名编号。禁止逐张查找/打开原始GT与模型图；禁止读manifest、任务池、数据目录、源码反查位置；禁止crop、补图、自写裁剪、运行--help、自写重复验证。不要看完看板再回头逐图分析。
 
-每组先检查 GT 与生成图完整画面，再使用彩度图导航。ΔC*=C*_生成−C*_GT，正红/品红、负蓝/青、近零黑色；显示色不是物体色。黑色不能证明无错色；红蓝不能直接判 E1/E2。所有组都须检查，不因 CV 无预警放行。
+每张六组，逐行对照GT/生成图/双向彩度差，单次完成后写JSON。彩度差正红、负蓝，黑色仍可能有等彩度错色，红蓝不是E1/E2自动标签。CV数字只辅助观察。
 
-## 标签边界
+## 轻量标签规则
 
-- A：全图灰阶或单一色调造成颜色结构整体丢失；GT 本身低彩度不构成缺色。单色集中也可能只是强偏色，不跟随 CV 候选自动熔断。A 为唯一缺陷，severity=""。
-- B：颜色越过具体物体边界侵染相邻物体；边缘色差不等于溢色。
-- C：具体物体颜色相对 GT 错配；颜色符合常识也可以存在 C。
-- D：不同物体/背景共同偏移；单个大物体换色不直接归 D。CV 共同向量只是辅助，网格不是物体。
-- E1/E2：具体物体相对 GT 浓艳/褪色。区分色相变化、共同偏移和真正彩度异常。允许不同物体分别命中。
-- F：颜色与物体、材质、光照、场景常识冲突；不因为与 GT 不同、或已存在其他缺陷而自动追加 F。
+- A：全图颜色结构失效；纯灰/单色失败，GT本身低彩度不罚。A为唯一缺陷，severity=""。
+- B：看得到具体物体颜色越界。小而模糊的边缘不追查。
+- C：具体物体相对GT错配，即使颜色看起来合理。
+- D：多个物体/背景共同偏移，单个大物体换色不直接归D。
+- E1/E2：具体物体相对GT过艳/褪色；不同物体可并存。
+- F：看板明确可见的颜色常识/材质/光照违和，不因存在C/D自动追加。
 
-明确写出物体名称、位置、GT 色、生成色、观察证据。当前严重度尚未人工锚定，不能猜测：非 A 的 severity 可以为 null，但这类结果无法导出完整候选。不要编造 CV 数值或未看见的物体。
+优先明确可见的主要缺陷，少量难辨细节跳过，不穷举小物体、不反复推演。具体物体写清楚，evidence用一句短话。非A允许临时近似分级：L1轻微局部，L2明显改变物体主要色彩，L3强烈且影响主要主体/大面积；这不是已校准的严重度真值。
 
-## 输出
+## 输出与自动结束
 
-从 review_template.json 另存为 reviews_gemini.json，不覆盖模板。每个 sample_key 恰好一条。检查完七类后 checked_categories=["A","B","C","D","E1","E2","F"]，inspection_complete=true。
+从模板另存reviews_gemini.json，每个匿名sample_key一条，checked_categories填写七类，完成行inspection_complete=true。主要判断无法成立才用uncertain，不能因少量细节模糊使整行待定。fast模式needs_crops固定[]，默认补图预算0。
 
-decision 为 defects/no_defects/uncertain。defects 的对象格式：
+保持object/location/gt_color/generated_color/evidence字段简短、具体。允许同类不同物体分别记录。不读历史分数/标签，不修改算法或正式数据。保存JSON后只回复文件已保存，不写长篇总结，不再反复验证，也不等待人工补图或逐项批准。程序完成一次必要的结构检查和后处理。
 
-```json
-{"id":"C","object":"木门","location":"画面右侧","gt_color":"棕色","generated_color":"蓝紫色","severity":null,"evidence":"木纹门板整体从棕色变成蓝紫色，GT对照可见"}
-```
-
-不同物体同类缺陷分别记录。证据不足时 decision="uncertain"，写 uncertainties；需要放大时 needs_crops 写 sample_key 与归一化 bbox=[x1,y1,x2,y2]。不要把待复核写成无缺陷。
-
-放大裁剪由 workflow.py crop 按需生成 GT+生成图二联，不默认增加其他参考图。
-
-区域导航可能同时提供compact_bbox_normalized（高差异紧范围）与expanded_bbox_normalized（扩展范围）。这是同一数值候选的两种视野，不是两个物体；bbox_normalized是推荐视野。JPEG生成图优先紧范围，避免扩展被压缩差异连接到背景；可根据原图观察请求另一视野。区域不构成物体识别或缺陷标签。
-
-## 回传和完成门槛
-
-import-reviews 检查完整覆盖、样本对应、字段和 A 熔断约束；保留不确定项，状态仍待解决。export-candidate 要求所有不确定项和裁剪请求已解决、所有非 A 严重度有效，输出仅位于实验目录。
-
-如需再审，建立新 run 保留旧审核记录。元数据 human_review.completed_by=0 表示外部 AI，不能称为主人或 Label Studio 的真人审核。正式发布/合并单独处理。
+可选的自动局部看板仅在明确开启非fast复核模式时使用；后台批量生成，仍不由Gemini打开原图，不依赖人工补图。默认轻量流程不进入该分支。

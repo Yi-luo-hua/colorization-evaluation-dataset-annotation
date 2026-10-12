@@ -13,7 +13,7 @@ def prior_sources():
         obj=read_json(path)
         for sample in obj.get('samples',[]):
             seen.add(sample if isinstance(sample,str) else sample[0])
-        if obj.get('schema_version')=='cv_handoff_v1':seen.update(r['sample_key'].split('/')[-1] for r in obj['records'])
+        if obj.get('schema_version') in ['cv_handoff_v1','cv_handoff_v2']:seen.update(r.get('source_sample_key',r['sample_key']).split('/')[-1] for r in obj['records'])
         seen.update(obj.get('prior_gt_excluded',[]))
     return seen
 

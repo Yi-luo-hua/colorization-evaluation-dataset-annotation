@@ -52,6 +52,16 @@
     "image_box_height": 320
   },
   "severity_anchors_ready": false,
+  "visual_harness": {
+    "mode": "fast_single_pass",
+    "source_access": "sheets_only",
+    "sample_identity": "batch_local_opaque_ids",
+    "maximum_detail_rounds": 0,
+    "severity_mode": "provisional_visual",
+    "evidence_style": "one_short_sentence",
+    "maximum_detail_samples_per_round": 6,
+    "maximum_detail_bbox_fraction": 0.25
+  },
   "production_ready": false,
   "global_models": {
     "features": {

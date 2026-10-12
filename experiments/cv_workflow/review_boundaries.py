@@ -39,7 +39,7 @@ def compare(manifest,visual,reference=None):
         row['A_disagreement']=row['visual_A'] is not None and row['visual_A']!=cv_a
         row['D_disagreement']=row['visual_D'] is not None and row['visual_D']!=row['cv_D_after_A']
         rows.append(row)
-    result={'created_at':utc(),'samples':len(rows),'GT_clusters':len({r['sample_key'].split('/')[-1] for r in rows}),
+    result={'created_at':utc(),'samples':len(rows),'GT_clusters':len({r.get('source_sample_key',r['sample_key']).split('/')[-1] for r in manifest['records']}),
             'visual_unresolved':sum(r['visual_A'] is None for r in rows),
             'A_disagreements':sum(r['A_disagreement'] for r in rows),'D_disagreements':sum(r['D_disagreement'] for r in rows),
             'warning':'CV-versus-AI agreement is not accuracy. Diagnostic selection is not representative.',
@@ -51,12 +51,21 @@ def compare(manifest,visual,reference=None):
     return result
 
 
-def init(run,manifest):
-    target=run/'master_reference_template.json'
-    if target.exists():raise ValueError('Reference template already exists')
-    write_json(target,{'schema_version':'boundary_reference_v1','reviewer':'主人',
-               'warning':'Only fill after personal inspection; model suggestions do not become human truth automatically.',
-               'reviews':[{'sample_key':r['sample_key'],'inspected':False,'A':None,'D':None,'evidence':''} for r in manifest['records']]})
+def write_start_instructions(run,manifest):
+    policy=manifest['configuration']['visual_harness']
+    if policy.get('mode')=='fast_single_pass':
+        instructions=f'''# 快速轻量标注：只看六组大图，一次完成
+
+使用主人指定的gemini-3.8-flash-high。工作目录：{run}
+
+1. 读取review_request.json、review_template.json和ANTIGRAVITY_HANDOFF.md。只打开请求列出的{len(manifest['sheets'])}张六组看板，按S001等匿名编号完成全部{len(manifest['records'])}行。
+2. **速度第一：大图单次审查后直接写JSON。禁止查找/打开单张原图，禁止读manifest、任务池、数据目录或源码反查位置，禁止crop、补图、重复复核。小而模糊的细节跳过，标注明确可见的主要缺陷；不要为追求完美拖慢整批。**
+3. A是全图颜色结构失败；C是具体物体相对GT错配；D是多物体/背景共同偏移；E1/E2绑定具体物体；B须看见越界，F须看见常识不自然。不跟随CV数值自动贴标签。
+4. 逐物体写短描述，evidence一句即可，不穷举小物体。A等级=""；非A按临时视觉规则给L1轻微、L2明显、L3强烈且影响主要主体/大面积，允许近似，后续迭代校准。只有主要判断也无法成立时才留uncertain；不因少量细节看不清就让整行待定。needs_crops固定[]。
+5. 从模板另存reviews_gemini.json，保持全部匿名sample_key及七类checked_categories，完成行inspection_complete=true。不要再读脚本、运行--help或自行编写重复校验；后处理由程序一次完成。
+6. 保存JSON后结束，只回复文件已保存。不写长篇报告，不等待人工补图/逐项批准，不修改算法或导出正式数据。
+'''
+        (run/'START_HERE.md').write_text(instructions,encoding='utf-8');return
     instructions=f'''# 真实边界小试：交给Antigravity的任务
 
 请在本批次使用主人指定的gemini-3.8-flash-high。工作目录：{run}。
@@ -65,13 +74,30 @@ def init(run,manifest):
 
 重点独立观察：全图颜色结构失败还是强欠饱和；多个物体/背景共同偏移还是单个物体换色；同图不同物体的彩度变化。CV数值不是答案。检查全部七类，具体物体分别记录；非A严重度尚未锚定时填null，不能为了导出猜等级。
 
-从模板另存reviews_gemini.json，保留每个完整sample_key。每行填写inspection_complete、checked_categories、decision、defects、uncertainties和needs_crops。证据不足时留uncertain和裁剪请求，不能假装完成。A的severity必须为空字符串，其他标签等级可暂留null。
+从模板另存reviews_gemini.json，保留每个匿名sample_key（S001等）。每行填写inspection_complete、checked_categories、decision、defects、uncertainties和needs_crops。证据不足时留uncertain，不能假装完成。A的severity必须为空字符串，其他标签等级可暂留null。
 
-只交回这份JSON，不导出正式数据、不修改CV代码或参数。若请求裁剪，先返回needs_crops，我会生成对应GT/模型二联图后继续。
+**效率硬约束：只打开review_request列出的六组大看板，禁止查找或逐张打开原始GT/模型图片，禁止读取manifest/任务池/数据目录来反查编号，也禁止调用逐图crop或自行写裁剪脚本。先完成全部大图的所有行，不能边看一行边跳到原图复读。**
 
-主人暂时只需运行这次视觉任务，并告诉洛熙JSON已保存。master_reference_template.json留待洛熙筛出分歧后由主人亲自核对；先不需要全量人工标注。人工参考只确认A/D是否存在，可保持未判项为null。
+仅当具体物体确因尺寸太小无法辨认时，填needs_crops=[{{"sample_key":"S001","bbox":[0.1,0.1,0.3,0.3],"reason":"说明看不清的具体物体"}}]；每样本最多一个局部请求，不请求整幅图。不要把一般标签分歧当作看不清。先保存完整初稿，然后自动执行以下命令，无需等待主人/洛熙补图：
+
+```powershell
+& "{engine.ROOT/'LS_lcad_reviewer/.venv/Scripts/python.exe'}" -B -X utf8 "{Path(__file__).with_name('workflow.py')}" build-detail-sheets --batch "{run}" --reviews "{run/'reviews_gemini.json'}"
+```
+
+程序自动汇总局部GT/模型/彩度差为六组看板，不向你提供原图路径。只读取命令返回的detail看板，更新完整reviews_gemini.json，删除已解决的needs_crops。最多{policy['maximum_detail_rounds']}轮、每轮{policy['maximum_detail_samples_per_round']}个局部样本，局部框≤全图{policy['maximum_detail_bbox_fraction']:.0%}，拒绝整图请求；超预算或仍无法确定的项保留uncertain后自动结束，不再查原图、不等待人工介入。未请求局部补充时不要执行命令。
+
+只交回这份JSON，不导出正式数据、不修改CV代码或参数。本次视觉审查不依赖人工补图；人工参考是后续算法评价的独立过程。
 '''
-    (run/'START_HERE.md').write_text(instructions,encoding='utf-8');print(run/'START_HERE.md')
+    (run/'START_HERE.md').write_text(instructions,encoding='utf-8')
+
+
+def init(run,manifest):
+    target=run/'master_reference_template.json'
+    if target.exists():raise ValueError('Reference template already exists')
+    write_json(target,{'schema_version':'boundary_reference_v1','reviewer':'主人',
+               'warning':'Only fill after personal inspection; model suggestions do not become human truth automatically.',
+               'reviews':[{'sample_key':r['sample_key'],'inspected':False,'A':None,'D':None,'evidence':''} for r in manifest['records']]})
+    write_start_instructions(run,manifest);print(run/'START_HERE.md')
 
 
 def main():

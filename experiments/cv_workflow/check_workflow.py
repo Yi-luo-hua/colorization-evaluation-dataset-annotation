@@ -70,6 +70,12 @@ class ContractChecks(unittest.TestCase):
 
     def test_six_groups_and_import_export_roundtrip(self):
         self.assertEqual(len(self.manifest['sheets']),1);self.assertEqual(self.manifest['sheets'][0]['groups'],6)
+        request=wf.read_json(self.run/'review_request.json');template=wf.read_json(self.run/'review_template.json')
+        self.assertEqual([r['sample_key'] for r in request['samples']],[f'S{i:03d}' for i in range(1,7)])
+        self.assertEqual([r['sample_key'] for r in template['reviews']],[r['sample_key'] for r in request['samples']])
+        text=json.dumps(request)
+        for forbidden in ['gt_path','model_path','source_sample_key','000000000000','000000000005']:
+            self.assertNotIn(forbidden,text)
         with Image.open(self.run/'sheets/sheet_001.png') as sheet:
             self.assertEqual(sheet.size,(1560,2580))
         p=self.payload();p['reviews'][0]['decision']='defects'
@@ -100,10 +106,45 @@ class ContractChecks(unittest.TestCase):
         args=argparse.Namespace(run_id='selected',model='lcad',split='val',start=1,end=12,selection=path)
         wf.prepare(args,CONFIG);manifest=wf.verify_sources(wf.OUTPUT/'selected')
         self.assertEqual([r['task_idx'] for r in manifest['records']],[6,2,4])
-        self.assertEqual([r['sample_key'].split('/')[-1] for r in manifest['records']],['000000000005','000000000001','000000000003'])
+        self.assertEqual([r['source_sample_key'].split('/')[-1] for r in manifest['records']],['000000000005','000000000001','000000000003'])
+        self.assertEqual([r['sample_key'] for r in manifest['records']],['S001','S002','S003'])
         wf.write_json(path,{'split':'val','samples':[{'model':'lcad','task_idx':1,'sample_key':'val/lcad/999999999999'}]})
         args.run_id='wrong_identity'
         with self.assertRaises(ValueError):wf.prepare(args,CONFIG)
+
+    def test_automatic_grouped_details_and_budget(self):
+        self.manifest['configuration']['visual_harness']['maximum_detail_rounds']=1
+        wf.write_json(self.run/'manifest.json',self.manifest)
+        p=self.payload()
+        for r in p['reviews']:
+            r.update(decision='uncertain',uncertainties=['物体较小'],needs_crops=[{'sample_key':r['sample_key'],'bbox':[0.1,0.1,0.4,0.4],'reason':'查看物体边界'}])
+        path=self.run/'provisional.json';wf.write_json(path,p)
+        args=argparse.Namespace(batch=self.run,reviews=path);response=wf.build_detail_sheets(args)
+        self.assertEqual(response['state'],'detail_sheets_ready');self.assertEqual(len(response['samples']),6)
+        manifest=wf.verify_sources(self.run);sheets=manifest['detail_rounds'][0]['sheets']
+        self.assertEqual(len(sheets),1);self.assertEqual(sheets[0]['groups'],6);self.assertEqual(sheets[0]['size'],[1560,2580])
+        for private in ['gt_path','model_path','000000000000']:self.assertNotIn(private,json.dumps(response))
+        self.assertEqual(wf.build_detail_sheets(args)['state'],'detail_budget_exhausted')
+        target=self.run/sheets[0]['path'];Image.new('RGB',(1560,2580),'red').save(target)
+        with self.assertRaises(ValueError):wf.verify_sources(self.run)
+
+    def test_whole_image_detail_request_is_not_a_per_image_fallback(self):
+        self.manifest['configuration']['visual_harness']['maximum_detail_rounds']=1
+        wf.write_json(self.run/'manifest.json',self.manifest)
+        p=self.payload();r=p['reviews'][0]
+        r.update(decision='uncertain',uncertainties=['看不清'],needs_crops=[{'sample_key':r['sample_key'],'bbox':[0,0,1,1]}])
+        path=self.run/'provisional.json';wf.write_json(path,p)
+        response=wf.build_detail_sheets(argparse.Namespace(batch=self.run,reviews=path))
+        self.assertEqual(response['state'],'no_eligible_detail_requests');self.assertEqual(response['unserved_samples'],['S001'])
+        self.assertFalse((self.run/'detail_rounds').exists())
+
+    def test_fast_default_has_no_detail_round_or_source_hints(self):
+        self.assertEqual(self.manifest['configuration']['visual_harness']['maximum_detail_rounds'],0)
+        request=wf.read_json(self.run/'review_request.json')
+        self.assertTrue(all('region_candidates' not in r and len(r['metrics'])==5 for r in request['samples']))
+        self.assertLess(len((self.run/'review_request.json').read_text(encoding='utf-8').splitlines()),30)
+        prompt=(self.run/'START_HERE.md').read_text(encoding='utf-8')
+        self.assertIn('速度第一',prompt);self.assertIn('needs_crops固定[]',prompt)
 
 
 if __name__=='__main__':unittest.main(verbosity=2)

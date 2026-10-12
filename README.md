@@ -1,8 +1,16 @@
 # 图像上色评价：CV实验与外部视觉审核
 
-当前阶段：先优化CV与工作流，再由主人使用Antigravity中的`gemini-3.8-flash-high`进行视觉实验。模型名称按主人指定记录；此仓库没有配置IDE或调用其模型API。
+当前阶段：优化CV与快速工作流，视觉模型按主人指定为`gemini-3.8-flash-high`。已获直接调用本机agy CLI的授权；agy_runner.py负责一次批次模型调用、存盘和实验候选后处理，图片调用能力需以实测成功响应确认。
 
-最新待协作包是`LS_lcad_reviewer/intermediate/experiments/real_boundary_pilot_20261012/START_HERE.md`：12个真实边界样本、两张六组看板。给Antigravity执行该文件，回传reviews_gemini.json。详情见[真实边界先导](docs/experiments/real_boundary_pilot_20261012.md)。
+最新交接包是`LS_lcad_reviewer/intermediate/experiments/real_boundary_full_fast_20261012/START_HERE.md`：36个真实边界样本、6张六组看板。默认速度优先，一次看板后输出短JSON，不读单张原图、不补图、不重复核验。原图位置仅在内部manifest；视觉请求用匿名S编号。允许临时视觉严重度近似，后续快速迭代。旧12样本结果已接收并保留。
+
+CLI恢复可用且图片能力验证后，可直接运行（已有结果不覆盖）：
+
+```powershell
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\agy_runner.py --batch .\LS_lcad_reviewer\intermediate\experiments\real_boundary_full_fast_20261012
+```
+
+CLI原始响应与耗时保存在该run的agy_calls/；空的SUCCESS超时响应、服务端错误不导入标签。未完成的观察保留为实验结果，完整有效结果自动导出实验候选。
 
 ## 目录
 

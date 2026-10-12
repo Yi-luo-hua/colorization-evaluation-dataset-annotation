@@ -45,9 +45,13 @@ def render(records,run,cfg):
         for row,r in enumerate(chunk):
             top=row*layout['card_height'];m=r['metrics']
             draw.rectangle((8,top+5,layout['width']-8,top+layout['card_height']-5),fill='white',outline=(200,205,215))
-            draw.text((18,top+10),f"行{row+1}  {r['sample_key']}",fill='black',font=font(20))
-            draw.text((18,top+39),f"CV测量：彩度保留比 {m['chroma_ratio']:.2f}；共同色度变化 {m['robust_shift_norm']:.1f}；网格一致覆盖 {m['common_coverage']:.0%}；CV平稳不代表无缺陷",fill=(65,65,70),font=font(16))
+            suffix='  局部复核' if 'detail_bbox' in r else ''
+            draw.text((18,top+10),f"行{row+1}  {r['sample_key']}{suffix}",fill='black',font=font(20))
+            draw.text((18,top+39),f"CV全图测量：彩度保留比 {m['chroma_ratio']:.2f}；共同色度变化 {m['robust_shift_norm']:.1f}；网格一致覆盖 {m['common_coverage']:.0%}；CV平稳不代表无缺陷",fill=(65,65,70),font=font(16))
             gt=engine.read_rgb(engine.ROOT/r['gt_path']);gen=align(gt,engine.read_rgb(engine.ROOT/r['model_path']))
+            if 'detail_bbox' in r:
+                h,w=gt.shape[:2];x1,y1,x2,y2=r['detail_bbox'];box=(int(x1*w),int(y1*h),int(x2*w),int(y2*h))
+                gt=gt[box[1]:box[3],box[0]:box[2]];gen=gen[box[1]:box[3],box[0]:box[2]]
             heat=engine.heatmap(engine.lab(gt),engine.lab(gen),cfg['display'])
             for col,(pixels,title) in enumerate(zip([gt,gen,heat],['GT',r['model'].upper()+' 生成图','双向彩度差：正红负蓝，近零不保证无错色'])):
                 left=18+col*515;draw.text((left,top+68),title,fill=(65,65,70),font=font(16))
@@ -100,10 +104,12 @@ def prepare(args,cfg):
                             'original_record':original,'source_task_data':copy.deepcopy(task['data']),
                             'metrics':metrics,'cv_flags':flags,'region_analysis_max_side':region_side,
                             'region_candidates':engine.regions(maps,cfg,prefer_compact=p.suffix.lower() in ['.jpg','.jpeg'])})
+    for i,r in enumerate(records,1):
+        r['source_sample_key']=r['sample_key'];r['sample_key']=f'S{i:03d}'
     run.mkdir(parents=True);(run/'sheets').mkdir()
     sheets=render(records,run,cfg)
-    manifest={'schema_version':'cv_handoff_v1','created_at':utc(),'state':'awaiting_external_visual_review',
-              'source_code_sha256':{p.name:engine.sha256(p) for p in [Path(__file__),Path(engine.__file__),Path(__file__).with_name('global_models.py'),Path(__file__).with_name('region_models.py')]},
+    manifest={'schema_version':'cv_handoff_v2','created_at':utc(),'state':'awaiting_external_visual_review',
+              'source_code_sha256':{p.name:engine.sha256(p) for p in [Path(__file__),Path(engine.__file__),Path(__file__).with_name('global_models.py'),Path(__file__).with_name('region_models.py'),Path(__file__).with_name('review_boundaries.py'),Path(__file__).with_name('ANTIGRAVITY_HANDOFF.md')]},
               'configuration':cfg,'source_task_sha256':sources,'records':records,'sheets':sheets}
     write_json(run/'manifest.json',manifest)
     summary_keys=['chroma_ratio','robust_shift_norm','common_da','common_db','common_coverage','active_grid_coverage','dc_p05','dc_p95','hue_component_max']
@@ -113,16 +119,28 @@ def prepare(args,cfg):
                       'scalar_gain','scalar_intercept_norm','scalar_fit_median_error','translation_fit_median_error',
                       'gain_fit_domain','gain_fit_residual','gain_channel_imbalance',
                       'dc_p05','dc_p95','hue_component_max']
+    fast=cfg.get('visual_harness',{}).get('mode')=='fast_single_pass'
+    if fast:summary_keys=['chroma_ratio','common_da','common_db','common_coverage','hue_component_p90']
     request={'schema_version':'visual_review_v1','reviewer':cfg['external_reviewer'],'sheet_groups':6,
-             'display':cfg['display'],'warning':'Numerical candidates are not labels. Do not access historical defect labels or scores during blind review.',
-             'samples':[{**{k:r[k] for k in ['sample_key','sheet','sheet_row','gt_path','model_path','region_candidates']},
-                         'metrics':{k:r['metrics'][k] for k in summary_keys}} for r in records]}
+             'display':cfg['display'],'visual_harness':cfg.get('visual_harness',{}),
+             'warning':('FAST SINGLE PASS: read only listed six-group sheets; no source-image lookup, crops, code reading or repeated validation. Skip unclear minor details. Numerical candidates are not labels.' if fast else 'SHEET-ONLY REVIEW: no individual source-image lookup; use only the bounded automatic detail-sheet command after completing the main sheets.'),
+             'samples':[{**{k:r[k] for k in (['sample_key','sheet','sheet_row'] if fast else ['sample_key','sheet','sheet_row','region_candidates'])},
+                         'metrics':{k:round(r['metrics'][k],3) if isinstance(r['metrics'][k],float) else r['metrics'][k] for k in summary_keys}} for r in records]}
     write_json(run/'review_request.json',request)
     template={'schema_version':'visual_review_v1','reviewer':cfg['external_reviewer'],
               'reviews':[{'sample_key':r['sample_key'],'inspection_complete':False,'decision':'uncertain','defects':[],
                           'checked_categories':[],'uncertainties':['尚未视觉审核'],'needs_crops':[]} for r in records]}
-    write_json(run/'review_template.json',template)
+    if fast:
+        # One row per sample, readable without paging through hundreds of lines.
+        for name,value,list_key in [('review_request.json',request,'samples'),('review_template.json',template,'reviews')]:
+            header={k:v for k,v in value.items() if k!=list_key}
+            prefix=json.dumps(header,ensure_ascii=False,allow_nan=False)[:-1]
+            rows=',\n'.join(json.dumps(r,ensure_ascii=False,allow_nan=False) for r in value[list_key])
+            (run/name).write_text(prefix+',\n"'+list_key+'": [\n'+rows+'\n]}',encoding='utf-8')
+    else:write_json(run/'review_template.json',template)
     (run/'ANTIGRAVITY_HANDOFF.md').write_text(Path(__file__).with_name('ANTIGRAVITY_HANDOFF.md').read_text(encoding='utf-8'),encoding='utf-8')
+    from review_boundaries import write_start_instructions
+    write_start_instructions(run,manifest)
     print(f'Prepared {len(records)} samples, {len(sheets)} six-group sheets: {run}')
 
 
@@ -135,6 +153,9 @@ def verify_sources(run):
         if engine.sha256(engine.ROOT/p)!=sha:raise ValueError(f'Source task pool changed: {p}')
     for s in manifest['sheets']:
         if engine.sha256(run/s['path'])!=s['sha256']:raise ValueError(f'Sheet changed: {s["path"]}')
+    for detail in manifest.get('detail_rounds',[]):
+        for s in detail['sheets']:
+            if engine.sha256(run/s['path'])!=s['sha256']:raise ValueError(f'Detail sheet changed: {s["path"]}')
     return manifest
 
 
@@ -233,6 +254,47 @@ def crop(args):
     canvas.save(crops/name);print(crops/name)
 
 
+def build_detail_sheets(args):
+    """Automatic bounded local-view round; the visual model never receives source paths."""
+    run=Path(args.batch).resolve();manifest=verify_sources(run);payload=read_json(args.reviews)
+    reviews=validate_reviews(manifest,payload);policy=manifest['configuration']['visual_harness']
+    rounds=manifest.get('detail_rounds',[])
+    if len(rounds)>=policy['maximum_detail_rounds']:
+        result={'state':'detail_budget_exhausted','next_action':'Finish the JSON with remaining uncertainty; do not search original images or wait for a person.'}
+        print(json.dumps(result,ensure_ascii=False));return result
+    selected=[];unserved=[]
+    for record in manifest['records']:
+        requests=reviews[record['sample_key']]['needs_crops']
+        if not requests:continue
+        request=requests[0];box=request.get('bbox',[]) if isinstance(request,dict) else []
+        valid=(isinstance(box,list) and len(box)==4 and all(isinstance(x,(int,float)) and math.isfinite(x) for x in box))
+        if valid:
+            x1,y1,x2,y2=box
+            valid=0<=x1<x2<=1 and 0<=y1<y2<=1 and (x2-x1)*(y2-y1)<=policy['maximum_detail_bbox_fraction']
+            if valid:
+                with Image.open(engine.ROOT/record['gt_path']) as source:w,h=source.size
+                valid=int(x2*w)>int(x1*w) and int(y2*h)>int(y1*h)
+        if not valid or request.get('sample_key')!=record['sample_key'] or len(selected)>=policy['maximum_detail_samples_per_round']:
+            unserved.append(record['sample_key']);continue
+        detail=copy.deepcopy(record);detail['detail_bbox']=box;selected.append(detail)
+    if not selected:
+        result={'state':'no_eligible_detail_requests','unserved_samples':unserved,'next_action':'Finish the JSON; retain uncertainty where necessary, without opening original images.'}
+        print(json.dumps(result,ensure_ascii=False));return result
+    number=len(rounds)+1;directory=run/'detail_rounds'/f'round_{number:03d}';directory.mkdir(parents=True);(directory/'sheets').mkdir()
+    write_json(directory/'input_reviews.json',payload)
+    sheets=render(selected,directory,manifest['configuration']);prefix=directory.relative_to(run).as_posix()
+    for sheet in sheets:sheet['path']=prefix+'/'+sheet['path']
+    response={'state':'detail_sheets_ready','round':number,'read_only_these_sheets':[s['path'] for s in sheets],
+              'samples':[{'sample_key':r['sample_key'],'sheet':prefix+'/'+r['sheet'],'sheet_row':r['sheet_row'],'bbox':r['detail_bbox']} for r in selected],
+              'unserved_samples':unserved,'remaining_detail_rounds':policy['maximum_detail_rounds']-number,
+              'next_action':'Read these grouped detail sheets once, update the complete final review JSON, retain unresolved items; do not inspect source files.'}
+    write_json(directory/'detail_response.json',response)
+    rounds.append({'round':number,'sheets':sheets,'input_reviews_sha256':engine.sha256(directory/'input_reviews.json'),
+                   'builder_sha256':engine.sha256(Path(__file__))})
+    manifest['detail_rounds']=rounds;write_json(run/'manifest.json',manifest)
+    print(json.dumps(response,ensure_ascii=False));return response
+
+
 def main():
     parser=argparse.ArgumentParser(description='Experimental CV → six-group sheets → Antigravity → strict candidate export')
     parser.add_argument('--config',type=Path,default=Path(__file__).with_name('config.json'));sub=parser.add_subparsers(dest='command',required=True)
@@ -241,12 +303,14 @@ def main():
     p=sub.add_parser('import-reviews');p.add_argument('--batch',required=True);p.add_argument('--reviews',required=True)
     p=sub.add_parser('export-candidate');p.add_argument('--batch',required=True)
     p=sub.add_parser('crop');p.add_argument('--batch',required=True);p.add_argument('--sample-key',required=True);p.add_argument('--bbox',nargs=4,type=float,required=True)
+    p=sub.add_parser('build-detail-sheets');p.add_argument('--batch',required=True);p.add_argument('--reviews',required=True)
     args=parser.parse_args();cv2.setNumThreads(1)
     if args.command=='prepare':prepare(args,read_json(args.config))
     elif args.command=='verify':m=verify_sources(Path(args.batch).resolve());print(f"PASS: {len(m['records'])} source pairs and {len(m['sheets'])} sheets unchanged; state={m['state']}")
     elif args.command=='import-reviews':import_reviews(args)
     elif args.command=='export-candidate':export_candidate(args)
     elif args.command=='crop':crop(args)
+    elif args.command=='build-detail-sheets':build_detail_sheets(args)
 
 
 if __name__=='__main__':
