@@ -1,15 +1,84 @@
 {
-  "version": "cv_workflow_candidate_3",
-  "external_reviewer": {"environment": "Antigravity", "model": "gemini-3.8-flash-high"},
-  "datasets": {"train": "9_14_10000GT_V1", "val": "10_5_val_V1", "test": "10_5_test_V1"},
+  "version": "cv_workflow_candidate_4",
+  "external_reviewer": {
+    "environment": "Antigravity",
+    "model": "gemini-3.8-flash-high"
+  },
+  "datasets": {
+    "train": "9_14_10000GT_V1",
+    "val": "10_5_val_V1",
+    "test": "10_5_test_V1"
+  },
   "analysis_max_side": 256,
   "grid_size": 4,
-  "a": {"maximum_mean_chroma": 0.5, "maximum_chroma_ratio": 0.03, "maximum_centered_spread": 3.0, "maximum_spread_ratio": 0.2},
-  "monochrome_review": {"minimum_hue_concentration": 0.98, "minimum_concentration_increase": 0.2},
-  "d": {"minimum_shift": 2.0, "absolute_tolerance": 2.0, "relative_tolerance": 0.4, "minimum_coverage": 0.75, "activity_floor": 1.0, "minimum_active_coverage": 0.875, "scale_explanation_ratio": 0.7},
-  "regions": {"maximum_per_kind": 2, "minimum_area_pixels": 8, "quantile": 95, "quantile_signal_floor": 1.0},
-  "display": {"deadzone": 1.0, "maximum": 51.23856391906738, "gamma": 0.6},
-  "sheet": {"groups_per_sheet": 6, "width": 1560, "card_height": 430, "image_box_width": 500, "image_box_height": 320},
+  "a": {
+    "maximum_mean_chroma": 0.5,
+    "maximum_chroma_ratio": 0.03,
+    "maximum_centered_spread": 3.0,
+    "maximum_spread_ratio": 0.2
+  },
+  "monochrome_review": {
+    "minimum_hue_concentration": 0.98,
+    "minimum_concentration_increase": 0.2
+  },
+  "d": {
+    "minimum_shift": 2.0,
+    "absolute_tolerance": 2.0,
+    "relative_tolerance": 0.4,
+    "minimum_coverage": 0.75,
+    "activity_floor": 1.0,
+    "minimum_active_coverage": 0.875,
+    "scale_explanation_ratio": 0.7
+  },
+  "regions": {
+    "grow_fraction": 0.1,
+    "maximum_growth_bbox_fraction": 0.5,
+    "maximum_per_kind": 2,
+    "minimum_area_pixels": 8,
+    "quantile": 95,
+    "quantile_signal_floor": 1.0,
+    "max_side": 512
+  },
+  "display": {
+    "deadzone": 1.0,
+    "maximum": 51.23856391906738,
+    "gamma": 0.6
+  },
+  "sheet": {
+    "groups_per_sheet": 6,
+    "width": 1560,
+    "card_height": 430,
+    "image_box_width": 500,
+    "image_box_height": 320
+  },
   "severity_anchors_ready": false,
-  "production_ready": false
+  "production_ready": false,
+  "global_models": {
+    "features": {
+      "curve_bins": 16,
+      "curve_stride": 4,
+      "signal_floor": 0.02,
+      "reference_chroma_floor": 3.0,
+      "matched_color_tolerance": 0.5
+    },
+    "a": {
+      "quantile": 95,
+      "minimum_gt_curve_residual": 0.5,
+      "maximum_model_curve_residual": 2.0,
+      "maximum_curve_ratio": 0.15,
+      "maximum_retained_fraction": 0.005,
+      "scale_competition": {
+        "minimum_retained_gain": 0.03,
+        "maximum_intercept": 0.5,
+        "maximum_residual": 0.5
+      }
+    },
+    "d": {
+      "minimum_pixel_coverage": 0.95,
+      "minimum_fit_fraction": 0.01,
+      "minimum_gain_spread": 0.02,
+      "maximum_gain_residual_p98": 0.75,
+      "minimum_gain_effect": 0.5
+    }
+  }
 }

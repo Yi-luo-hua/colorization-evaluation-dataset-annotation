@@ -33,6 +33,8 @@ decision 为 defects/no_defects/uncertain。defects 的对象格式：
 
 放大裁剪由 workflow.py crop 按需生成 GT+生成图二联，不默认增加其他参考图。
 
+区域导航可能同时提供compact_bbox_normalized（高差异紧范围）与expanded_bbox_normalized（扩展范围）。这是同一数值候选的两种视野，不是两个物体；bbox_normalized是推荐视野。JPEG生成图优先紧范围，避免扩展被压缩差异连接到背景；可根据原图观察请求另一视野。区域不构成物体识别或缺陷标签。
+
 ## 回传和完成门槛
 
 import-reviews 检查完整覆盖、样本对应、字段和 A 熔断约束；保留不确定项，状态仍待解决。export-candidate 要求所有不确定项和裁剪请求已解决、所有非 A 严重度有效，输出仅位于实验目录。

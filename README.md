@@ -24,7 +24,7 @@ Git用于源码、配置、提示词和报告版本管理，不纳入图片数�
 从项目根目录运行：
 
 ```powershell
-& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py prepare --model both --split val --start 1 --end 12 --run-id antigravity_val_1_12
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py prepare --model both --split val --start 1 --end 12 --run-id my_cv4_batch
 ```
 
 生成24个样本、4张看板，每张6组，每组GT+生成图+双向彩度差。尾张可以少于6组。已有run不会覆盖。
@@ -32,9 +32,9 @@ Git用于源码、配置、提示词和报告版本管理，不纳入图片数�
 把该run的`ANTIGRAVITY_HANDOFF.md`交给Antigravity，按`review_request.json`读取看板，从模板另存结果。原评分/旧缺陷仅在manifest里保留用于导出继承，不提供给盲审。
 
 ```powershell
-& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py verify --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12
-& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py import-reviews --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12 --reviews .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12\reviews_gemini.json
-& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py export-candidate --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py verify --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12_cv4_ready
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py import-reviews --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12_cv4_ready --reviews .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12_cv4_ready\reviews_gemini.json
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\workflow.py export-candidate --batch .\LS_lcad_reviewer\intermediate\experiments\antigravity_val_1_12_cv4_ready
 ```
 
 未完成视觉审核、缺样本、未解决疑问/裁剪请求或缺少严重度，都会阻止候选导出。导出仍留在实验run，遵循正式JSON字段契约；不会写入原正式exports或SQLite。候选流包支持Label Studio，但同类多物体在界面里汇总显示最高级别，逐物体等级保留在描述与正式候选JSON。
@@ -43,7 +43,8 @@ Git用于源码、配置、提示词和报告版本管理，不纳入图片数�
 
 ```powershell
 & .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\check_workflow.py
-& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\evaluate.py
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\check_models.py
+& .\LS_lcad_reviewer\.venv\Scripts\python.exe -B -X utf8 .\experiments\cv_workflow\summarize_models.py
 ```
 
-evaluate需要第一轮GT统计及分区记录，默认运行目录不会覆盖；再次实验用`--run-id`另建运行。初步结论与限制见`docs/STATUS.md`。参数是候选而非已确认标签阈值，严重度锚点尚未确定。
+现成新版交接包为antigravity_val_1_12_cv4_ready。prepare使用新run名称，已有run不会覆盖。第四轮优化和新GT确认见[实验报告](docs/experiments/cv_models_v4_20261012.md)。summarize_models读取已完成运行，复核源码哈希并按GT聚类统计。evaluate/optimize需要第一轮GT统计及之前manifest，重跑须新run；历史分数需使用baselines对应源码。verify_regions/stress_models是本轮固定实验脚本，下一轮须新建运行入口。参数是候选而非已确认标签阈值，严重度锚点尚未确定。

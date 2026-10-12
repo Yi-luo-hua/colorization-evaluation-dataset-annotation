@@ -1,0 +1,36 @@
+{
+  "seed": 20261012,
+  "development_per_stratum": 8,
+  "holdout_per_stratum": 16,
+  "features": {"curve_bins": 16, "curve_stride": 4, "signal_floor": 0.02, "reference_chroma_floor": 3.0, "matched_color_tolerance": 0.5},
+  "a_search": {
+    "quantile": [95, 99],
+    "minimum_gt_curve_residual": [0.5, 1.0, 2.0],
+    "maximum_model_curve_residual": [0.5, 1.0, 2.0],
+    "maximum_curve_ratio": [0.03, 0.08, 0.15],
+    "maximum_retained_fraction": [0.002, 0.005, 0.01]
+  },
+  "d_search": {
+    "minimum_pixel_coverage": [0.9, 0.95, 0.98],
+    "minimum_fit_fraction": [0.01],
+    "minimum_gain_spread": [0.02, 0.04, 0.08],
+    "maximum_gain_residual_p98": [0.75, 1.5, 3.0],
+    "minimum_gain_effect": [0.5, 1.0, 2.0]
+  },
+  "localization_search": {
+    "grow_fraction": [0.1, 0.25, 0.5],
+    "maximum_growth_bbox_fraction": [0.5, 0.8],
+    "maximum_per_kind": [2],
+    "minimum_area_pixels": [8],
+    "quantile": [95],
+    "quantile_signal_floor": [1.0]
+  },
+  "small_region_areas": [0.001, 0.01, 0.05, 0.15],
+  "minimum_effective_signal_fraction": 0.2,
+  "region_resolutions": [256, 512],
+  "jpeg_quality": 90,
+  "partial_gray_retained_areas": [0.01, 0.1],
+  "linear_white_balance_gains": [[1.15, 1.0, 0.85], [0.85, 1.0, 1.15]],
+  "exposure_gains": [0.8, 1.2],
+  "bootstrap_replicates": 500
+}

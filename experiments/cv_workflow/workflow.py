@@ -76,17 +76,29 @@ def prepare(args,cfg):
             g=dataset/'image'/f'{stem}.jpg';p=model_image(dataset/'model'/model,stem)
             gr=engine.read_rgb(g,cfg['analysis_max_side']);mr=align(gr,engine.read_rgb(p,cfg['analysis_max_side']))
             metrics,flags,maps=engine.measure(engine.lab(gr),engine.lab(mr),cfg)
+            region_side=cfg['regions'].get('max_side',cfg['analysis_max_side'])
+            if region_side!=cfg['analysis_max_side']:
+                rg=engine.read_rgb(g,region_side);rm_=align(rg,engine.read_rgb(p,region_side))
+                maps=engine.difference_maps(engine.lab(rg),engine.lab(rm_))
             records.append({'sample_key':f'{args.split}/{model}/{stem}','task_idx':index,'split':args.split,'model':model,
                             'gt_path':str(g.relative_to(engine.ROOT)),'model_path':str(p.relative_to(engine.ROOT)),
                             'gt_sha256':engine.sha256(g),'model_sha256':engine.sha256(p),
                             'original_record':original,'source_task_data':copy.deepcopy(task['data']),
-                            'metrics':metrics,'cv_flags':flags,'region_candidates':engine.regions(maps,cfg)})
+                            'metrics':metrics,'cv_flags':flags,'region_analysis_max_side':region_side,
+                            'region_candidates':engine.regions(maps,cfg,prefer_compact=p.suffix.lower() in ['.jpg','.jpeg'])})
     run.mkdir(parents=True);(run/'sheets').mkdir()
     sheets=render(records,run,cfg)
     manifest={'schema_version':'cv_handoff_v1','created_at':utc(),'state':'awaiting_external_visual_review',
+              'source_code_sha256':{p.name:engine.sha256(p) for p in [Path(__file__),Path(engine.__file__),Path(__file__).with_name('global_models.py'),Path(__file__).with_name('region_models.py')]},
               'configuration':cfg,'source_task_sha256':sources,'records':records,'sheets':sheets}
     write_json(run/'manifest.json',manifest)
     summary_keys=['chroma_ratio','robust_shift_norm','common_da','common_db','common_coverage','active_grid_coverage','dc_p05','dc_p95','hue_component_max']
+    if 'global_models' in cfg:
+        summary_keys=['chroma_ratio','brightness_conditioned_color_ratio','reference_color_retention',
+                      'robust_shift_norm','common_da','common_db','common_coverage','active_grid_coverage','active_pixel_coverage',
+                      'scalar_gain','scalar_intercept_norm','scalar_fit_median_error','translation_fit_median_error',
+                      'gain_fit_domain','gain_fit_residual','gain_channel_imbalance',
+                      'dc_p05','dc_p95','hue_component_max']
     request={'schema_version':'visual_review_v1','reviewer':cfg['external_reviewer'],'sheet_groups':6,
              'display':cfg['display'],'warning':'Numerical candidates are not labels. Do not access historical defect labels or scores during blind review.',
              'samples':[{**{k:r[k] for k in ['sample_key','sheet','sheet_row','gt_path','model_path','region_candidates']},

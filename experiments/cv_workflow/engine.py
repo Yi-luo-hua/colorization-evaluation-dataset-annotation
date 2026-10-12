@@ -31,6 +31,11 @@ def rgb(lab_image):
 def chroma(image):return np.linalg.norm(image[...,1:],axis=-1)
 
 
+def difference_maps(gt,gen):
+    dc=chroma(gen)-chroma(gt);ab=np.linalg.norm(gen[...,1:]-gt[...,1:],axis=-1)
+    return {'signed_dc':dc,'hue_component':np.sqrt(np.maximum(0,ab**2-dc**2)),'ab_error':ab}
+
+
 def measure(gt,gen,config):
     if gt.shape!=gen.shape:raise ValueError('Align RGB images before Lab measurement')
     cg,cm=chroma(gt),chroma(gen);delta=gen[...,1:]-gt[...,1:];dc=cm-cg
@@ -73,12 +78,30 @@ def measure(gt,gen,config):
     flags={'a_candidate':a_flag,'d_candidate':d_flag,
            'monochrome_review_only':bool(concentrations[1]>=mono['minimum_hue_concentration'] and concentrations[1]-concentrations[0]>=mono['minimum_concentration_increase']),
            'scale_explains_shift':scale_explains,'automatic_final_decision':False}
+    if 'global_models' in config:
+        import global_models as gm
+        models=gm.measure(gt,gen,config['global_models']['features'])
+        row={'baseline_a':a_flag,'baseline_d':d_flag,'metrics':metrics,'models':models}
+        flags.update(a_candidate=gm.predict_a(row,config['global_models']['a']),
+                     d_candidate=gm.predict_d(row,config['global_models']['d']),
+                     a_reference_insufficient=models['reference_chromatic_fraction']==0)
+        metrics['global_models']=models
+        quantile=config['global_models']['a']['quantile']
+        metrics['brightness_conditioned_color_ratio']=models[f'curve_ratio_p{quantile}']
+        metrics['reference_color_retention']=models['retained_reference_color_fraction']
+        domain,best=min(models['gain_models'].items(),key=lambda pair:pair[1]['residual_p98'])
+        metrics['gain_fit_domain']=domain
+        metrics['gain_fit_residual']=best['residual_p98']
+        metrics['gain_channel_imbalance']=best['relative_gain_spread']
     return metrics,flags,{'signed_dc':dc,'hue_component':hue_error,'ab_error':ab_error}
 
 
-def regions(maps,config):
+def regions(maps,config,prefer_compact=False):
     """Connected numerical candidates, not semantic object masks; no extra images."""
     out=[];settings=config['regions'];h,w=maps['signed_dc'].shape
+    if 'grow_fraction' in settings:
+        import region_models
+        return region_models.anchored_regions(maps,settings,prefer_compact=prefer_compact)
     signals={'chroma_gain':np.maximum(maps['signed_dc'],0),'chroma_loss':np.maximum(-maps['signed_dc'],0),'hue_change':maps['hue_component']}
     for kind,signal in signals.items():
         cutoff=max(settings['quantile_signal_floor'],float(np.percentile(signal,settings['quantile'])))
