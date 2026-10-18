@@ -1,0 +1,19 @@
+{
+  "protected_historical_and_source_files": 126,
+  "protected_hashes_unchanged": true,
+  "four_archived_drivers_byte_identical": true,
+  "numerical_parameters_unchanged": true,
+  "downstream_qualification_paths_removed": true,
+  "software_checks_passed": 38,
+  "native_calls": 2,
+  "native_input_pairs": 12,
+  "complete_seven_category_reviews": 12,
+  "downstream_dropped_samples": 0,
+  "unresolved": 0,
+  "current_links_checked": 61,
+  "missing_links": [],
+  "annotation_contract": "post_screened_GT_generated_only_v1",
+  "configuration_version": "cv_workflow_candidate_10",
+  "production_ready": false,
+  "git_commit_push_performed": false
+}

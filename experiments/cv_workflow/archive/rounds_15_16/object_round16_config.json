@@ -1,0 +1,7 @@
+{
+  "seed": 1613,
+  "splits": ["train", "test"],
+  "GT_per_stratum": 3,
+  "strata": ["diverse_palette", "low_chroma", "concentrated_palette", "random_control"],
+  "object_color_rule": "在GT与生成图的同一位置对应同一个物体，再写颜色差异。GT颜色只写看得到的，不凭物体常识补色；优先明显受损的主要物体，别把相邻物体或局部灯光的颜色写成该物体自身颜色。"
+}

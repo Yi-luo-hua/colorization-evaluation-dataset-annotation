@@ -1,0 +1,193 @@
+{
+  "archive_files": [
+    {
+      "source": "experiments/cv_workflow/compare_harness.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/compare_harness.py",
+      "sha256": "d1dd538d1db7bf4a117ea131654f0e897eac610535219c7b0143d0a76ee83dde",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/confirm_a_round8.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/confirm_a_round8.py",
+      "sha256": "7c253247256d40fdbb0d968841ccac4ac70939601a5a8eb4b0d9f90a3698f8e7",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/confirm_d_groups.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/confirm_d_groups.py",
+      "sha256": "5a381d23fe09b48afba0cc723260bb00f7d5039c6ef8af3a8022826d9de3d0e5",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/evaluate.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/evaluate.py",
+      "sha256": "c6dac7ad95b67455b3f5c3f41077866ba1dc904426f474457494aff71c5201cd",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/evaluate_ce_maps.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/evaluate_ce_maps.py",
+      "sha256": "2419b6e62601a0269bde7dd3ee6517ae5e9306307e3fcddaedbb2980fc64b579",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/evaluate_hue_regions.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/evaluate_hue_regions.py",
+      "sha256": "e69395206c04e59db20f0b35cfee2af0f564a9697aa0697d6bd592ce58e29403",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_ab_heatmap.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_ab_heatmap.py",
+      "sha256": "5ae4b07ea83627694c0382e338100aabcac7c4d2dc3ecb9a26410ed847565bcc",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_batch_order.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_batch_order.py",
+      "sha256": "cf6b1910904b56da1367137b7265ca345993260227233dbfd014fb516f2b52c3",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_ce_sheets.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_ce_sheets.py",
+      "sha256": "4118cdf576d212baf6fce96cb2b42291d6228234718ee5a7ba717dd25ef45dfa",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_d_groups.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_d_groups.py",
+      "sha256": "43f649c243d72d34d4ad74f244cefe0d74619c8320eae8b164139ea479f38692",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_gt_reference.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_gt_reference.py",
+      "sha256": "36a2674ba6099cdd4da0fd064708d872a8c8dc325f55bb8b357f41c31b34b768",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_model_batches.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_model_batches.py",
+      "sha256": "ed9dccb98002c1139c4cecea13f29de688b4d58604290f576518702e71810bab",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_roi_overlay.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_roi_overlay.py",
+      "sha256": "c8df403811e0a8b08643674195b11847a64f50e0185b5230783055cb0960531c",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/experiment_tiled_sheets.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/experiment_tiled_sheets.py",
+      "sha256": "7c700bacbd94d99abcf693d1c5a3e596a7c9bd6e4cb7a7d1daf187d9791156e4",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/optimize.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/optimize.py",
+      "sha256": "63ea00af612450b25282008ece6ddea447920be5dbc4410398cd25e4bd5180f6",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/profile_gt_reference.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/profile_gt_reference.py",
+      "sha256": "b508084de0b5d28847b9f6e28204df7716cd43fa28c79b6822d8ca94f26b7094",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/stress_models.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/stress_models.py",
+      "sha256": "74b8a6b10c225eaa07a74829466e45cc7a5cfc9749010bbcb930899dd5289df0",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/summarize_d_groups.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/summarize_d_groups.py",
+      "sha256": "57db887b6d003c4c811a756eba7c217ada0e992a2dbdf91ac05af7fd2d387881",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/summarize_layout_trial.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/summarize_layout_trial.py",
+      "sha256": "4a3cee17804425a7428b40fb52eca7413a5de3b2b7fece73d19fb592af5ab8bf",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/summarize_models.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/summarize_models.py",
+      "sha256": "b41cf0d30cf97a623c9a91c85f7a0480eeb0ce2b5b15f542966a669d43a1ca58",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/summarize_parallel.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/summarize_parallel.py",
+      "sha256": "8e7fb91773a5755a97ea5037915d166a5d566dba1cbaf33f1c6e602f88cf84a4",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/summarize_scale.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/summarize_scale.py",
+      "sha256": "b64a213a81d6e119010bc42872b29b2b5c7eca5392cdc642a76557bc3fa9d146",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/verify_regions.py",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/verify_regions.py",
+      "sha256": "6c737433977b3eb30c9b5d568df3dc4a7843987ac61718c15094ee225b1a8ef8",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/evaluation_config.json",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/evaluation_config.json",
+      "sha256": "c666433f379914fc421d54f67568df82af4ec32ba82d49ad20174a10f2c12257",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/optimization_config.json",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/optimization_config.json",
+      "sha256": "3ab61dbe635780f6c4bb4147ea00dfd01d44441e8c036963257dd79174d46e92",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/d_group_config.json",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/d_group_config.json",
+      "sha256": "14fc22a3e7ed3f385dfe72c519583efb9a3232f07f2e0e68c66047223e1d8995",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/roi_overlay_config.json",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/roi_overlay_config.json",
+      "sha256": "1f548d54627a83f7032752c9df268e95b18cfe50973a943b2e66a8c675c1c179",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "experiments/cv_workflow/gt_reference_round14_config.json",
+      "destination": "experiments/cv_workflow/archive/rounds_01_14/gt_reference_round14_config.json",
+      "sha256": "5c9ca5dcaf1576b4046ded9f5862148c40af0f96b6c3a28c563201ad18c80fa2",
+      "reason": "Completed one-off experiment or cancelled reference-free direction; history only"
+    },
+    {
+      "source": "LS_lcad_reviewer/03_export_lcad.cmd",
+      "destination": "LS_lcad_reviewer/legacy_archive/workflow_cleanup_20261013/03_export_lcad.cmd",
+      "sha256": "7ce524cb3fb44041b6239686b8cce1ad82eb707ba15330e2418954330c670ef9",
+      "reason": "Outdated manual 10000-task SOP and launcher pointing at a missing root exporter"
+    },
+    {
+      "source": "LS_lcad_reviewer/使用说明_lcad师弟.md",
+      "destination": "LS_lcad_reviewer/legacy_archive/workflow_cleanup_20261013/使用说明_lcad师弟.md",
+      "sha256": "fa531799a56b011999bbef31ea48bd220a40356559101531b837ed78bebd03e3",
+      "reason": "Outdated manual 10000-task SOP and launcher pointing at a missing root exporter"
+    }
+  ],
+  "protected_sha256": {
+    "experiments/cv_workflow/config.json": "bdb1836724602dfca52f3f5901be0b39ca2855306c106d8d6ca03b98cd2e4e9d",
+    "experiments/cv_workflow/engine.py": "309c4604977080bf2ceb38e770a6bc212c19c6c91f4d17e93943a3fbd4c1f92f",
+    "experiments/cv_workflow/global_models.py": "1c7a1f0b262fa1511be92f3a8441e1d2bd2ce6fbfb75cfacfa65f9f41df0cc9e",
+    "experiments/cv_workflow/region_models.py": "087a39632b8e8599a799d5bc04bd1d5c38fc9d6d9287526ac9cfd05bd1fb3744",
+    "experiments/cv_workflow/d_color_groups.py": "f8534e06d6105399634a7915f28f63938f5184055962841ecf2f36dce436f8eb",
+    "LS_lcad_reviewer/intermediate/experiments/gt_quality_all_splits_20261013/excluded_GT.json": "a3e21a61e1ca0fc79e2143f6b44fa5d020f8979196b4918fe5b3f7b2367087b3"
+  },
+  "scope": "Docs, script organization, current entrypoint consistency; no new labeling or dataset edits"
+}

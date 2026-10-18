@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device" version="24.7.17">
+  <diagram id="colorization-detailed-v4" name="GT初筛与固定A分流详细版">
+    <mxGraphModel dx="1740" dy="2960" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1740" pageHeight="2960" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gt_stage" value="" style="rounded=1;arcSize=5;html=1;fillColor=#f5f7fb;strokeColor=#d6dfe9;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="125" width="1600" height="890" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_stage_label" value="① 上游低质量GT初筛 · 已完成，新增GT时才重做" style="text;html=1;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=19;fontColor=#526881;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="85" y="133" width="1570" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="route_stage" value="" style="rounded=1;arcSize=5;html=1;fillColor=#f6faf7;strokeColor=#d6dfe9;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1030" width="1600" height="585" as="geometry" />
+        </mxCell>
+        <mxCell id="route_stage_label" value="② 正式标注分流 · GT清单与人工A清单均已冻结" style="text;html=1;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=19;fontColor=#526881;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="85" y="1038" width="1570" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="visual_stage" value="" style="rounded=1;arcSize=5;html=1;fillColor=#f5f8fd;strokeColor=#d6dfe9;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1405" width="1130" height="1230" as="geometry" />
+        </mxCell>
+        <mxCell id="visual_stage_label" value="③ 非A的CV证据、六类视觉判断与文件恢复" style="text;html=1;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=19;fontColor=#526881;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="555" y="1413" width="1100" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="g1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="gt_input" target="gt_cv">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="gt_cv" target="gt_candidate">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g3" value="是" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.5;entryX=0.0;entryY=0.46875;" edge="1" parent="1" source="gt_candidate" target="gt_vision">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g4" value="否 / 非候选保留" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.5;entryX=0.0;entryY=0.5;" edge="1" parent="1" source="gt_candidate" target="gt_keep">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="555" y="560" />
+              <mxPoint x="555" y="920" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="gt_vision" target="gt_bad">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1360" y="675" />
+              <mxPoint x="1330" y="675" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g6" value="是 / 剔除" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c68484;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#c68484;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.5;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="gt_bad" target="gt_drop">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1535" y="760" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g7" value="否 / 保留" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.5;entryX=1.0;entryY=0.5;" edge="1" parent="1" source="gt_bad" target="gt_keep">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1130" y="760" />
+              <mxPoint x="1130" y="920" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="gt_keep" target="a_gate">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a1" value="是" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#479c72;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#479c72;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.5;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="a_gate" target="a_direct">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="295" y="1145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a2" value="否" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.5;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="a_gate" target="non_a">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="1145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#479c72;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#479c72;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="a_direct" target="a_file">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a4" value="直接复用人工A结果" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#479c72;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#479c72;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.0;entryY=0.496;" edge="1" parent="1" source="a_file" target="merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="295" y="1640" />
+              <mxPoint x="50" y="1640" />
+              <mxPoint x="50" y="2732" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="non_a" target="lab">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1375" y="1430" />
+              <mxPoint x="1355" y="1430" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.49523809523809526;entryX=0.4989010989010989;entryY=0.0;" edge="1" parent="1" source="lab" target="ce">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1075" y="1517" />
+              <mxPoint x="1075" y="1605" />
+              <mxPoint x="822" y="1605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.4895833333333333;entryY=0.0;" edge="1" parent="1" source="lab" target="d">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v4" value="私有B诊断" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#8b9bb0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#8b9bb0;labelBackgroundColor=#ffffff;exitX=0.0;exitY=0.49523809523809526;entryX=0.0;entryY=0.5;dashed=1;" edge="1" parent="1" source="lab" target="b_private">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="1517" />
+              <mxPoint x="550" y="1945" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.4989010989010989;exitY=1.0;entryX=0.49887640449438203;entryY=0.0;" edge="1" parent="1" source="ce" target="boards">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="822" y="1825" />
+              <mxPoint x="1202" y="1825" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.49887640449438203;entryY=0.0;" edge="1" parent="1" source="d" target="boards">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1360" y="1825" />
+              <mxPoint x="1202" y="1825" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.49887640449438203;exitY=1.0;entryX=0.49887640449438203;entryY=0.0;" edge="1" parent="1" source="boards" target="gemini">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.49887640449438203;exitY=1.0;entryX=0.49830508474576274;entryY=0.0;" edge="1" parent="1" source="gemini" target="complete">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v9" value="否" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c68484;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#c68484;labelBackgroundColor=#ffffff;exitX=1.0;exitY=0.4956521739130435;entryX=0.0;entryY=0.48333333333333334;" edge="1" parent="1" source="complete" target="retry">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v10" value="缺失项且服务可用" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#c68484;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#c68484;labelBackgroundColor=#ffffff;exitX=0.4978723404255319;exitY=0.0;entryX=1.0;entryY=0.5;dashed=1;" edge="1" parent="1" source="retry" target="gemini">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1577" y="2160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v11" value="是" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.49830508474576274;exitY=1.0;entryX=0.49887640449438203;entryY=0.0;" edge="1" parent="1" source="complete" target="validate">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#638cd0;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#638cd0;labelBackgroundColor=#ffffff;exitX=0.49887640449438203;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="validate" target="merge">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1202" y="2630" />
+              <mxPoint x="905" y="2630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#667d95;fontFamily=Microsoft YaHei;fontSize=16;fontColor=#667d95;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1.0;entryX=0.5;entryY=0.0;" edge="1" parent="1" source="merge" target="output">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gt_input" value="&lt;b&gt;全量GT · 上游一次性筛查&lt;/b&gt;&lt;br&gt;train / val / test，共14,285张&lt;br&gt;同一GT只筛一次，两模型共用判定" style="whiteSpace=wrap;html=1;fillColor=#233e60;strokeColor=#233e60;strokeWidth=2;fontColor=white;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="170" width="420" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_cv" value="&lt;b&gt;GT质量CV：只捞可疑候选&lt;/b&gt;&lt;br&gt;Lab平均彩度、ab(L)曲线残差&lt;br&gt;色相集中度：|Σab| / Σ|ab|&lt;br&gt;训练分布P1 / P1 / P95校准&lt;br&gt;三种异常信号取并集，不自动剔除" style="whiteSpace=wrap;html=1;fillColor=#edf2f7;strokeColor=#8b9bb0;strokeWidth=2;fontColor=#2a3c50;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="315" width="420" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_candidate" value="&lt;b&gt;是否为CV可疑GT？&lt;/b&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff4ce;strokeColor=#c8a04e;strokeWidth=2;fontColor=#705626;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rhombus;perimeter=rhombusPerimeter;" vertex="1" parent="1">
+          <mxGeometry x="715" y="505" width="270" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_vision" value="&lt;b&gt;候选GT六组看板 → High确认&lt;/b&gt;&lt;br&gt;默认保留，拿不准保留&lt;br&gt;仅剔除：主体无有效颜色的黑白GT&lt;br&gt;或明显整体异常色偏且正常光照不能解释&lt;br&gt;低饱和 / 夕阳 / 夜景 / 雪景不单独剔除" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="485" width="500" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_bad" value="&lt;b&gt;确认GT不可信？&lt;/b&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff4ce;strokeColor=#c8a04e;strokeWidth=2;fontColor=#705626;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rhombus;perimeter=rhombusPerimeter;" vertex="1" parent="1">
+          <mxGeometry x="1195" y="705" width="270" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_drop" value="&lt;b&gt;提前排除低质量GT&lt;/b&gt;&lt;br&gt;当前57张GT已剔除&lt;br&gt;对应两模型114张生成图&lt;br&gt;不进入后续标注" style="whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#c68484;strokeWidth=2;fontColor=#8c4141;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="865" width="250" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="gt_keep" value="&lt;b&gt;冻结清单 · 保留有效数据&lt;/b&gt;&lt;br&gt;14,228有效GT → 28,456生成图&lt;br&gt;日常prepare直接复用排除清单&lt;br&gt;下游不重新判断GT资格" style="whiteSpace=wrap;html=1;fillColor=#edf2f7;strokeColor=#8b9bb0;strokeWidth=2;fontColor=#2a3c50;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="865" width="420" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="a_gate" value="&lt;b&gt;命中冻结人工A名单？&lt;/b&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff4ce;strokeColor=#c8a04e;strokeWidth=2;fontColor=#705626;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rhombus;perimeter=rhombusPerimeter;" vertex="1" parent="1">
+          <mxGeometry x="715" y="1090" width="270" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="a_direct" value="&lt;b&gt;固定人工A · 154张&lt;/b&gt;&lt;br&gt;训练97 / 验证15 / 测试42&lt;br&gt;人工170条中16条随低质量GT排除&lt;br&gt;只写A命中，severity为空，评分1.0&lt;br&gt;不做CV、不生成看板、不调用模型" style="whiteSpace=wrap;html=1;fillColor=#e6f5ed;strokeColor=#479c72;strokeWidth=2;fontColor=#245c41;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1290" width="390" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="a_file" value="&lt;b&gt;固定A结果立即保存&lt;/b&gt;&lt;br&gt;reviews_fixed_A.json&lt;br&gt;其他类别不检查、不填缺陷" style="whiteSpace=wrap;html=1;fillColor=#e6f5ed;strokeColor=#479c72;strokeWidth=2;fontColor=#245c41;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1480" width="390" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="non_a" value="&lt;b&gt;其余28,302张 · 六类视觉范围&lt;/b&gt;&lt;br&gt;只检查B / C / D / E1 / E2 / F&lt;br&gt;A由固定名单决定，模型不再判A" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="1290" width="450" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="lab" value="&lt;b&gt;GT / 生成图对齐 → RGB转Lab&lt;/b&gt;&lt;br&gt;CV分析最长边256，GT直接作颜色参考&lt;br&gt;C/B低彩度参照4.299005来自全量GT" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="1465" width="490" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="ce" value="&lt;b&gt;C / E1 / E2：颜色与浓淡证据&lt;/b&gt;&lt;br&gt;ΔC*=C生成−C_GT：红增、蓝减&lt;br&gt;C：去除同色相缩放后的色度残差&lt;br&gt;弱彩度降权，P95选区，面积≥8像素&lt;br&gt;差分列最多2处橙轮廓，不直接判C" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="595" y="1640" width="455" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="d" value="&lt;b&gt;D：全图共同偏移证据&lt;/b&gt;&lt;br&gt;4×4网格共同ab偏移及变化覆盖&lt;br&gt;GT色组等权检查同向变化&lt;br&gt;RGB增益拟合区分曝光/白平衡候选&lt;br&gt;AI须确认全图作为整体一起偏色" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="1640" width="480" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="b_private" value="&lt;b&gt;B原型 · 只存内部诊断&lt;/b&gt;&lt;br&gt;GT亮度强边缘&lt;br&gt;双侧近/远颜色侵染&lt;br&gt;供色保留、稳定性降权&lt;br&gt;不向AI提供B候选坐标&lt;br&gt;不自动判溢色" style="whiteSpace=wrap;html=1;fillColor=#edf2f7;strokeColor=#8b9bb0;strokeWidth=2;fontColor=#2a3c50;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="595" y="1860" width="315" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="boards" value="&lt;b&gt;匿名六组PNG看板&lt;/b&gt;&lt;br&gt;每张6行，每组GT / 生成 / 差分&lt;br&gt;差分：红蓝彩度差 + 稀疏橙轮廓&lt;br&gt;热图上限51.783686来自全量图对&lt;br&gt;无原图位置、旧评分或旧标签" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="1860" width="445" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="gemini" value="&lt;b&gt;Gemini High · 只判断六类&lt;/b&gt;&lt;br&gt;B：邻接颜色跨轮廓侵染&lt;br&gt;C：物体换色；D：全图整体偏色&lt;br&gt;E1/E2：相对GT浓淡；F：明确常识违和&lt;br&gt;自己读指定本地PNG，每张只读一次&lt;br&gt;直接写独立reviews_gemini.json&lt;br&gt;不输出A，不返回标签JSON" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="2070" width="445" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="complete" value="&lt;b&gt;实际JSON完整合法？&lt;/b&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff4ce;strokeColor=#c8a04e;strokeWidth=2;fontColor=#705626;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rhombus;perimeter=rhombusPerimeter;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="2310" width="295" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="retry" value="&lt;b&gt;只恢复缺失结果&lt;/b&gt;&lt;br&gt;成功标签与失败现场保留&lt;br&gt;同任务本轮最多恢复2次&lt;br&gt;仍失败保留待办&lt;br&gt;个人配额耗尽停止调用&lt;br&gt;不因CLI报错重跑完整文件" style="whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#c68484;strokeWidth=2;fontColor=#8c4141;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="2280" width="235" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="validate" value="&lt;b&gt;读取文件 → 六类结果校验&lt;/b&gt;&lt;br&gt;S编号覆盖、id / severity / 对象 / 短证据&lt;br&gt;null未看；[]为看过无主要缺陷&lt;br&gt;文件完整时CLI ERROR仍可导入" style="whiteSpace=wrap;html=1;fillColor=#e8f0fd;strokeColor=#638cd0;strokeWidth=2;fontColor=#244c80;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="980" y="2480" width="445" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="merge" value="&lt;b&gt;汇聚固定人工A + AI六类结果&lt;/b&gt;&lt;br&gt;按源身份对应，保留全部GT合格输入&lt;br&gt;A分支只标A；六类分支禁止模型输出A&lt;br&gt;检查缺失 / 重复 / 标签范围，作者来源分别记录" style="whiteSpace=wrap;html=1;fillColor=#edf2f7;strokeColor=#8b9bb0;strokeWidth=2;fontColor=#2a3c50;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="595" y="2670" width="620" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="output" value="&lt;b&gt;统一标签与标注任务流&lt;/b&gt;&lt;br&gt;完整标签JSON + 任务流 + provenance；过程输出独立保存" style="whiteSpace=wrap;html=1;fillColor=#233e60;strokeColor=#233e60;strokeWidth=2;fontColor=white;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="595" y="2850" width="620" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="reading_note" value="&lt;b&gt;高效标注与可靠描述&lt;/b&gt;&lt;br&gt;默认2看板/任务，完成即补位&lt;br&gt;共享最多16路；服务恢复期临时4路&lt;br&gt;只读列出的PNG，不找原图&lt;br&gt;不裁剪、不补图、不反复复核&lt;br&gt;每任务写独立JSON，不争写共享文件&lt;br&gt;宁可漏标或宽泛可靠描述&lt;br&gt;不猜颜色、部位、材质或类别&lt;br&gt;CV候选与热图颜色都不是标签" style="whiteSpace=wrap;html=1;fillColor=#fffaf0;strokeColor=#d4bd8b;strokeWidth=2;fontColor=#645739;fontFamily=Microsoft YaHei;fontSize=16;align=center;verticalAlign=middle;spacing=8;rounded=1;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="1800" width="390" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="title" value="图像上色评价 · 从低质量GT初筛到正式标注" style="text;html=1;align=center;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=30;fontColor=#233e60;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="19" width="1700" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="CV13 / v4 · 固定人工A分流 + 非A六类视觉标注 + 完整结果汇聚" style="text;html=1;align=center;verticalAlign=middle;fontFamily=Microsoft YaHei;fontSize=19;fontColor=#233e60;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="20" y="73" width="1700" height="45" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,15 @@
+{
+  "verified_local_links": 47,
+  "protected_code_config_prompt_files_unchanged": [
+    "experiments/cv_workflow/config.json",
+    "experiments/cv_workflow/ANTIGRAVITY_HANDOFF.md",
+    "experiments/cv_workflow/engine.py",
+    "experiments/cv_workflow/workflow.py",
+    "experiments/cv_workflow/compact_harness.py",
+    "experiments/cv_workflow/run_sheet_workers.py"
+  ],
+  "confirmed_recent_new_samples": 360,
+  "GT_sources": 180,
+  "existing_merged_candidate_samples": 288,
+  "new_model_calls": 0
+}

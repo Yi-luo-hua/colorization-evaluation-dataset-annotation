@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1590" viewBox="0 0 1280 1590"><rect width="100%" height="100%" fill="white"/>
+<polyline points="640,180 640,230" fill="none" stroke="#60758b" stroke-width="2"/><polygon points="640,230 645.0,218.0 635.0,218.0" fill="#60758b"/>
+<polyline points="845,272 965,272" fill="none" stroke="#bd7979" stroke-width="2"/><polygon points="965,272 953.0,267.0 953.0,277.0" fill="#bd7979"/>
+<text x="887.0" y="269.0" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#bd7979">排除</text>
+<polyline points="640,315 640,365" fill="none" stroke="#60758b" stroke-width="2"/><polygon points="640,365 645.0,353.0 635.0,353.0" fill="#60758b"/>
+<text x="622.0" y="337.0" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#60758b">保留</text>
+<polyline points="515,425 275,425 275,545" fill="none" stroke="#489d72" stroke-width="2"/><polygon points="275,545 280.0,533.0 270.0,533.0" fill="#489d72"/>
+<text x="450" y="424" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#489d72">是</text>
+<polyline points="765,425 1005,425 1005,545" fill="none" stroke="#618dd0" stroke-width="2"/><polygon points="1005,545 1010.0,533.0 1000.0,533.0" fill="#618dd0"/>
+<text x="830" y="424" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#618dd0">否</text>
+<polyline points="275,665 275,855" fill="none" stroke="#489d72" stroke-width="2"/><polygon points="275,855 280.0,843.0 270.0,843.0" fill="#489d72"/>
+<polyline points="1005,625 1005,690" fill="none" stroke="#618dd0" stroke-width="2"/><polygon points="1005,690 1010.0,678.0 1000.0,678.0" fill="#618dd0"/>
+<polyline points="1005,790 1005,855" fill="none" stroke="#618dd0" stroke-width="2"/><polygon points="1005,855 1010.0,843.0 1000.0,843.0" fill="#618dd0"/>
+<polyline points="1005,955 1005,1020" fill="none" stroke="#618dd0" stroke-width="2"/><polygon points="1005,1020 1010.0,1008.0 1000.0,1008.0" fill="#618dd0"/>
+<polyline points="275,955 275,1270 430,1270" fill="none" stroke="#489d72" stroke-width="2"/><polygon points="430,1270 418.0,1265.0 418.0,1275.0" fill="#489d72"/>
+<polyline points="1005,1135 1005,1270 850,1270" fill="none" stroke="#618dd0" stroke-width="2"/><polygon points="850,1270 862.0,1275.0 862.0,1265.0" fill="#618dd0"/>
+<polyline points="640,1330 640,1390" fill="none" stroke="#60758b" stroke-width="2"/><polygon points="640,1390 645.0,1378.0 635.0,1378.0" fill="#60758b"/>
+<rect x="435" y="100" width="410" height="80" rx="13" fill="#233e60" stroke="#233e60" stroke-width="2"/>
+<text x="640.0" y="123.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="white">输入数据</text>
+<text x="640.0" y="144.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="white">14,285张GT × 2个上色模型</text>
+<text x="640.0" y="169.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="white">共28,570张生成图</text>
+<rect x="435" y="230" width="410" height="85" rx="13" fill="#edf2f7" stroke="#889bb0" stroke-width="2"/>
+<text x="640.0" y="255.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#24374b">按冻结GT清单过滤</text>
+<text x="640.0" y="276.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#24374b">保留28,456张生成图</text>
+<text x="640.0" y="301.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#24374b">GT资格不在下游复审</text>
+<rect x="965" y="230" width="270" height="85" rx="13" fill="#fff0f0" stroke="#c78383" stroke-width="2"/>
+<text x="1100.0" y="255.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#8c4141">上游排除</text>
+<text x="1100.0" y="276.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#8c4141">57张GT → 114张生成图</text>
+<text x="1100.0" y="301.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#8c4141">不进入标注</text>
+<polygon points="640.0,365 765,425.0 640.0,485 515,425.0" fill="#fff4ce" stroke="#c9a14d" stroke-width="2"/>
+<text x="640.0" y="420.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#6e5524">命中冻结人工</text>
+<text x="640.0" y="441.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#6e5524">A名单？</text>
+<rect x="85" y="545" width="380" height="120" rx="13" fill="#e6f5ed" stroke="#489d72" stroke-width="2"/>
+<text x="275.0" y="575.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#245b40">固定A · 154张</text>
+<text x="275.0" y="596.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#245b40">仅标A命中 · severity为空</text>
+<text x="275.0" y="621.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#245b40">评分1.0</text>
+<text x="275.0" y="646.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#245b40">不做CV / 看板 / AI</text>
+<rect x="815" y="545" width="380" height="80" rx="13" fill="#e8f0fd" stroke="#618dd0" stroke-width="2"/>
+<text x="1005.0" y="580.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#234d83">其余样本 · 28,302张</text>
+<text x="1005.0" y="601.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">仅B / C / D / E1 / E2 / F</text>
+<rect x="815" y="690" width="380" height="100" rx="13" fill="#e8f0fd" stroke="#618dd0" stroke-width="2"/>
+<text x="1005.0" y="710.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#234d83">计算CV证据</text>
+<text x="1005.0" y="731.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">彩度差、色相残差与全图变化</text>
+<text x="1005.0" y="756.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">CV只提供候选，不自动写标签</text>
+<text x="1005.0" y="781.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">B证据仅内部诊断</text>
+<rect x="85" y="855" width="380" height="100" rx="13" fill="#e6f5ed" stroke="#489d72" stroke-width="2"/>
+<text x="275.0" y="888.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#245b40">保存固定A结果</text>
+<text x="275.0" y="909.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#245b40">reviews_fixed_A.json</text>
+<text x="275.0" y="934.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#245b40">只含A，不标其他类别</text>
+<rect x="815" y="855" width="380" height="100" rx="13" fill="#e8f0fd" stroke="#618dd0" stroke-width="2"/>
+<text x="1005.0" y="888.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#234d83">生成匿名六组看板</text>
+<text x="1005.0" y="909.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">每组：GT / 生成图 / 差分图</text>
+<text x="1005.0" y="934.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">匿名S编号，无原图路径、旧标签</text>
+<rect x="815" y="1020" width="380" height="115" rx="13" fill="#e8f0fd" stroke="#618dd0" stroke-width="2"/>
+<text x="1005.0" y="1048.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#234d83">Gemini High六类标注</text>
+<text x="1005.0" y="1069.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">自行读取列出的本地PNG，每张一次</text>
+<text x="1005.0" y="1094.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">直接写独立reviews_gemini.json</text>
+<text x="1005.0" y="1119.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#234d83">不判断或输出A，不找原图</text>
+<rect x="430" y="1210" width="420" height="120" rx="13" fill="#edf2f7" stroke="#889bb0" stroke-width="2"/>
+<text x="640.0" y="1240.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="#24374b">程序汇聚与校验</text>
+<text x="640.0" y="1261.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#24374b">固定人工A + AI六类结果</text>
+<text x="640.0" y="1286.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#24374b">检查源身份、标签范围、完整覆盖</text>
+<text x="640.0" y="1311.5" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#24374b">保留全部GT合格输入</text>
+<rect x="430" y="1390" width="420" height="85" rx="13" fill="#233e60" stroke="#233e60" stroke-width="2"/>
+<text x="640.0" y="1428.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="21" fill="white">统一标注结果</text>
+<text x="640.0" y="1449.0" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="white">标签JSON / 标注任务流 / 来源记录</text>
+<text x="640.0" y="53" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="29" fill="#233e60">图像上色评价 · 标注工作流</text>
+<text x="640.0" y="86" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#233e60">CV13 / v4 · 固定人工A直接标注，其余样本由Gemini判断六类</text>
+<text x="640.0" y="1542" text-anchor="middle" font-family="Microsoft YaHei, sans-serif" font-size="17" fill="#233e60">GT排除清单和人工A名单均已冻结；CV候选不是语义标签。</text>
+</svg>

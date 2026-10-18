@@ -1,0 +1,14 @@
+{
+  "seed": 1513,
+  "GT_quantiles": [0.2, 0.35, 0.5, 0.65, 0.8, 0.95],
+  "fade_scales": [0.08, 0.2, 0.4],
+  "local_gray_fractions": [0.75, 0.95],
+  "noise_sigma": [0.5, 1.5],
+  "single_tint_ab": [6.0, 12.0],
+  "search": {
+    "minimum_retained_gain": [0.01, 0.03, 0.05],
+    "maximum_residual": [0.5, 1.0, 1.5, 2.0, 3.0]
+  },
+  "visual_variants": ["identity", "grayscale", "single_tint", "fade_0.08", "fade_0.2", "local_gray_0.75"],
+  "candidate_boundary": "A只用于全图灰阶或统一单色、物体间颜色区分已失效。仍能看出肤色、衣物或其他物体之间的颜色差别，即使很淡或大部分区域发灰，也优先按具体物体标E2，不标A；微量噪声或统一泛黄不算保留物体颜色。"
+}

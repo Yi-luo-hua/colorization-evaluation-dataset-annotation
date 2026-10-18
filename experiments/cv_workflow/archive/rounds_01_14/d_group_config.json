@@ -1,0 +1,15 @@
+{
+  "features": {"ab_bin_width": 12.0, "l_bin_width": 25.0, "minimum_group_fraction": 0.02, "stride": 4},
+  "search": {
+    "minimum_shift": [2.0, 4.0, 6.0, 8.0],
+    "minimum_direction_coverage": [0.5, 0.65, 0.8, 0.9],
+    "minimum_scalar_gain": [-1.0, 0.0, 0.2, 0.5],
+    "minimum_group_projection": [0.0, 1.0, 2.0],
+    "require_baseline": [true, false]
+  },
+  "direction_cosine": 0.5,
+  "projection_quantile": 25,
+  "maximum_synthetic_development_f1_loss": 0.01,
+  "seed": 20261012,
+  "real_development_GT_count": 9
+}

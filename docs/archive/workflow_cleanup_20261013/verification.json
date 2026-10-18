@@ -1,0 +1,17 @@
+{
+  "archived_files_byte_identical": 30,
+  "protected_configuration_numerical_modules_GT_registry_unchanged": true,
+  "GT_prepare_without_historical_dependency": true,
+  "no_active_import_of_archived_modules": true,
+  "checked_local_links": 116,
+  "broken_links": [],
+  "model_calls": 0,
+  "checks_passed": {
+    "workflow": 15,
+    "file_runner": 6,
+    "rolling_scheduler": 2
+  },
+  "recycled_cache_folders": 3,
+  "recycled_pyc_files": 24,
+  "no_new_model_calls": true
+}

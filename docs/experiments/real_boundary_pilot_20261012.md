@@ -1,5 +1,7 @@
 # 真实样本边界小试准备
 
+> 已完成阶段的历史记录。当前任务与默认流程查[STATUS](../STATUS.md)和[PLAN](../PLAN.md)；旧命令保留当时文本，一次性脚本现位于[归档索引](../../experiments/cv_workflow/archive/rounds_01_14/README.md)，不作为当前运行入口。
+
 2026-10-12；未获得Antigravity视觉结果，尚未建立人工真值。本轮不调整CV分类阈值。
 
 ## 数值扫描与选样

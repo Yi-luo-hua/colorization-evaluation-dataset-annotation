@@ -1,0 +1,14 @@
+{
+  "real_scout_keys": ["G01","G03","G04","G02","G05","G07","G08","G12","G17","G19","G20","G30","G35","G42","G45","G46"],
+  "control_base_keys": ["G12","G23","G31"],
+  "control_interventions": [
+    {"name":"bw_natural","GT":"gray","generated":"identity","expected_category":null},
+    {"name":"bw_gray","GT":"gray","generated":"gray","expected_category":"A"},
+    {"name":"bw_faded","GT":"gray","generated":"scale","scale":0.2,"expected_category":"E2"},
+    {"name":"bw_vivid","GT":"gray","generated":"scale","scale":2.4,"expected_category":"E1"},
+    {"name":"cast_natural","GT":"cast","generated":"identity","expected_category":null},
+    {"name":"cast_same","GT":"cast","generated":"cast","expected_category":"D"}
+  ],
+  "cast_ab": [30.0,-30.0],
+  "note":"Known interventions for diagnostic controls, not production thresholds or population accuracy. Real scene expectations are Codex observations, not human ground truth."
+}

@@ -7,3 +7,10 @@
 *.png binary
 *.jpg binary
 *.pdf binary
+*.exe binary
+
+# Historical snapshots are verified by byte hashes; preserve their line endings.
+docs/archive/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+experiments/cv_workflow/archive/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+experiments/cv_workflow/baselines/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+LS_lcad_reviewer/legacy_archive/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

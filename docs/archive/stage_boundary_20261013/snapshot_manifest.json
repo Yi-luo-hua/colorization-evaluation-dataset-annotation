@@ -1,0 +1,258 @@
+{
+  "before": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "07e79c32431b11db54d367675cdd0c4a6f996bde820d1d45de4626c3ff18a470",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\AGENTS.md"
+    },
+    {
+      "path": "README.md",
+      "sha256": "180d3dbdde105d83ae4341e38b10040b61c130179f7661f945ea40661babf5bc",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\README.md"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "sha256": "8419502e13c1ff02994e1b3d57ca5f4d2783df2fdaadb420015d54204d6b419a",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\docs\\STATUS.md"
+    },
+    {
+      "path": "docs/PLAN.md",
+      "sha256": "2bc45811ec1b06a511f3ff05d50975461451bf60bcdab85f3c1d7bf12bc3a187",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\docs\\PLAN.md"
+    },
+    {
+      "path": "docs/DESIGN.md",
+      "sha256": "c139f767fa4a9c6c0ab09a796767421629f675abca75e899e327567812631568",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\docs\\DESIGN.md"
+    },
+    {
+      "path": "docs/EXPERIMENTS.md",
+      "sha256": "32e7a62d9fde4b3b3ca20ab8bbd3eb4589c9f51c6b0d59861151b59c365bebb4",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\docs\\EXPERIMENTS.md"
+    },
+    {
+      "path": "experiments/cv_workflow/README.md",
+      "sha256": "38bff83f71889643c08674747933b74fb4d2d58b9be250131357f09ad016cede",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\README.md"
+    },
+    {
+      "path": "experiments/cv_workflow/ANTIGRAVITY_HANDOFF.md",
+      "sha256": "cb44d7215ee509944624fa0e65afb2b92aa4356f2debffb5b657922f77d5dbd6",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\ANTIGRAVITY_HANDOFF.md"
+    },
+    {
+      "path": "experiments/cv_workflow/workflow.py",
+      "sha256": "094e808b15277b134f1bd5219fad4b0d7a66122217705742af4337d616ebabc0",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\workflow.py"
+    },
+    {
+      "path": "experiments/cv_workflow/compact_harness.py",
+      "sha256": "a938c401631b68b5263ce94771d95783b3352ef457bc1da27c9ce21c677a5cfd",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\compact_harness.py"
+    },
+    {
+      "path": "experiments/cv_workflow/engine.py",
+      "sha256": "309c4604977080bf2ceb38e770a6bc212c19c6c91f4d17e93943a3fbd4c1f92f",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\engine.py"
+    },
+    {
+      "path": "experiments/cv_workflow/review_boundaries.py",
+      "sha256": "ab62726d7ccef1db862cf003084e5c8922c5b8efc7cdbf76a5a22df2a4d59d44",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\review_boundaries.py"
+    },
+    {
+      "path": "experiments/cv_workflow/run_harness_trial.py",
+      "sha256": "fba3cf19e794984fe08bcfa09e8708c7c8b91fe9dc23e68c33f46a290e5e57dd",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\run_harness_trial.py"
+    },
+    {
+      "path": "experiments/cv_workflow/agy_runner.py",
+      "sha256": "91776b6ff431510ed1dbab07437d3e6f5b8dcd6ba17290f0ba290323fb6a174c",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\agy_runner.py"
+    },
+    {
+      "path": "experiments/cv_workflow/run_sheet_workers.py",
+      "sha256": "3665f11be447da909f2a325cb5580f01509b5733661b1cc95f2c0573bb6296a6",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\run_sheet_workers.py"
+    },
+    {
+      "path": "experiments/cv_workflow/screen_real.py",
+      "sha256": "6572b5b923e76d6db20b1890dabe8f80899a9ca109e6a87e30e7c332c0f2223f",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\screen_real.py"
+    },
+    {
+      "path": "experiments/cv_workflow/select_boundaries.py",
+      "sha256": "be109da795e55cf9d253cabe4668c939943983a949a7aafc0e6c5a7fcd000be6",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\select_boundaries.py"
+    },
+    {
+      "path": "experiments/cv_workflow/check_workflow.py",
+      "sha256": "eb2d07493a2e40612056a27e7b290edfd79f375ddc8c7c0db1d813951304b1f5",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\check_workflow.py"
+    },
+    {
+      "path": "experiments/cv_workflow/check_agy_runner.py",
+      "sha256": "b299fe6a936da38ea4ea6244b175db7b2aa7e80108b06b3a7ad72d9ccb61aeb4",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\check_agy_runner.py"
+    },
+    {
+      "path": "experiments/cv_workflow/check_boundaries.py",
+      "sha256": "1bcea9b914da7d8629c78405504acd614ae5083dabf5181f7cd293af4a0ef5a0",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\check_boundaries.py"
+    },
+    {
+      "path": "experiments/cv_workflow/config.json",
+      "sha256": "25dcf754a4c8fb59b8686afd3cfd5d2743b4041d6c3615bacf179f9c1d1ecfd6",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\config.json"
+    },
+    {
+      "path": "experiments/cv_workflow/ae_diagnostic.py",
+      "sha256": "ecea9b6adbbe86a4b1f3d6af7746e0829f2349be365d4775655e11b76d15c625",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\ae_diagnostic.py"
+    },
+    {
+      "path": "experiments/cv_workflow/ae_round15_config.json",
+      "sha256": "db8425a9f15cb573c79bbc93dcbb43aaafbf2362e110efec19b3d356f63adeef",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\ae_round15_config.json"
+    },
+    {
+      "path": "experiments/cv_workflow/object_diagnostic.py",
+      "sha256": "a7e847f3bdbe7eb5cbb9118fbb2054fcfe3ddcfc36a8a6fb7035f298f89ecae3",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\object_diagnostic.py"
+    },
+    {
+      "path": "experiments/cv_workflow/object_round16_config.json",
+      "sha256": "139a0c8d327a39bc8fade98331813103270023f140ad1de3aef6a5d7a5d48ae5",
+      "snapshot": "docs\\archive\\stage_boundary_20261013\\before\\experiments\\cv_workflow\\object_round16_config.json"
+    }
+  ],
+  "protected_files": {
+    "LS_lcad_reviewer\\tasks_pool\\test\\tasks_lcad_test_2857.json": "61ddb36bbf96d1df116bbe5430800d04a9a2be095ee8e5a744c96fb4ef70aa83",
+    "LS_lcad_reviewer\\tasks_pool\\test\\tasks_unicolor_test_2857.json": "b3a58f01bc7513f44601fa871761f9db07de981e5c50d153e1120a0d70b972e8",
+    "LS_lcad_reviewer\\tasks_pool\\train\\tasks_lcad_10000.json": "ed5515b3163471300819ca53486cb05922b0c11968b36247d48cc6403fef95be",
+    "LS_lcad_reviewer\\tasks_pool\\train\\tasks_unicolor_10000.json": "e5befb4189261380314f2d5fadfccd0e203237b51313940cbb6f7cf4b1783ae6",
+    "LS_lcad_reviewer\\tasks_pool\\val\\tasks_lcad_val_1428.json": "ac7b47f4db6ae5762820b907871c176d76ac59ba1a39b2940a17381b40851f96",
+    "LS_lcad_reviewer\\tasks_pool\\val\\tasks_unicolor_val_1428.json": "0ba825fd1b221182f8dc41519f954d01ab3c085b99a299afa905143794449135",
+    "LS_lcad_reviewer\\intermediate\\experiments\\gt_quality_all_splits_20261013\\excluded_GT.json": "a3e21a61e1ca0fc79e2143f6b44fa5d020f8979196b4918fe5b3f7b2367087b3",
+    "LS_lcad_reviewer\\exports\\reviewed_20260930_084839.json": "b840d10cda929281d6277e22a1c2df16faee897dd49dfbbb87af4b40d4b28d24",
+    "LS_lcad_reviewer\\exports\\reviewed_1_10000_clean.json": "8d370ae15dcafa26f6f01bd7b17fe3561f38af3f9869571e22a9b290f1f33413",
+    "LS_lcad_reviewer\\exports\\reviewed_1_10000_all.json": "cb5e9d58000bd2a8451084e7e6cc6081d1e5be5d13ef7e3c7d880ba033c88a3f",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\manifest.json": "14b96d31a40b082a94083de08089b4eacd752dc197ee43527319e77e43522522",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\parallel_plan.json": "44c174efb864d0005c8cfcafe6e51b712a1201f75dc7de9021adcbf4d605ff17",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\reviews_merged.json": "484f4f796d89e04442178540d6492bd5b6c392f9b3cc56f54ec411b982d0c094",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\review_request.json": "d306afb5279ce9df6a222bdf5cf2eec1d76185b2a6032d41caf1b901b2c00f69",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\review_template.json": "17da3dd424b53f1aa3be98f645b5001a42fd2c9aba13191714845227e002025e",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\visual_reviews.json": "61b1583587b5f87cd1d8f8f4fa3822476162efa8ded6c31e8cccc32fbabca1f1",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\exports\\excluded_GT.json": "9797d64be81c431867a92e3d186069cf6d2e3239a0013969eccb4094a5de46fd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\exports\\provenance.json": "daf6cb4711a3e7cb5e252629c1b2abbefdb50ac3e142af9d6620279e051bf01f",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\exports\\reviewed_candidate.json": "90fa03fc48374a28abbf449b0f211de0e0f3bd56b6a0199596af96b8f6d1101e",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\exports\\tasks_reviewed_stream.json": "1d10f2d342a2a5851164af1bb1e34fbcd65b0b3f86079b4bc6bf915b77071c0f",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\parts\\job_001\\reviews_gemini.json": "3c8d8b46a6b509e3fb3c0255d1d2f47c94b5c694b38f0128981ef5d0d7922820",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\parts\\job_002\\reviews_gemini.json": "6dd096a7700f009dae70823783eb75f1f33803cec1d54799c745fa442ab6b6f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\parts\\job_003\\reviews_gemini.json": "013768035e9be15c99d81290a264ebb67b44d95aaa79aa995b4ba305c7be8ac8",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_baseline48\\parts\\job_004\\reviews_gemini.json": "7b281fc8fb63df93280ff43df25d62d2a35a495d9aa41852af32cf50d11d7100",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\manifest.json": "a840e19679ff6756fa739d78dc184d2768ad6b806aae27bca374ce24cef74fac",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\parallel_plan.json": "44c174efb864d0005c8cfcafe6e51b712a1201f75dc7de9021adcbf4d605ff17",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\reviews_merged.json": "db06f878b5a62dece2e37e4c12b8b69c53810737ad8fb58b8eafcaa6b0e075ef",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\review_request.json": "f375e7fc80cfd04a4b8e7e3cedab421153d599bcdb6adea42fd7c38ea29eea37",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\review_template.json": "17da3dd424b53f1aa3be98f645b5001a42fd2c9aba13191714845227e002025e",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\trial.json": "9ddc0684e3687f726e2713093723013ed8d08d5faf84c5a6b5d90911d0e41ade",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\visual_reviews.json": "c41f05feec99fdb3d4b64b0368d6e748ffcec54ad9843c808913bb472982a168",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\exports\\excluded_GT.json": "9797d64be81c431867a92e3d186069cf6d2e3239a0013969eccb4094a5de46fd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\exports\\provenance.json": "155016f73e8a972832e27da75a285ea07f8fd4c376a93a6f4e32c0d1e7d31702",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\exports\\reviewed_candidate.json": "2338bd27ee125b3c216ef12f091146748f9438d557ef196d6fb00a13c6ca1368",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\exports\\tasks_reviewed_stream.json": "6cad44a2b379cbbc11488e0ed13b667e3281c81dd14c9c2a4be8d8ef32138b07",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\parts\\job_001\\reviews_gemini.json": "1593f4e38f69c3f47792c0b009440ffcd61838f0d8be8718a6bfc175b9e47322",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\parts\\job_002\\reviews_gemini.json": "3194b4344642500532eb7749917304e5e6a53745bc6ad64c761e5fda3ef4ea20",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\parts\\job_003\\reviews_gemini.json": "e6fda1fed8bf6b005ffd363fef43d76001f1cffea94bcf9fea3f0c75d645a8e3",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_boundary48\\parts\\job_004\\reviews_gemini.json": "624617d2ca788141976b828c37cd0b8c6496ae110baed5650e64a25fa6fb6b61",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\manifest.json": "1c56dcae487889bec4b03394b474129258d81494dcc55624c338b8e110a0fbd1",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\parallel_plan.json": "81c0d287379293b785a324246fa32849c8c38394a711d3575f8ee36ca7093321",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\reviews_merged.json": "9f99a48803efb8cba1bbcdcef0a12465be1c530151074dda112abf0a80569986",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\review_request.json": "1537635d364f6342f7852811f1d95556eb7b073e980dccfeccd5cf37f22698f2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\review_template.json": "17da3dd424b53f1aa3be98f645b5001a42fd2c9aba13191714845227e002025e",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\trial.json": "aef35f7660010943da2f962084e13d067d0530bd5a4418e911662a62407fcede",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\visual_reviews.json": "6224e567107c84d1840213667514bec02235359514d69134328ffa40fe3a137d",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\exports\\excluded_GT.json": "9797d64be81c431867a92e3d186069cf6d2e3239a0013969eccb4094a5de46fd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\exports\\provenance.json": "7586cafbc511c39f0cb813c63bbc7c294a5b575ea6f5fa440b8574c72011747b",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\exports\\reviewed_candidate.json": "a4b589acf1646848392d2dd8eaa049461c6415168ee09a6b9f1297bec8a420f7",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\exports\\tasks_reviewed_stream.json": "e3e1199d351d1c083a6a9f3cd33f61e59bc822537ee02e80c300e4f7134c6008",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\parts\\job_001\\reviews_gemini.json": "ebb9504d4715589bded379c94b5f488883e0f36653754fd0f23b9dc16885b7f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\parts\\job_002\\reviews_gemini.json": "f1834b8fb5269a394a3ac0fe0fb148bfaf61903e606cc6c03175a3193c68ce02",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\parts\\job_003\\reviews_gemini.json": "58422e2e80b911d5e78bc5e4b82c49f7c0c7c0e56dea1eaff0b37c1842154b48",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_evidence48\\parts\\job_004\\reviews_gemini.json": "16c17c4307af94236f1182bfd4a052b6887d98bf918b7d977c1b362b8d1db198",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\manifest.json": "8505c74114963f04a431499a75620f25402b0b982bc7570f98cf482f4cdede9d",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\parallel_plan.json": "044dff1dc177e0fa6cedc2d8b701915a5471c04b201c5a92e0c01a35c1118dbd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\reviews_merged.json": "01a65e2217ee0b3004ffe2100a0a45d7cf7517dd26077e6598cc711a2a038d03",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\review_request.json": "19a0d08cedfd09339a3cb23215f12b702e929a6c0975f726f6e1e29adebfe6b8",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\review_template.json": "3a29be815dcae56cb8111af433f9cbc8bc60707ced78cae7dd4aac5469635ff8",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\trial.json": "aef35f7660010943da2f962084e13d067d0530bd5a4418e911662a62407fcede",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\visual_reviews.json": "3c16fe124242ccde640896138ba5213689d502977c4a3cdd3fa0d47436619974",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\exports\\excluded_GT.json": "9797d64be81c431867a92e3d186069cf6d2e3239a0013969eccb4094a5de46fd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\exports\\provenance.json": "ef62d9bc7a8693f67e458c52e6f1bfcdbe87e079a9eaf724bfd63642349965af",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\exports\\reviewed_candidate.json": "0f73ccb679c965566b2b6e98ea2b616eb83347e04c84a6f943c85864400b8172",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\exports\\tasks_reviewed_stream.json": "e2d79cb1482f2e2a66f533ef52c5bc08e4d7777d20398a6c91a52b8db0e11909",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\parts\\job_001\\reviews_gemini.json": "7d62c1ac13ee334c53b1f572d9f237ad86ae9822cb8f27ac759d2c42e87b1403",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\parts\\job_002\\reviews_gemini.json": "7809ceba758ef78f956719c47ad8ee2827727ccd2690f057284833eec11c528e",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_boundary36\\parts\\job_003\\reviews_gemini.json": "63d7a21696377a86d8e1bf0303c424afac9d915294d3bda57b4d8812bdc46461",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\manifest.json": "95b497cc1c40e2acdc46c751bdc22de1228c5dd5fbe7014fd34cfa8028a15ca5",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\parallel_plan.json": "044dff1dc177e0fa6cedc2d8b701915a5471c04b201c5a92e0c01a35c1118dbd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\reviews_merged.json": "3aed13cd5eb15f4eb174114dfa144842a744961f1f73a2220844cdccbd6d77cf",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\review_request.json": "2aeeb09e20d4d712cf7a8d89e33746b2862e2f0ad9975b999d5a52c662539ab0",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\review_template.json": "3a29be815dcae56cb8111af433f9cbc8bc60707ced78cae7dd4aac5469635ff8",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\trial.json": "999c0282e860c0729d3c436d9382e3158b5d748f983a6b0c90e59321fc91db67",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\visual_reviews.json": "cb909d87f07770af76ebf51f5c96f1f0ff4d185587512441c99dd1cb5dc7f9ae",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\exports\\excluded_GT.json": "9797d64be81c431867a92e3d186069cf6d2e3239a0013969eccb4094a5de46fd",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\exports\\provenance.json": "61679daa9a0e56c301b4bd8a44c734f275ee4a9a4b8e4cf1d6a81efc60a3190b",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\exports\\reviewed_candidate.json": "48812804cf848b9ca3749caab4b709df541d161cea7288cfdec65a50d8c0401f",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\exports\\tasks_reviewed_stream.json": "dffd04f86321033d1a1fd5513e24150bcc1b29a55f8486988a92653478722654",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\parts\\job_001\\reviews_gemini.json": "3147b7a2b713f161865046644cd43073acab09ee7549c159d661ba07204106fa",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\parts\\job_002\\reviews_gemini.json": "23cbb21a195356b300a04fe5c508460adcac83e527c2e0749323d2042c61a793",
+    "LS_lcad_reviewer\\intermediate\\experiments\\ae_round15_20261013_confirm_evidence36\\parts\\job_003\\reviews_gemini.json": "974aba8b8af10ac14b324e2448ef4d64b0e4b2472b4e23a71d77d994872516b2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\manifest.json": "e2efdee69344e37f701a5fe64dbd940d44482095c2f227be5bd386e90df21f8d",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\parallel_plan.json": "55984ae5dd0e5c66f9629422651c6d676bc96968f45ff847b7b29d024202fef2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\reviews_merged.json": "0c28c92d5ccc79ad6f09e5a3aa243aca24e8a0868c70535a454d7c153601a7fb",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\review_request.json": "e5a616978f3e62aec302f2ac60a0f206b0aa1ec41492763ff9da6cf80041f014",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\review_template.json": "62cebf208d0f7401090e62f325dd0d6097e28d759e00b7231263783fda6a14f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\visual_reviews.json": "b17e69d8d76bc52e2d1d4091cf67dd9a9f09df5921e68df7d6669be054e40dc1",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\exports\\excluded_GT.json": "bc812e6ea1c156179021559346fcee5dcfe14ef56a304cc0351c9f627f0280f0",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\exports\\provenance.json": "507279fbe7976745dfb21f0b03badbd847a8477812b0e235c486f07cb3509a78",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\exports\\reviewed_candidate.json": "eb06ede67891bf8016b9cc4bf0aba9b35d204013d02be73ee784087a893d5928",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\exports\\tasks_reviewed_stream.json": "c2b73598da79deaddb95feefa6a16321bc30473d3afc8fcfb4eaf5fb041786b6",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\parts\\job_001\\reviews_gemini.json": "28b6c3429f6facaa7224df11996f44a7e4ee153de83709a8f888266077f414ad",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_baseline24\\parts\\job_002\\reviews_gemini.json": "a163eb310601c10c027540214e57a73115757e78f3054f8cdcffda0f1f36818d",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\manifest.json": "c9c31fa07c5d4250ecfcec36db6c8d1fe6f9102fc7b6ade45dd98061cf5bde97",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\parallel_plan.json": "55984ae5dd0e5c66f9629422651c6d676bc96968f45ff847b7b29d024202fef2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\reviews_merged.json": "644a374c3bd7f84776f97c3a63b69a078ec976ed6041b419016a35dfe7fb3614",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\review_request.json": "c0900a38c43e7e5db65b0ab7f9a6b70e086e2e494feac505f4b40b0d326d189d",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\review_template.json": "62cebf208d0f7401090e62f325dd0d6097e28d759e00b7231263783fda6a14f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\trial.json": "a031132210baaefa50e97b2c7b952ae9d376a1e87fea35a0e954eedc09d3187a",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\visual_reviews.json": "c7b2d4d7ab4b3775bf43315083671c9ab6c8bdeb29e55afb358bd6600e3f44f2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\exports\\excluded_GT.json": "bc812e6ea1c156179021559346fcee5dcfe14ef56a304cc0351c9f627f0280f0",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\exports\\provenance.json": "29490f6dfc99d8725ec9b59b1ca46c16cf5df97b1de9239f5591555a3af868b1",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\exports\\reviewed_candidate.json": "bfc4d6e9ef1dc62d2a033e6f90a66d6533b161d60a3250ba1a621e14be1f5009",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\exports\\tasks_reviewed_stream.json": "e33e417c181f947ec5402e2ca32445fb9b8290138696bc4c2f905eaa896d97ee",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\parts\\job_001\\reviews_gemini.json": "146f30cfacb4847613e0d023766e447975fbd4b6b097461ac3899fb2849d7031",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_train_position24\\parts\\job_002\\reviews_gemini.json": "4c41ee20c5bd33b489d2980535f8ad855ac3d5129b46776900735d005d827153",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\manifest.json": "439b2eb96a2ba172f365013a4f2d21d3a6ad05d105841d42ff49c31de3012d21",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\parallel_plan.json": "55984ae5dd0e5c66f9629422651c6d676bc96968f45ff847b7b29d024202fef2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\reviews_merged.json": "b4d3bfe869451cad5b768e1082585ab68a7406716c717324f3ff69a23f6ccae3",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\review_request.json": "44b487f8156e383c156fc758f8b1cd31938e05e1be77bf4262bcadc8874fbd1c",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\review_template.json": "62cebf208d0f7401090e62f325dd0d6097e28d759e00b7231263783fda6a14f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\source_metadata_pending.json": "43b28207e06f4962fd46c3748fc431598a4de28480a589e27dafa721988dbd9a",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\visual_reviews.json": "3ab8eb5425140445dce4baa5e7e73f751bbb20628cf58a3336fa09b83779eba6",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\parts\\job_001\\reviews_gemini.json": "24bbab6f525222a5ae281f8bd273148fc33a0187d71480daecb425465d8e0743",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_baseline24\\parts\\job_002\\reviews_gemini.json": "053042f7661373ee6b98459f7b628f680c3a8d0842695b959c349dc62dda5c86",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\manifest.json": "e0dd9de56627d81067333751d60cda6c2d6a9fe347d7c497cf7fddf0bcf7033c",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\parallel_plan.json": "55984ae5dd0e5c66f9629422651c6d676bc96968f45ff847b7b29d024202fef2",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\reviews_merged.json": "c204ead9559eb3c982015c179ac2ec242a1eb5536a04316719382cf14eab494c",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\review_request.json": "ecbc612283dee3432ce998242c3d9acdc08a813acebe6b51b9e8a71ad66d3820",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\review_template.json": "62cebf208d0f7401090e62f325dd0d6097e28d759e00b7231263783fda6a14f9",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\source_metadata_pending.json": "43b28207e06f4962fd46c3748fc431598a4de28480a589e27dafa721988dbd9a",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\trial.json": "a4959826ee4491f03852ff0742ed49992f94bffe6e6de81873ad2f1fdd4e31b6",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\visual_reviews.json": "f240fe3b059b3ae38ceaf63b5928a7b19bd758ac93052e002e730483573c4ba5",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\parts\\job_001\\reviews_gemini.json": "7af5dd5df522fe7706dba635510d401d9bdda06de96c0dd192b0904babfeb889",
+    "LS_lcad_reviewer\\intermediate\\experiments\\object_round16_20261013_test_position24\\parts\\job_002\\reviews_gemini.json": "afed23a684d6b7865cb6d88cd5e2e5d54f866178f4332d3e1b33a18166043bbc"
+  },
+  "reason": "User correction: GT eligibility is upstream only; no downstream scope/exclusion."
+}

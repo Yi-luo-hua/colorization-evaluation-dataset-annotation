@@ -1,0 +1,52 @@
+a/job_001: started runner PID 100, offset 0.0s
+a/job_002: started runner PID 101, offset 0.0s
+b/job_001: started runner PID 102, offset 0.0s
+a/job_001 failed; see worker_stderr.txt
+a/job_002: 0.1s, candidate_exported
+Batch complete: a, workers_incomplete, 0.1s
+b/job_001: 0.1s, candidate_exported
+Batch complete: b, candidate_exported, 0.1s
+Queue complete: 3 jobs, 0.02s
+a/job_001: started runner PID 100, offset 0.0s
+a/job_002: started runner PID 101, offset 0.0s
+b/job_001: started runner PID 102, offset 0.0s
+a/job_002: 0.1s, candidate_exported
+b/job_001: 0.1s, candidate_exported
+Batch complete: b, candidate_exported, 0.1s
+a/job_001: 0.1s, candidate_exported
+Batch complete: a, candidate_exported, 0.1s
+Queue complete: 3 jobs, 0.02s
+......................................
+----------------------------------------------------------------------
+Ran 38 tests in 6.066s
+
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_qpr3msfo\LS_lcad_reviewer\intermediate\experiments\fixture
+OK
+{"state": "detail_sheets_ready", "round": 1, "read_only_these_sheets": ["detail_rounds/round_001/sheets/sheet_001.png"], "samples": [{"sample_key": "S001", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 1, "bbox": [0.1, 0.1, 0.4, 0.4]}, {"sample_key": "S002", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 2, "bbox": [0.1, 0.1, 0.4, 0.4]}, {"sample_key": "S003", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 3, "bbox": [0.1, 0.1, 0.4, 0.4]}, {"sample_key": "S004", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 4, "bbox": [0.1, 0.1, 0.4, 0.4]}, {"sample_key": "S005", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 5, "bbox": [0.1, 0.1, 0.4, 0.4]}, {"sample_key": "S006", "sheet": "detail_rounds/round_001/sheets/sheet_001.png", "sheet_row": 6, "bbox": [0.1, 0.1, 0.4, 0.4]}], "unserved_samples": [], "remaining_detail_rounds": 0, "next_action": "Read these grouped detail sheets once, update the complete final review JSON, retain unresolved items; do not inspect source files."}
+{"state": "detail_budget_exhausted", "next_action": "Finish the JSON with remaining uncertainty; do not search original images or wait for a person."}
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_t82nwli_\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_x3i5komo\LS_lcad_reviewer\intermediate\experiments\fixture
+Imported complete sample coverage; uncertain decisions and uncalibrated severities remain pending.
+[PASS] 100% Schema & Logic Compliant: reviewed_candidate.pending.json (Matched reviewed_20260930_084839.json)
+Validated candidate (not published or copied to formal exports): D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_x3i5komo\LS_lcad_reviewer\intermediate\experiments\fixture\exports\reviewed_candidate.json
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_34gt9uzq\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_a950qhdb\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_iuxh6fgt\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_moty1c3q\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 3 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_moty1c3q\LS_lcad_reviewer\intermediate\experiments\selected
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_tslhhor5\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_suoqinz3\LS_lcad_reviewer\intermediate\experiments\fixture
+Prepared 5 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_suoqinz3\LS_lcad_reviewer\intermediate\experiments\filtered
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_xf69pbl0\LS_lcad_reviewer\intermediate\experiments\fixture
+Imported complete sample coverage; uncertain decisions and uncalibrated severities remain pending.
+[PASS] 100% Schema & Logic Compliant: reviewed_candidate.pending.json (Matched reviewed_20260930_084839.json)
+Validated candidate (not published or copied to formal exports): D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_xf69pbl0\LS_lcad_reviewer\intermediate\experiments\fixture\exports\reviewed_candidate.json
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_ex_76a2k\LS_lcad_reviewer\intermediate\experiments\fixture
+Imported complete sample coverage; uncertain decisions and uncalibrated severities remain pending.
+[PASS] 100% Schema & Logic Compliant: reviewed_candidate.pending.json (Matched reviewed_20260930_084839.json)
+Validated candidate (not published or copied to formal exports): D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_ex_76a2k\LS_lcad_reviewer\intermediate\experiments\fixture\exports\reviewed_candidate.json
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_i9gny6yp\LS_lcad_reviewer\intermediate\experiments\fixture
+Imported complete sample coverage; uncertain decisions and uncalibrated severities remain pending.
+Labels complete; strict candidate deferred for 1 unscored source records.
+Prepared 6 samples, 1 six-group sheets: D:\学业文件\MCL\上色评价_数据集标注\LS_lcad_reviewer\intermediate\experiments\contract_check_u9dcyapy\LS_lcad_reviewer\intermediate\experiments\fixture
+{"state": "no_eligible_detail_requests", "unserved_samples": ["S001"], "next_action": "Finish the JSON; retain uncertainty where necessary, without opening original images."}

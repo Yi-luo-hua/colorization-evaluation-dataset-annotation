@@ -1,0 +1,12 @@
+{
+  "splits": ["train", "val", "test"],
+  "max_side": 256,
+  "curve_bins": 16,
+  "curve_stride": 4,
+  "calibration_split": "train",
+  "candidate_percentiles": {"low_mean_chroma": 1, "low_curve_residual": 1, "high_hue_concentration": 95},
+  "workers": 16,
+  "sheets_per_job": 2,
+  "timeout_seconds": 180,
+  "note": "Distribution-calibrated CV candidate screening only. Visual confirmation excludes black-and-white or abnormal global cast; no fixed rejection quota."
+}

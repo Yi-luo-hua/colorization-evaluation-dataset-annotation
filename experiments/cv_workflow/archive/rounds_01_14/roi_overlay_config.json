@@ -1,0 +1,6 @@
+{
+  "maximum_regions": 2,
+  "maximum_overlap_iou": 0.5,
+  "bbox_source": "compact_bbox_normalized",
+  "ranking": "seed_pixel_fraction_times_mean_signal"
+}

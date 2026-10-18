@@ -1,0 +1,8 @@
+{
+  "experiments/cv_workflow/config.json": "d5e6b8667f1af1b5a4c63f7c593da3bf8b2beb031e5726e6ee7827d01bd3240a",
+  "experiments/cv_workflow/ANTIGRAVITY_HANDOFF.md": "a2d9b66b0224579c2388f81e06acb283c865d74fbe4ea7d1eaf104501d687f47",
+  "experiments/cv_workflow/engine.py": "309c4604977080bf2ceb38e770a6bc212c19c6c91f4d17e93943a3fbd4c1f92f",
+  "experiments/cv_workflow/workflow.py": "a9e867358900d9a08e7ec9e39dd7343e50e6ce1f9c4cee870deca3fb1973f44e",
+  "experiments/cv_workflow/compact_harness.py": "ed90b6b2f45abb8064e3f7730f790b528193fa99c231efb4fa0927d297c23b8e",
+  "experiments/cv_workflow/run_sheet_workers.py": "116c30f53190030c7af05dd556d671bb7276756d3bb8d18e7f93a1403f57e914"
+}

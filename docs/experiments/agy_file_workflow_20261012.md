@@ -1,5 +1,7 @@
 # agy本地看板与直接文件输出实测
 
+> 已完成阶段的历史记录。当前任务与默认流程查[STATUS](../STATUS.md)和[PLAN](../PLAN.md)；旧命令保留当时文本，一次性脚本现位于[归档索引](../../experiments/cv_workflow/archive/rounds_01_14/README.md)，不作为当前运行入口。
+
 默认High，速度优先，允许微量不完美；Gemini自行读取本地六组看板，直接填写指定标注JSON，CLI只返回保存确认。
 
 ## 调用链修复

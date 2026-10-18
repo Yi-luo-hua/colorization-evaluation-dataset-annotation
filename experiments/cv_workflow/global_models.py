@@ -60,35 +60,7 @@ def gain_explanation(gt,gen,settings):
 
 
 def measure(gt,gen,settings):
-    gt_curve=color_curve_residual(gt,settings['curve_bins'],settings['curve_stride'])
-    gen_curve=color_curve_residual(gen,settings['curve_bins'],settings['curve_stride'])
-    cg=np.linalg.norm(gt[...,1:],axis=-1);ab_diff=np.linalg.norm(gen[...,1:]-gt[...,1:],axis=-1)
-    chromatic=cg>=settings['reference_chroma_floor']
-    retained=(ab_diff<=settings['matched_color_tolerance']) & chromatic
-    return {'curve_gt':gt_curve,'curve_model':gen_curve,
-            'curve_ratio_p95':gen_curve['p95']/(gt_curve['p95']+1e-8),
-            'curve_ratio_p99':gen_curve['p99']/(gt_curve['p99']+1e-8),
-            'retained_reference_color_fraction':float(retained.sum()/(chromatic.sum()+1e-8)),
-            'reference_chromatic_fraction':float(chromatic.mean()),
-            'gain_models':gain_explanation(gt,gen,settings)}
-
-
-def predict_a(row,params):
-    p=params['quantile'];extra=row['models']
-    # With no chromatic reference, unchanged grayscale is not evidence of coloring failure.
-    if extra['reference_chromatic_fraction']==0:return False
-    competition=params.get('scale_competition')
-    if competition:
-        m=row['metrics']
-        # A weak but faithful scaled color structure belongs to desaturation review.
-        if (m['scalar_gain']>competition['minimum_retained_gain'] and
-            m['scalar_intercept_norm']<=competition['maximum_intercept'] and
-            m['scalar_fit_median_error']<=competition['maximum_residual']):return False
-    surviving=extra['retained_reference_color_fraction']>=params['maximum_retained_fraction']
-    curve=(extra['curve_gt'][f'p{p}']>=params['minimum_gt_curve_residual'] and
-           extra['curve_model'][f'p{p}']<=params['maximum_model_curve_residual'] and
-           extra[f'curve_ratio_p{p}']<=params['maximum_curve_ratio'])
-    return bool((row['baseline_a'] or curve) and not surviving)
+    return {'gain_models':gain_explanation(gt,gen,settings)}
 
 
 def predict_d(row,params):
