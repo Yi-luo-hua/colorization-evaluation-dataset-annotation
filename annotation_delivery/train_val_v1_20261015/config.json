@@ -1,0 +1,81 @@
+{
+  "annotation_contract": "train_val_two_stage_NR_legacy_only_v2",
+  "label_semantics": "generated_image_visible_quality_original_taxonomy",
+  "description_policy": "natural_sentence_no_GT_no_object_severity_heading",
+  "preparation": {
+    "inventory": "data/preparation_02",
+    "starter": "runtime/starter_02"
+  },
+  "scope": {
+    "splits": [
+      "train",
+      "val"
+    ],
+    "models": [
+      "lcad",
+      "unicolor"
+    ],
+    "test": "deferred"
+  },
+  "source_config": "experiments/cv_workflow/config.json",
+  "model": "gemini-3.8-flash-high",
+  "stages": {
+    "initial_rgb": {
+      "checked_categories": [
+        "B",
+        "C",
+        "D",
+        "F"
+      ],
+      "display": "rgb_abs_difference_x2"
+    },
+    "secondary_chroma": {
+      "checked_categories": [
+        "B",
+        "C",
+        "D",
+        "E1",
+        "E2",
+        "F"
+      ],
+      "display": "signed_chroma",
+      "merge": "saturation_replace_other_explicit_review_delta",
+      "result_schema": "delivery_secondary_review_delta_v1",
+      "prompt_revision": "NR_secondary_compact_20261016_05"
+    }
+  },
+  "layout": {
+    "groups_per_sheet": 6,
+    "sheets_per_round": 4,
+    "width": 1560,
+    "card_height": 430,
+    "image_box_width": 500,
+    "image_box_height": 320
+  },
+  "scheduler": {
+    "global_concurrency": 16,
+    "session_role_fixed": true,
+    "rounds_per_session": 4,
+    "maximum_rounds_per_session": 8,
+    "dispatch_one_round_at_a_time": true,
+    "resume_by": "explicit_conversation_id",
+    "maximum_retries": 2,
+    "network_error": "stop_all_and_checkpoint",
+    "quota_exhausted": "stop_all_wait_user",
+    "timeout_alone_is_network_error": false
+  },
+  "execution": {
+    "model_calls_enabled": false,
+    "quota_restore_confirmed": false,
+    "scheduler_implemented": true,
+    "result_import_implemented": true
+  },
+  "sources": {
+    "legacy_reviewed": "LS_lcad_reviewer/exports/reviewed_1_10000_clean.json",
+    "legacy_status": "baseline_BCDF_item_review_and_E_relabel",
+    "experiment_annotations_eligible": false,
+    "raw_pool_predictions_are_completed_visual_reviews": false,
+    "diagnostic_manual_drafts_are_baselines": false
+  },
+  "transport_revision": "explicit_checks_v1"
+}

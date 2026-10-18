@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上色质量评价 · 标注工作台</title>
+<style>
+:root {
+  --paper:#f3f5f8;--surface:#ffffff;--ink:#253246;--muted:#6a7688;--line:#dfe5ed;
+  --accent:#c24d3d;--accent-wash:#fff1ec;--green:#287a65;--green-wash:#eaf6ef;
+  --teal:#287a65;--blue:#2469e0;--blue-wash:#edf3ff;--ochre:#9b7424;--ochre-wash:#fff8e6;
+  --text-main:var(--ink);--text-muted:var(--muted);--text-sub:#81847a;
+  --primary:var(--accent);--border:var(--line);--surface-sub:#eeeee7;
+  --font-text:"Segoe UI Variable Text","Segoe UI","Microsoft YaHei UI",sans-serif;
+  --font-number:"Segoe UI Variable Display","Segoe UI","Microsoft YaHei UI",sans-serif;
+  --font-mono:"Cascadia Mono","Consolas",monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:13px/1.6 var(--font-text);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;isolation:isolate}
+/* Solid primary geometry sits behind the opaque work surfaces. */
+.geometric-backdrop{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict}
+.geo-shape{position:absolute;display:block}
+.geo-blue-cap{width:330px;height:330px;right:-90px;top:-210px;background:#155cf5;border-radius:50%}
+.geo-red-disc{width:252px;height:252px;left:-154px;top:34vh;background:#f24b3f;border-radius:50%}
+.geo-yellow-sail{width:330px;height:310px;right:-106px;bottom:-95px;background:#ffd336;clip-path:polygon(50% 0,100% 100%,0 100%);transform:rotate(-14deg)}
+.geo-blue-ring{width:300px;height:300px;left:15vw;bottom:-220px;border:38px solid #155cf5;border-radius:50%}
+.geo-red-bar{width:95px;height:165px;right:-64px;top:56vh;background:#f24b3f;transform:rotate(17deg)}
+.geo-yellow-tab{width:136px;height:15px;left:33vw;top:-4px;background:#ffd336;transform:skewX(-24deg)}
+.geo-header-art{position:absolute;top:19px;left:calc(50% - 112px);width:220px;height:44px;transform:rotate(-5deg)}
+.geo-header-art::before{content:'';position:absolute;left:0;top:15px;width:150px;height:25px;background:#155cf5}
+.geo-header-art::after{content:'';position:absolute;left:132px;top:0;width:43px;height:43px;border-radius:50%;background:#f24b3f}
+.geo-header-art i{position:absolute;left:174px;top:11px;width:38px;height:34px;background:#ffd336;clip-path:polygon(50% 0,100% 100%,0 100%)}
+button,input,select{font:inherit;color:inherit}
+button,a,input,select,summary{touch-action:manipulation}
+button{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:9px 12px;min-height:38px;cursor:pointer;transition:background .15s,border-color .15s;line-height:1.4}
+button:hover:not(:disabled){background:#f3f7fd;border-color:#b7c7dd}
+button.primary{color:#fff;background:var(--blue);border-color:var(--blue)}
+button.primary:hover:not(:disabled){background:#1d57bc;border-color:#1d57bc}
+button:disabled{color:#9da8b6;border-color:#e4e9f0;background:#f7f9fb;cursor:not-allowed}
+button.primary:disabled{background:#e4ebf5;border-color:#e4ebf5;color:#99a6b9}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+input,select{min-width:0;width:100%;height:38px;border:1px solid #d3dce8;border-radius:5px;background:var(--surface);padding:7px 10px;outline:none}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 2px #2469e019}
+input::placeholder{color:#9b9e93}
+main{position:relative;width:100%;max-width:1920px;margin:auto;padding:22px 28px 24px}
+.masthead{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:18px;margin-bottom:0}
+.masthead-brand{display:flex;align-items:center;gap:13px}
+.brand-mark{width:31px;height:31px;background:var(--blue);border-radius:3px;position:relative;margin:2px 5px;flex:none}
+.brand-mark::before,.brand-mark::after{content:"";position:absolute;background:var(--paper)}
+.brand-mark::before{left:-5px;top:-5px;width:13px;height:13px;border-radius:50%;background:#dc5946;border:2px solid var(--paper)}
+.brand-mark::after{right:-6px;bottom:-4px;width:16px;height:16px;background:#efba34;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.eyebrow{font:10px/1.4 var(--font-text);letter-spacing:.05em;color:var(--muted)}
+h1{font-size:22px;line-height:1.4;letter-spacing:-.3px;font-weight:650;margin:1px 0 0}
+.masthead-note{text-align:right;color:var(--muted);font-size:12px;line-height:1.8;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 10px}
+.masthead-note strong{color:var(--ink);font-weight:500}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 336px;column-gap:20px;align-items:start}
+.workspace>*,.main-column>*,.side-column>*{min-width:0}
+.main-column{min-width:0}
+.side-column{min-width:0;display:grid;gap:16px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin-bottom:14px}
+.section-heading{display:flex;gap:9px;align-items:center;margin:0;font-size:15px;font-weight:650}
+.section-no{font:10px var(--font-number);color:var(--muted);background:#f1f4f8;padding:2px 5px;border-radius:3px;font-weight:600}
+.section-en{display:none}
+.section-meta{color:var(--muted);font-size:12px;text-align:right}
+.overview,.workers-panel,.sample-panel,.control-panel,.side-section{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:18px}
+.overview{margin-bottom:16px}
+.hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center}
+.hero-number{display:flex;align-items:baseline;gap:2px;font:600 58px/1.1 var(--font-number);letter-spacing:-2px}
+.hero-number{color:var(--blue)}
+.hero-unit{font-size:24px;letter-spacing:0;margin-left:5px;color:var(--muted)}
+.hero-caption{color:var(--muted);margin:7px 0 0;font-size:12px}
+.completion-count{font:600 36px/1.2 var(--font-number);letter-spacing:-1px}
+.completion-count>span{display:block;font:12px var(--font-text);color:var(--muted);letter-spacing:0;margin-top:8px}
+.completion-detail{font-size:12px;color:var(--muted);margin-top:7px}
+.progress-container{height:6px;background:#edf1f6;margin-top:17px;border-radius:3px;overflow:hidden}
+.progress-bar{height:100%;background:var(--blue);transition:width .4s}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:18px}
+.metric{padding-left:19px;border-left:1px solid var(--line);min-width:0}
+.metric:first-child{padding-left:0;border:0}
+.metric-label{font-size:12px;color:var(--muted);margin-bottom:5px}
+.metric-number{font:600 27px/1.2 var(--font-number);letter-spacing:-.5px}
+#ready{color:var(--ochre)}
+#active{color:var(--blue)}
+#manual{color:var(--accent)}
+.metric-desc{font-size:11px;line-height:1.7;color:var(--muted);margin-top:5px}
+.telemetry{display:flex;gap:23px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:16px;padding-top:11px}
+.telemetry-item{display:flex;align-items:baseline;gap:9px;font-size:11px;color:var(--muted)}
+.telemetry-item strong{font-weight:500;color:var(--ink);font-size:12px}
+.empty-detail{color:var(--muted);font-size:11px}
+.workers-panel{margin-bottom:16px}
+.workers-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.worker-card{padding:11px 12px;min-width:0;background:var(--surface);border:1px solid var(--line);border-top:2px solid #c3c9c8;border-radius:5px}
+.worker-card.awaiting{border-top-color:var(--blue)}
+.worker-card.active{border-top-color:var(--green)}
+.worker-card.isolated{border-top-color:var(--accent)}
+.worker-card.retrying{border-top-color:var(--ochre)}
+.retrying .worker-state{color:var(--ochre);background:var(--ochre-wash)}
+.retrying .worker-status-detail{color:var(--ochre)}
+#interruptionPool{font-size:11px;margin:0 0 12px;color:var(--muted)}
+#poolList{display:grid;gap:8px;margin-top:9px}
+.pool-item{padding:8px;border:1px solid var(--line);border-radius:5px;overflow-wrap:anywhere}
+.pool-item strong{color:var(--ink)}
+.worker-card{position:relative;isolation:isolate}
+.worker-card::after{content:'';position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;opacity:0;z-index:-1}
+.worker-card[data-completing]::after{background:linear-gradient(125deg,#16d995,#087aff 75%);animation:completion-wash 2400ms ease-out both}
+.worker-card[data-completing]{animation:completion-lift 2400ms ease-out both}
+.worker-card[data-completing] .worker-name,.worker-card[data-completing] .worker-role,.worker-card[data-completing] .worker-stat-label,.worker-card[data-completing] .worker-stat-value,.worker-card[data-completing] .round-limit{animation:completion-ink 2400ms ease-out both}
+.worker-card[data-completing] .worker-state{animation:completion-state 2400ms ease-out both}
+.worker-card[data-completing]::before{content:attr(data-completion-label);position:absolute;right:10px;top:-14px;z-index:2;padding:3px 9px;border-radius:20px;background:#075ee9;color:white;font:600 12px var(--font-number);pointer-events:none}
+.number-value{display:inline-flex;align-items:center;height:1.2em;line-height:1.2;letter-spacing:0;white-space:nowrap;vertical-align:baseline}
+.number-value::before{content:'0';visibility:hidden;width:0;overflow:hidden;flex:none;line-height:1.2}
+.number-rolling{line-height:1.2}
+.roller-digit{display:inline-block;height:var(--digit-height);overflow:hidden;width:1ch;text-align:center;line-height:var(--digit-height);font-size:inherit;margin:0;padding:0;flex:none}
+.roller-track{display:block;will-change:transform;font:inherit;margin:0;padding:0}
+.roller-track i{display:block;height:var(--digit-height);line-height:var(--digit-height);font:inherit;font-style:normal;margin:0;padding:0}
+.roller-mark{display:inline-block;font:inherit;line-height:var(--digit-height);margin:0;padding:0}
+@keyframes completion-wash{0%{opacity:0}16%,42%{opacity:1}72%{opacity:.25}100%{opacity:0}}
+@keyframes completion-lift{0%,100%{transform:translateY(0);box-shadow:none}20%,44%{transform:translateY(-3px);border-color:#168aff;box-shadow:0 0 0 3px #168aff24,0 9px 24px #087aff30}}
+@keyframes completion-ink{0%,100%{color:inherit}15%,45%{color:#fff}75%{color:inherit}}
+@keyframes completion-state{15%,45%{color:#fff;background:#ffffff29}}
+@media(prefers-reduced-motion:reduce){.worker-card[data-completing],.worker-card[data-completing]::after,.worker-card[data-completing] *{animation:none!important}}
+.worker-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;min-height:23px}
+.worker-heading{display:flex;align-items:baseline;gap:8px;min-width:0}
+.worker-name{font:600 20px/1.1 var(--font-number);letter-spacing:-.4px;color:var(--ink)}
+.worker-role{font-size:11px;color:var(--muted);white-space:nowrap}
+.worker-state{font-size:11px;padding:2px 6px;border-radius:4px;background:#f0f3f7;color:var(--muted);white-space:nowrap;line-height:1.5;display:inline-flex;align-items:center;gap:4px}
+.worker-state::before{content:'';width:5px;height:5px;background:currentColor;display:inline-block}
+.active .worker-state::before{border-radius:50%}
+.isolated .worker-state::before{width:7px;height:6px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.awaiting .worker-state{color:#2059ba;background:var(--blue-wash)}
+.active .worker-state{color:var(--green);background:var(--green-wash)}
+.isolated .worker-state{color:var(--accent);background:var(--accent-wash)}
+.worker-stats{display:grid;grid-template-columns:1fr 1fr;column-gap:12px;border-top:1px solid #edf0f5;padding-top:7px}
+.worker-stat-label{display:block;font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:3px}
+.worker-stat-value{font:600 21px/1.15 var(--font-number);letter-spacing:-.3px;color:var(--ink)}
+.worker-stat-value small{font:11px var(--font-text);color:var(--muted);margin-left:4px;letter-spacing:0}
+.worker-stat-value .round-limit{font:14px var(--font-number);color:#9ca7a9;margin-left:3px;letter-spacing:0}
+.awaiting .worker-pending-value{color:var(--blue)}
+.worker-status-detail{font:17px/1.3 var(--font-mono);color:var(--green);white-space:nowrap}
+.matrix-legend{display:flex;gap:13px;flex-wrap:wrap;margin-top:11px;font-size:11px;color:var(--muted)}
+.matrix-legend span{display:inline-flex;align-items:center;gap:5px}
+.matrix-legend i{display:inline-block;width:6px;height:6px;background:var(--line)}
+.matrix-legend .legend-await{background:var(--blue)}
+.matrix-legend .legend-active{background:var(--green)}
+.matrix-legend .legend-active{border-radius:50%}
+.matrix-legend .legend-isolated{background:var(--accent);clip-path:polygon(50% 0,100% 100%,0 100%)}
+#previewMotion{margin-left:auto;min-height:25px;padding:2px 8px;font-size:11px;color:var(--blue);background:var(--blue-wash);border-color:transparent}
+.filters-bar{display:grid;grid-template-columns:178px minmax(0,1fr);gap:10px;margin-bottom:12px}
+.filters-bar select,.filters-bar input{height:36px;font-size:12px}
+.table-wrap{width:100%;max-width:100%;overflow:auto;max-height:328px;border:1px solid var(--line);border-radius:5px;scrollbar-width:thin;scrollbar-color:#bdc9d9 transparent}
+table{border-collapse:collapse;width:100%;font-size:12px;background:transparent}
+th{text-align:left;padding:9px 11px;color:var(--muted);font-weight:500;white-space:nowrap;background:#f7f9fc;position:sticky;top:0;border-bottom:1px solid var(--line);z-index:1}
+td{padding:10px 11px;vertical-align:top;border-bottom:1px solid #e1e2d9;line-height:1.7}
+td:first-child{font:11px/1.8 var(--font-mono);white-space:nowrap;color:var(--ink)}
+td:last-child{font-size:11px;min-width:200px}
+tr:hover td{background:#f1f6ff}
+.pagination-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;color:var(--muted);font-size:10px}
+.pagination-actions{display:flex;gap:6px}
+.pagination-actions button{font-size:10px;min-height:29px;padding:5px 9px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:4px;background:#f0f3f7;color:var(--muted);font-size:11px;line-height:1.5;white-space:nowrap}
+.pill.blocked,.pill.error{background:var(--accent-wash);color:var(--accent)}
+.pill.running{background:var(--green-wash);color:var(--green)}
+.pill.paused,.pill.warning{background:#eee9db;color:#877343}
+.control-head{margin-bottom:12px}
+.notice{padding:12px 13px;border-radius:5px;background:#f1f5fa;border-left:3px solid var(--ink);margin-bottom:13px;overflow-wrap:anywhere}
+.notice.error{background:var(--accent-wash);border-color:var(--accent)}
+.notice-title{font-size:13px;font-weight:600}
+.notice.error .notice-title{color:var(--accent)}
+.notice-code{font:10px/1.7 var(--font-mono);color:#a15b4b;margin-top:5px}
+.notice-detail{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.8}
+.control-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#drain{grid-column:1/-1;font-size:12px}
+#continueBlocked{grid-column:1/-1;background:var(--blue);border-color:var(--blue);text-align:left;display:flex;justify-content:space-between;padding:11px 13px}
+#continueBlocked:hover:not(:disabled){background:#1d57bc;border-color:#1d57bc}
+#continueBlocked:disabled{background:#e4ebf5;border-color:#e4ebf5;color:#99a6b9}
+#continueBlocked::after{content:'↗';font-size:16px;line-height:1}
+.control-actions #start,.control-actions #stop{font-size:12px}
+.operation-note{font-size:11px;color:var(--muted);line-height:1.8;margin:9px 0 0}
+.quota-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.quota-head{display:flex;justify-content:space-between;align-items:baseline;gap:6px;color:var(--muted);font-size:10px;margin-bottom:8px}
+.quota-badge{font-size:9px;padding:1px 4px;background:transparent!important;border:0!important;color:var(--muted)!important}
+.quota-num{font:600 29px/1.2 var(--font-number);letter-spacing:-.5px;color:var(--teal)}
+.quota-card:nth-child(2) .quota-num{color:var(--blue)}
+.quota-refresh{color:var(--muted);font:9px/1.6 var(--font-mono);margin-top:5px}
+.quota-bar-wrap{height:3px;background:#dedfd6;margin-top:9px}
+.quota-bar-fill{height:100%;background:var(--teal)!important;transition:width .4s}
+.quota-card:nth-child(2) .quota-bar-fill{background:var(--blue)!important}
+.quota-card.low .quota-num{color:var(--accent)}
+.quota-card.low .quota-bar-fill{background:var(--accent)!important}
+.quota-details{margin-top:14px;font-size:10px;color:var(--muted)}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font:15px var(--font-mono);color:var(--muted)}
+details[open]>summary::after{content:'−'}
+.quota-info-list{display:grid;gap:5px;margin-top:10px;border-top:1px solid var(--line);padding-top:10px}
+.quota-info-item{display:flex;justify-content:space-between;gap:10px}
+.quota-info-val{font-family:var(--font-mono);color:var(--ink)}
+.quota-monitor-meta{font-size:10px;line-height:1.8;margin-top:10px}
+.import-form{display:grid;grid-template-columns:1fr 1fr;gap:11px 10px}
+.import-form label{display:block;font-size:12px;color:var(--muted)}
+.import-form input,.import-form select{display:block;margin-top:5px;font-size:12px;height:36px}
+.import-form button{grid-column:1/-1;width:100%;margin-top:1px;display:flex;justify-content:space-between;text-align:left;padding:10px 12px}
+.import-form button::after{content:'→'}
+#importButton:not(:disabled){background:var(--blue);border-color:var(--blue)}
+#importButton:hover:not(:disabled){background:#1d57bc;border-color:#1d57bc}
+.range-note{font-size:11px;color:var(--muted);line-height:1.8;margin:10px 0}
+#importPreview{font-size:10px;line-height:1.85;overflow-wrap:anywhere;padding:10px 0;border-top:1px solid var(--line)}
+.import-form #importPreview{grid-column:1/-1;padding:8px 0 0;margin-top:1px}
+.import-preview-summary{font-size:11px;color:var(--muted)}
+.import-preview-summary strong{font:25px var(--font-number);letter-spacing:-.5px;color:var(--ink);margin:0 5px}
+.range-identities{margin-top:5px;color:var(--muted);font-size:9px}
+.range-identities>div{font-family:var(--font-mono);margin-top:6px}
+.import-state{padding-top:9px;border-top:1px solid var(--line);font-size:10px;line-height:1.8;color:var(--muted)}
+#deliveryTasks{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:3px}
+#deliveryDesc{font-size:10px;color:var(--muted);line-height:1.8}
+#importStatus{font-size:10px;margin-top:7px;overflow-wrap:anywhere}
+.live-stream-panel{margin-top:19px;padding-top:12px;border-top:1px solid var(--line)}
+.live-stream-title{font-size:10px;color:var(--muted)}
+.stream-list{display:grid;gap:7px;margin-top:10px}
+.stream-item{font-size:10px;display:grid;grid-template-columns:65px 1fr auto;gap:9px;line-height:1.7;padding-top:7px;border-top:1px solid var(--line)}
+.stream-tag,.stream-time{font-family:var(--font-mono);color:var(--muted)}
+.stream-tag{color:var(--accent)}
+.page-footer{border:1px solid var(--line);border-radius:6px;background:var(--surface);margin-top:20px;padding:10px 12px;display:flex;justify-content:space-between;gap:15px;font:9px var(--font-mono);color:var(--muted);letter-spacing:.03em}
+@media(min-width:1800px){
+  .workspace{grid-template-columns:minmax(0,1fr) 360px;gap:24px}
+  .hero-number{font-size:64px}.table-wrap{max-height:400px}
+}
+@media(max-width:1499px){
+  main{padding:20px}.workspace{grid-template-columns:minmax(0,1fr) 316px;gap:16px}
+  .worker-card{padding:10px}.section-meta{font-size:11px}.telemetry{gap:17px}.table-wrap{max-height:290px}
+}
+@media(max-width:1100px){
+  main{padding:18px}.workspace{grid-template-columns:minmax(0,1fr) 284px;gap:14px}
+  .overview,.workers-panel,.sample-panel,.control-panel,.side-section{padding:14px}
+  .workers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-grid{gap:18px}.hero-number{font-size:52px}.completion-count{font-size:32px}
+  .metric{padding-left:12px}.metric-number{font-size:25px}.filters-bar{grid-template-columns:135px 1fr}
+  .masthead-note .context-note{display:none}.telemetry-item{gap:6px}
+  .geo-header-art{display:none}.geo-red-disc{width:215px;height:215px;left:-145px}.geo-yellow-sail{right:-165px}
+}
+@media(max-width:820px){
+  main{padding:16px}.masthead{padding-bottom:16px}.masthead-note{font-size:11px}
+  .workspace{grid-template-columns:1fr;gap:16px}.main-column{display:contents}
+  .overview{grid-row:1;margin-bottom:0}.side-column{grid-row:2;grid-template-columns:1fr 1fr;align-items:start;gap:16px}
+  .control-panel{grid-column:1}.quota-panel{grid-column:2}.import-panel{grid-column:1/-1}
+  .import-form{grid-template-columns:repeat(4,minmax(0,1fr))}.import-form button,.import-form #importPreview{grid-column:1/-1}
+  .workers-panel{grid-row:3;margin-bottom:0}.sample-panel{grid-row:4}.live-stream-panel{grid-row:5;margin-top:0}
+  .table-wrap{max-height:350px}
+}
+@media(max-width:820px) and (min-width:740px){.workers-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.worker-heading{gap:5px}.worker-role{font-size:10px}.worker-state{font-size:10px;padding:2px 4px}}
+@media(max-width:520px){
+  main{padding:14px 12px}.masthead-note{display:none}.eyebrow{font-size:10px}h1{font-size:21px}
+  .hero-grid{gap:14px;grid-template-columns:1fr 1fr}.hero-number{font-size:48px;letter-spacing:-1px}.hero-unit{font-size:21px}
+  .completion-count{font-size:29px}.completion-count span,.completion-detail,.hero-caption{font-size:11px}
+  .metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 0}
+  .metric:nth-child(3){padding-left:0;border:0}.metric:nth-child(2),.metric:nth-child(4){padding-left:18px}
+  .metric-number{font-size:27px}.telemetry{display:grid;grid-template-columns:1fr;gap:7px}
+  .side-column{grid-template-columns:1fr}.control-panel,.quota-panel,.import-panel{grid-column:1}
+  .import-form{grid-template-columns:1fr 1fr}.workers-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .section-head{gap:10px}.section-meta{max-width:150px;font-size:11px}.filters-bar{grid-template-columns:1fr}
+  .pagination-bar{align-items:flex-start}.stream-item{grid-template-columns:50px 1fr}.stream-time{display:none}
+  .page-footer{font-size:9px;line-height:1.8}.completion-detail{max-width:145px}
+  .worker-heading{gap:5px}.worker-name{font-size:19px}.worker-role,.worker-state{font-size:10px}.worker-state{padding:2px 4px}
+  .geo-blue-cap,.geo-yellow-tab{display:none}.geo-red-disc{left:-177px;top:37vh}
+  .geo-yellow-sail{width:230px;height:230px;right:-165px;bottom:-75px}.geo-blue-ring{left:-130px;bottom:-220px}.geo-red-bar{right:-78px}
+}
+@media(max-width:360px){.worker-heading{display:block}.worker-role{display:block}.worker-top{gap:4px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="geometric-backdrop" aria-hidden="true">
+  <span class="geo-shape geo-blue-cap"></span>
+  <span class="geo-shape geo-red-disc"></span>
+  <span class="geo-shape geo-yellow-sail"></span>
+  <span class="geo-shape geo-blue-ring"></span>
+  <span class="geo-shape geo-red-bar"></span>
+  <span class="geo-shape geo-yellow-tab"></span>
+  <span class="geo-header-art"><i></i></span>
+</div>
+<main>
+  <header class="masthead">
+    <div class="masthead-brand"><div class="brand-mark" aria-hidden="true"></div><div><div class="eyebrow">MCL · Color Quality</div><h1>上色评价工作台</h1></div></div>
+    <div class="masthead-note"><div class="context-note">固定角色会话 <strong>16</strong> 路 &nbsp; / &nbsp; 两阶段标注</div><div>最近读取 <strong id="observedAt">—</strong> &nbsp; · &nbsp; <span id="refreshStatus" role="status">每 3 秒更新</span></div></div>
+  </header>
+  <div class="workspace">
+    <div class="main-column">
+      <section class="overview" aria-labelledby="overviewTitle">
+        <div class="section-head"><h2 class="section-heading" id="overviewTitle"><span class="section-no">01</span>整体进度 <span class="section-en">Overview</span></h2><span class="section-meta">程序完整性校验 · 视觉语义待人工复核</span></div>
+        <div class="hero-grid">
+          <div><div class="hero-number"><span id="completionPct">—</span><span class="hero-unit">%</span></div><p class="hero-caption" id="percentDesc">整体完成进度</p></div>
+          <div><div class="completion-count"><div id="completed">—</div><span>份可交付结果</span></div><div class="completion-detail" id="completedNote">视觉结果 <span id="visualCompleted">—</span> · 冻结人工 A <span id="fixedA">—</span></div></div>
+        </div>
+        <div class="progress-container" role="progressbar" aria-label="整体完成进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progress" class="progress-bar"></div></div>
+        <div class="metrics-grid">
+          <div class="metric"><div class="metric-label">本批样本</div><div class="metric-number" id="total">—</div><div class="metric-desc">当前已载入范围</div></div>
+          <div class="metric"><div class="metric-label">等待标注</div><div class="metric-number" id="ready">—</div><div class="metric-desc" id="queueDetail">初标 <span id="initialReady">—</span> · 二次待审 <span id="secondaryReady">—</span></div></div>
+          <div class="metric"><div class="metric-label">活跃会话</div><div class="metric-number"><span id="active">—</span> / <span id="workerLimit">—</span></div><div class="metric-desc" id="workerLoad"><span id="activeLoad">—</span> 路活跃推理中</div></div>
+          <div class="metric"><div class="metric-label">需人工处理</div><div class="metric-number" id="manual">—</div><div class="metric-desc">补试后待处理样本</div></div>
+        </div>
+        <div class="telemetry">
+          <div class="telemetry-item">处理速率 <strong id="velocity"><span id="velocityLabel">—</span><span id="velocityValue" style="display:none"></span><span id="velocitySuffix" style="display:none"> 组 / 小时</span></strong></div>
+          <div class="telemetry-item">预计完成 <strong id="eta">—</strong></div>
+          <div class="telemetry-item" title="已完成视觉样本中没有缺陷标签的比例，不代表标注准确率。">空缺陷占比 <strong><span id="emptyRate">—</span>%</strong><span id="emptyBadge" class="empty-detail"><span id="emptyBadgeText"><span id="emptyCount">—</span> / <span id="qualityCompleted">—</span></span></span></div>
+        </div>
+      </section>
+      <section class="workers-panel" aria-labelledby="workersTitle">
+        <div class="section-head"><h2 class="section-heading" id="workersTitle"><span class="section-no">02</span>会话矩阵 <span class="section-en">Sessions</span></h2><span class="section-meta" id="clusterSummary">正在读取会话状态</span></div>
+        <div class="workers-grid" id="workers" role="list" aria-label="按W编号排序的标注会话"></div>
+        <div class="matrix-legend" aria-label="会话状态图例"><span><i class="legend-await"></i>待手动继续</span><span><i class="legend-active"></i>运行中</span><span><i></i>空闲</span><span><i class="legend-isolated"></i>已隔离</span><button id="previewMotion" title="仅预览动画，不修改数据或运行状态">预览完成动效 ↗</button></div>
+      </section>
+      <section class="sample-panel" aria-labelledby="samplesTitle">
+        <div class="section-head"><h2 class="section-heading" id="samplesTitle"><span class="section-no">03</span>样本明细 <span class="section-en">Sample index</span></h2><span class="section-meta">按源身份检索</span></div>
+        <div class="filters-bar"><select id="filter" aria-label="筛选样本状态"><option value="all">全部状态</option><option value="completed">程序校验通过</option><option value="requeued">已打回补正</option><option value="secondary_chroma_ready">待二次标注</option><option value="secondary_chroma_running">二次在执行</option><option value="needs_manual">需人工处理</option></select><input id="search" placeholder="搜索样本身份，如 train/lcad/000000187525" aria-label="搜索"></div>
+        <div class="table-wrap"><table><thead><tr><th>样本身份</th><th>状态</th><th>缺陷</th><th>打回</th><th>最新校验反馈</th></tr></thead><tbody id="rows"></tbody></table></div>
+        <div class="pagination-bar"><span id="pageInfo">—</span><div class="pagination-actions"><button id="prev">上一页</button><button id="next">下一页</button></div></div>
+      </section>
+      <details class="live-stream-panel"><summary class="live-stream-title">本次页面的操作记录 <span class="section-en">Activity</span></summary><div id="streamList" class="stream-list"><div class="stream-item"><span class="stream-tag">SYSTEM</span><span>等待本次页面的操作与新增完成事件。</span><span class="stream-time" id="initTime">—</span></div></div></details>
+    </div>
+    <aside class="side-column" aria-label="工作流控制与资源">
+      <section class="control-panel" aria-labelledby="controlTitle">
+        <div class="section-head control-head"><h2 class="section-heading" id="controlTitle"><span class="section-no">04</span>运行控制</h2><span id="phase" class="pill">读取状态</span></div>
+        <div id="notice" class="notice" role="status" aria-live="polite">正在读取调度状态…</div>
+        <details id="interruptionPool" hidden><summary>中断池 <span id="poolCount">0</span></summary><div id="poolList"></div></details>
+        <div class="control-actions"><button id="continueBlocked" class="primary" disabled>继续异常会话</button><button id="drain" disabled>停止派发，等待在途结束</button><button id="start" disabled>继续调度</button><button id="stop" disabled title="立即终止在途调用，并核对已落盘结果、保存断点">安全保存</button></div>
+        <p class="operation-note" id="drainNote">停止领取新任务，已领取任务含必要补试自然结束并保存后暂停；之后可继续调度。</p>
+        <p class="operation-note" id="retryPolicyNote">异常每隔20秒在原会话发送“继续”，最多5次；成功后次数清零，再次异常从第1次算起。仍异常进入中断池，等待手动继续。</p>
+      </section>
+      <section class="side-section quota-panel" aria-labelledby="quotaTitle">
+        <div class="section-head"><h2 class="section-heading" id="quotaTitle"><span class="section-no">05</span>可用额度</h2><span class="section-meta">Gemini</span></div>
+        <div class="quota-grid">
+          <div class="quota-card"><div class="quota-head"><span>5 小时剩余</span><span class="quota-badge" id="quota5hBadge">—</span></div><div class="quota-num" id="quota5hVal">—</div><div class="quota-bar-wrap"><div class="quota-bar-fill" id="quota5hBar"></div></div><div class="quota-refresh" id="quota5hRefresh">—</div></div>
+          <div class="quota-card"><div class="quota-head"><span>本周剩余</span><span class="quota-badge" id="quotaWeeklyBadge">—</span></div><div class="quota-num" id="quotaWeeklyVal">—</div><div class="quota-bar-wrap"><div class="quota-bar-fill" id="quotaWeeklyBar"></div></div><div class="quota-refresh" id="quotaWeeklyRefresh">—</div></div>
+        </div>
+        <details class="quota-details"><summary>额度巡检详情 <span class="pill" id="quotaStatusPill">读取中</span></summary><div class="quota-info-list"><div class="quota-info-item"><span>上次查询</span><span class="quota-info-val" id="quotaLastChecked">—</span></div><div class="quota-info-item"><span>下次查询</span><span class="quota-info-val" id="quotaNextCheck">—</span></div><div class="quota-info-item"><span>监控进程</span><span class="quota-info-val" id="quotaWorkerPid">—</span></div></div><div id="quotaMonitorMeta" class="quota-monitor-meta">每 10 分钟原生查询</div></details>
+      </section>
+      <section class="side-section import-panel" aria-labelledby="importTitle">
+        <div class="section-head"><h2 class="section-heading" id="importTitle"><span class="section-no">06</span>结果导入</h2><span class="section-meta">Label Studio</span></div>
+        <div class="import-form">
+          <label for="importSplit">数据集<select id="importSplit"><option value="all">全部</option><option value="train">train</option><option value="val">val</option></select></label>
+          <label for="importModel">模型<select id="importModel"><option value="all">全部</option><option value="lcad">LCAD</option><option value="unicolor">UniColor</option></select></label>
+          <label for="importStart">起始序号<input id="importStart" type="number" min="1" value="1"></label>
+          <label for="importEnd">结束序号<input id="importEnd" type="number" min="1" placeholder="全部"></label>
+          <div id="importPreview" aria-live="polite">正在读取可导入范围…</div>
+          <button id="importButton" class="primary" disabled>导入所选范围</button>
+        </div>
+        <p class="range-note">序号按筛选后的源身份排序，含未完成项。仅导入完成结果，重复身份自动去重。</p>
+        <details class="import-state"><summary id="deliveryTasks">等待手动导入</summary><div id="deliveryDesc">自动推送已关闭</div></details><div id="importStatus" role="status"></div>
+      </section>
+    </aside>
+  </div>
+  <footer class="page-footer"><span>MCL · COLOR QUALITY / ANNOTATION OPERATIONS</span><span>程序校验 ≠ 语义质量验收</span></footer>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const labels = {
+  prepared: '续跑准备完成', running: '16路运行中', paused: '已平稳暂停',
+  blocked: '异常全停', completed: '全量顺利完成', needs_attention: '需处理',
+  interrupted: '执行器已退出', unresponsive: '心跳超时',
+  draining: '停止派发 · 等待在途结束'
+};
+const states = {
+  completed: '程序校验通过', fixed_a: '冻结人工A', secondary_chroma_ready: '待二次标注',
+  initial_rgb_ready: '待初标', secondary_chroma_running: '二次在执行',
+  initial_rgb_running: '初标在执行', needs_manual: '需人工处理'
+};
+const faultLabels = {
+  location_unsupported: '该会话地区访问被拒绝 · 等待手动继续',
+  quota_exhausted: '该会话额度耗尽 · 等待手动继续',
+  sessions_paused: '异常会话等待手动继续',
+  auth_browser_blocked: '后台认证失败，已阻止弹出登录页；请手动登录 agy 后继续',
+  user_pause: '人工暂停', user_drain: '在途任务已结束，结果与断点已保存'
+};
+const escapeText = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let importPreviewRevision=0, importPreview=null, importBusy=false, importLocalError='';
+
+let page = 1, lastState = null, busy = false, refreshNeeded = false, viewRevision = 0;
+let lastStatusAt = 0, statusFailed = false, sampling = false, samplesNeeded = false;
+let historyVelocity = []; // 用于平滑计算 ETA
+let previousCompleted = null;
+let streamItems = [];
+let previousWorkerProgress=null, motionRun=null;
+const numberStates=new Map();
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const motionTiming={stagger:90,roll:1750};
+
+function numberText(value,decimals=0){return Number(value).toLocaleString('en-US',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});}
+function paintNumber(state,value){
+  state.el.classList.remove('number-rolling');
+  state.el.textContent=numberText(value,state.decimals);
+  state.shown=value;
+}
+function settleNumbers(){
+  numberStates.forEach(state=>{
+    clearTimeout(state.timer);state.version++;state.animations.forEach(a=>a.cancel());
+    state.running=false;state.timer=null;paintNumber(state,state.value);
+  });
+}
+document.addEventListener('visibilitychange',()=>{
+  motionRun?.abort();motionRun=null;settleNumbers();previousWorkerProgress=null;previousCompleted=null;
+  if(!document.hidden)refresh();
+});
+reducedMotion.addEventListener('change',()=>{
+  if(reducedMotion.matches){motionRun?.abort();motionRun=null;settleNumbers();}
+});
+window.addEventListener('resize',settleNumbers);
+
+function scheduleNumber(state,delay=0,force=false){
+  state.timer=setTimeout(()=>{state.timer=null;rollNumber(state,force);},delay);
+}
+function setNumber(id,value,{decimals=0,delay=0,force=false}={}){
+  const el=$(id),numeric=Number(value);
+  el.classList.add('number-value');el.dataset.value=String(numeric);
+  el.setAttribute('aria-label',numberText(numeric,decimals));
+  let state=numberStates.get(id);
+  if(!state){
+    state={el,value:numeric,shown:numeric,decimals,running:false,timer:null,version:0,animations:[]};
+    numberStates.set(id,state);paintNumber(state,numeric);return;
+  }
+  const changed=state.value!==numeric || state.decimals!==decimals;
+  state.value=numeric;state.decimals=decimals;
+  if(reducedMotion.matches || document.hidden){
+    clearTimeout(state.timer);state.timer=null;state.version++;state.animations.forEach(a=>a.cancel());state.running=false;paintNumber(state,numeric);return;
+  }
+  if(!changed && !force)return;
+  // A new poll only updates the destination; it cannot replace a rolling digit strip.
+  if(state.running || state.timer!==null)return;
+  scheduleNumber(state,delay,force);
+}
+async function rollNumber(state,force=false){
+  const {el}=state,to=state.value,from=state.shown,run=++state.version;
+  if(from===to && !force)return;
+  state.running=true;state.animations=[];
+  const after=numberText(to,state.decimals),before=numberText(from,state.decimals).padStart(after.length,' ').slice(-after.length);
+  const height=parseFloat(getComputedStyle(el).fontSize)*1.2,direction=to<from?-1:1;
+  el.style.setProperty('--digit-height',height+'px');el.classList.add('number-rolling');
+  el.innerHTML=Array.from(after).map((digit,i)=>{
+    if(!/\d/.test(digit) || (!force && digit===before[i]))return `<span class="roller-mark" aria-hidden="true">${digit}</span>`;
+    const start=/\d/.test(before[i])?Number(before[i]):0;
+    const steps=10+(direction*(Number(digit)-start)+10)%10;
+    let digits=Array.from({length:steps+1},(_,j)=>(start+direction*j+30)%10);
+    if(direction<0)digits.reverse();
+    return `<span class="roller-digit" aria-hidden="true"><span class="roller-track" data-steps="${steps}">${digits.map(n=>`<i>${n}</i>`).join('')}</span></span>`;
+  }).join('');
+  el.querySelectorAll('.roller-track').forEach((track,i)=>{
+    const distance=Number(track.dataset.steps)*height;
+    state.animations.push(track.animate([{transform:`translateY(${direction>0?0:-distance}px)`},{transform:`translateY(${direction>0?-distance:0}px)`}],
+      {duration:motionTiming.roll+i*80,easing:'cubic-bezier(.22,.65,.25,1)',fill:'forwards'}));
+  });
+  await Promise.allSettled(state.animations.map(a=>a.finished));
+  if(run!==state.version)return;
+  paintNumber(state,to);state.running=false;state.animations=[];
+  el.animate([{transform:'translateY(0)'},{transform:'translateY(-2px)',offset:.45},{transform:'translateY(0)'}],{duration:480,easing:'ease-out'});
+  if(state.value!==to)scheduleNumber(state,100);
+}
+function previewNumbers(){
+  numberStates.forEach((state,id)=>setNumber(id,state.value,{decimals:state.decimals,force:true}));
+}
+
+function completionPulse(gains,preview=false){
+  motionRun?.abort();
+  if(reducedMotion.matches || document.hidden)return;
+  const controller=new AbortController();motionRun=controller;
+  const timers=[],cards=[];
+  const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+  const clean=()=>{timers.forEach(clearTimeout);cards.forEach(card=>{card.removeAttribute('data-completing');card.removeAttribute('data-completion-label');});};
+  controller.signal.addEventListener('abort',clean,{once:true});
+  gains.forEach((gain,i)=>{
+    const card=$('card-'+gain.id);if(!card)return;
+    const delay=Math.min(i*motionTiming.stagger,630);
+    later(()=>{
+      card.dataset.completionLabel=preview?'动效预览':(gain.stage==='initial'?'初标 +':'完成 +')+gain.count;
+      card.dataset.completing=gain.stage;cards.push(card);
+    },delay);
+    later(()=>{card.removeAttribute('data-completing');card.removeAttribute('data-completion-label');},delay+2400);
+  });
+  if(preview)later(previewNumbers,600);
+  later(()=>{clean();if(motionRun===controller)motionRun=null;},3100);
+}
+
+
+function stamp(s) { return s ? new Date(s).toLocaleTimeString('zh-CN', {hour12: false}) : '—'; }
+
+// 格式化秒数为 mm:ss
+function formatTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) return '00:00';
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function statusStale(nowMs = Date.now()) {
+  return statusFailed || !lastStatusAt || nowMs - lastStatusAt > 10000;
+}
+
+function retryDisplay(w, nowMs = Date.now()) {
+  const seconds = Math.max(0, Math.ceil((new Date(w.continue_retry.next_at).getTime() - nowMs) / 1000));
+  const stale = statusStale(nowMs);
+  return {label: stale ? '等待同步' : seconds ? '待重试' : '等待启动',
+    value: stale ? '待同步' : seconds ? `${seconds}s` : '等待启动',
+    detail: stale ? '状态已过期' : seconds ? '距下次继续' : '重试状态'};
+}
+
+function paintFreshness() {
+  const stale = statusStale();
+  $('refreshStatus').textContent = stale ? (lastStatusAt ? '状态已过期，正在重新同步' : '正在读取状态') : '每 3 秒更新';
+  $('refreshStatus').style.color = stale ? 'var(--ochre)' : '';
+  $('workers').setAttribute('aria-busy', String(stale));
+}
+
+async function api(path, options = {}) {
+  const timeoutMs=path==='/api/status' || path.startsWith('/api/action/') ? 30000 : 7000;
+  const ctrl = new AbortController(), t = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(path, { cache: 'no-store', ...options, signal: ctrl.signal });
+    const data = await r.json();
+    if (!r.ok) throw Error(data.error || r.status);
+    return data;
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+// 添加一条实时流动态
+function pushStream(tag, text) {
+  const timeStr = new Date().toLocaleTimeString('zh-CN', {hour12: false});
+  streamItems.unshift({ tag, text, time: timeStr });
+  if (streamItems.length > 5) streamItems.pop();
+
+  const container = $('streamList');
+  container.innerHTML = streamItems.map(item => `
+    <div class="stream-item">
+      <span class="stream-tag">${item.tag}</span>
+      <span>${item.text}</span>
+      <span class="stream-time">${item.time}</span>
+    </div>
+  `).join('');
+}
+
+function render(s) {
+  if (s.dashboard_contract !== 'sqlite_runtime_dashboard_v1' || !s.stats) return;
+
+  const n = s.stats;
+  const ready = n.secondary_ready + n.initial_ready;
+  const completed = n.program_validated || n.completed || 0;
+  const fromCompleted=previousCompleted;
+  const gains=[];
+  const progress=s.worker_progress || {};
+  if(previousWorkerProgress && !document.hidden) Object.entries(progress).forEach(([id,counts])=>{
+    const before=previousWorkerProgress[id] || {initial:0,secondary:0};
+    ['secondary','initial'].forEach(stage=>{
+      const count=counts[stage]-(before[stage] || 0);
+      if(count>0) gains.push({id,stage,count});
+    });
+  });
+  previousWorkerProgress=s.worker_progress ? structuredClone(progress) : null;
+  const animateCompletion=fromCompleted!==null && !document.hidden && (completed>fromCompleted || gains.length>0);
+  if(fromCompleted!==null && completed<fromCompleted){
+    motionRun?.abort();motionRun=null;
+  }
+
+  // 监测新完成事件并推入走马灯
+  if (previousCompleted !== null && completed > previousCompleted) {
+    const delta = completed - previousCompleted;
+    pushStream('SUCCESS', `新增 ${delta} 份程序校验结果，当前 ${completed} / ${n.total}`);
+    // 计算速率样本
+    historyVelocity.push({ time: Date.now(), completed });
+    if (historyVelocity.length > 10) historyVelocity.shift();
+  }
+  previousCompleted = completed;
+
+  // 顶部药丸与按钮
+  const retryLimit=s.retry_limit ?? s.retry_policy_activation?.retry_limit ?? 5;
+  const quotaGuard=s.quota_guard || {};
+  const quotaWaiting=!!quotaGuard.waiting_for_recovery;
+  const quotaFreshAvailable=!!s.quota_snapshot && !s.quota_monitor?.last_error &&
+    s.quota_snapshot.checked_at>(quotaGuard.last_exhaustion_at || quotaGuard.triggered_at || '') &&
+    s.quota_snapshot.five_hour_remaining_percent>0 && s.quota_snapshot.weekly_remaining_percent>0;
+  const quotaBlocked=quotaWaiting && !quotaFreshAvailable;
+  const quotaMessage=quotaGuard.weekly_manual_hold ? '周额度耗尽，等待换账号后手动继续' : quotaGuard.manual_hold ? '额度暂停已转为手动控制，等待手动继续' : '五小时额度耗尽，确认恢复后自动继续';
+  $('retryPolicyNote').textContent=`额度耗尽立即暂停全部会话；五小时额度确认恢复后自动继续，周额度归零等待换账号后手动继续。其他异常每20秒原会话最多补试${retryLimit}次，成功清零。`;
+  const blockedSessions=Object.values(s.workers || {}).filter(w=>w.pending_resume && !w.active && w.status!=='retry_wait');
+  const retryWaiting=Object.values(s.workers || {}).filter(w=>w.status==='retry_wait');
+  const isolatedSessions=Object.values(s.workers || {}).filter(w=>w.status==='session_blocked');
+  const localFaultCount=blockedSessions.length+isolatedSessions.length;
+  const draining=!!s.engine_alive && !!s.dispatch_hold?.active;
+  const drainSupported=s.dispatch_control?.version===1 && s.dispatch_control?.owner_pid===s.owner_pid;
+  $('phase').textContent = quotaWaiting ? (quotaGuard.weekly_manual_hold ? '周额度暂停' : '额度暂停') : draining ? `等待在途结束 · ${n.running} 条处理中` : s.engine_alive ? `${s.active_calls} 路运行${retryWaiting.length ? ' · '+retryWaiting.length+' 路等待重试' : ''}${localFaultCount ? ' · '+localFaultCount+' 路中断' : ''}` : labels[s.phase] || s.phase;
+  $('phase').className = 'pill ' + s.phase;
+  const reservedCount=blockedSessions.reduce((count,w)=>count+w.pending_resume.keys.length,0);
+  $('start').disabled = busy || s.engine_alive || !s.preflight?.ready || !(Math.max(0,ready-reservedCount) + n.running);
+  $('stop').disabled = busy || (!s.engine_alive && !quotaWaiting);
+  $('drain').disabled=busy || !s.engine_alive || !drainSupported || draining || quotaWaiting || s.phase==='pausing';
+  $('drain').textContent=draining ? '已停止派发，等待在途结束…' : '停止派发，等待在途结束';
+  $('drainNote').textContent=s.engine_alive && !drainSupported
+    ? '当前执行器尚未加载此功能，下次启动后生效；不会为更新中断当前调用。'
+    : '停止领取新任务，已领取任务含必要补试自然结束并保存后暂停；之后可继续调度。';
+  $('continueBlocked').disabled = busy || !s.preflight?.ready || !blockedSessions.length ||
+    (s.engine_alive && !['pause_faulted_lane_manual_continue_v2','continue_three_then_pool_v3','continue_five_then_pool_v4'].includes(s.session_fault_policy));
+  $('continueBlocked').textContent = `继续中断会话${blockedSessions.length ? '（'+blockedSessions.length+'路）' : ''}`;
+  if(quotaBlocked){$('start').disabled=true;$('continueBlocked').disabled=true;}
+  if(draining)$('continueBlocked').disabled=true;
+  $('interruptionPool').hidden=!blockedSessions.length;
+  $('poolCount').textContent=blockedSessions.length+' 路';
+  $('poolList').innerHTML=blockedSessions.map(w=>`<div class="pool-item"><strong>${escapeText(w.worker_id)}</strong> · ${w.pending_resume.keys.length} 条保留任务<br>${escapeText(faultLabels[w.pending_resume.reason] || w.pending_resume.reason)}<br>自动继续 ${w.pending_resume.continue_retries ?? 0}/${w.pending_resume.retry_limit ?? retryLimit} 次</div>`).join('');
+
+  // 通知条
+  $('notice').className = 'notice' + (localFaultCount || ['blocked', 'interrupted', 'unresponsive'].includes(s.phase) ? ' error' : '');
+  const noticeTitle=quotaWaiting ? quotaMessage : s.engine_alive && localFaultCount ? `${localFaultCount} 路在中断池，其他会话继续` : retryWaiting.length ? '异常会话按20秒间隔重试' : s.stop_reason==='location_unsupported' ? '地区访问被拒绝' : s.stop_reason==='quota_exhausted' ? '额度耗尽，等待手动继续' : faultLabels[s.stop_reason] || s.stop_reason || labels[s.phase] || s.phase;
+  const reasons=[...new Set(blockedSessions.map(w=>faultLabels[w.pending_resume.reason] || w.pending_resume.reason))];
+  $('notice').innerHTML = `<div class="notice-title">${escapeText(noticeTitle)}</div>${reasons.length ? `<div class="notice-code">${escapeText(reasons.join('；'))}</div>` : s.stop_reason==='location_unsupported' ? '<div class="notice-code">User location is not supported</div>' : ''}<div class="notice-detail">${s.engine_alive ? (s.heartbeat_healthy ? '执行器心跳正常' : '执行器心跳延迟') : '执行器已停止'}${blockedSessions.length ? ` · ${blockedSessions.length} 路原会话已保留` : ''}${blockedSessions.length ? '<br>只手动续接异常会话，其他路不受影响。' : ''}</div>`;
+  if(quotaWaiting)$('notice').innerHTML=`<div class="notice-title">${escapeText(quotaMessage)}</div><div class="notice-detail">全部会话已暂停，原会话与未完成任务已保留。<br>${quotaGuard.weekly_manual_hold ? '更换账号后，待原生额度查询确认可用，再点击继续中断会话。' : quotaGuard.manual_hold ? '已取消本次自动恢复；点击继续前需原生额度确认可用。' : '每10分钟查询原生额度；五小时和周额度均大于0后续接，查询失败不会启动标注。'}</div>`;
+  else if(draining)$('notice').innerHTML=`<div class="notice-title">已停止派发，等待在途任务结束</div><div class="notice-detail">剩余 ${n.running} 条已领取样本，当前 ${s.active_calls} 路调用运行中。<br>当前任务含必要补试完成后保存；不会领取下一批。需要立即中断时仍可点击“安全保存”。</div>`;
+  if(s.policy_activation?.status==='waiting_for_owner'){
+    $('notice').innerHTML+='<div class="notice-detail">逐路隔离策略已就绪，等待当前执行器自然结束后切换；不会打断在途任务。</div>';
+  }
+  if(s.retry_policy_activation?.status==='waiting_for_owner'){
+    $('notice').innerHTML+=`<div class="notice-detail">20秒间隔、最多继续${s.retry_policy_activation.retry_limit ?? retryLimit}次的新策略已就绪；等待执行器切换。</div>`;
+  }
+  $('observedAt').textContent=stamp(s.observed_at);
+
+  // 核心数字卡
+  const numberDelay=animateCompletion?600:0;
+  const countValues={total:n.total,completed,ready,active:s.active_calls,workerLimit:s.worker_limit || 16,
+    manual:n.needs_manual,visualCompleted:n.completed,fixedA:n.fixed_a || 0,initialReady:n.initial_ready,secondaryReady:n.secondary_ready,activeLoad:s.active_calls};
+  Object.entries(countValues).forEach(([id,value])=>setNumber(id,value,{delay:numberDelay}));
+
+  // 描述
+  const pct = n.total ? (completed / n.total * 100).toFixed(1) : '0.0';
+  setNumber('completionPct',pct,{decimals:1,delay:numberDelay});
+  $('percentDesc').textContent = '当前范围的完成比例';
+
+  // 主进度条
+  $('progress').style.width = pct + '%';
+  $('progress').parentElement.setAttribute('aria-valuenow',pct);
+
+  // 估算速率与 ETA
+  const showVelocity=(text,speed=null)=>{
+    $('velocityLabel').textContent=text;
+    $('velocityValue').style.display=speed===null?'none':'inline-flex';
+    $('velocitySuffix').style.display=speed===null?'none':'inline';
+    if(speed!==null)setNumber('velocityValue',speed);
+  };
+  if (!s.engine_alive) {
+    showVelocity('已停止');
+    $('eta').textContent = quotaWaiting ? (quotaGuard.weekly_manual_hold ? '等待换账号后手动继续' :
+      quotaGuard.manual_hold ? '等待手动继续' : '等待额度恢复后自动继续') : blockedSessions.length ? '等待手动继续' : '等待启动';
+  } else if (historyVelocity.length >= 2) {
+    const first = historyVelocity[0];
+    const last = historyVelocity[historyVelocity.length - 1];
+    const elapsedHours = (last.time - first.time) / (1000 * 3600);
+    const speed = elapsedHours > 0 ? (last.completed - first.completed) / elapsedHours : 0;
+    if (speed > 10) {
+      showVelocity('~',Math.round(speed));
+      const remain = n.total - completed;
+      const remHours = remain / speed;
+      const rh = Math.floor(remHours);
+      const rm = Math.round((remHours - rh) * 60);
+      $('eta').textContent = `约 ${rh}h ${rm}m`;
+    } else {
+      showVelocity('测速采集中…');
+      $('eta').textContent = '动态估算中…';
+    }
+  } else {
+    showVelocity('等待进度采样');
+    $('eta').textContent = '等待进度采样';
+  }
+
+  // Label Studio 增量交付
+  const d = s.delivery || {};
+  if ($('deliveryTasks')) {
+    if (d.status === 'synced') {
+      $('deliveryTasks').textContent = `${d.samples ? d.samples.toLocaleString() : 0} 任务`;
+      $('deliveryDesc').textContent = `项目 ${d.project_id || 21} · 已同步 · 打回 ${d.returned_tasks || 0} 条`;
+    } else if (d.status === 'syncing') {
+      $('deliveryTasks').textContent = '同步中…';
+      $('deliveryDesc').textContent = d.detail || '正在手动导入';
+    } else {
+      $('deliveryTasks').textContent = d.status === 'authentication_required' ? '认证待处理' : '等待手动导入';
+      $('deliveryDesc').textContent = d.detail || '选择范围后点击导入；不会自动推送';
+    }
+  }
+  const job=s.import_job || {};
+  const importing=['queued','running'].includes(job.status);
+  $('importButton').disabled=importBusy || importing || !importPreview?.eligible;
+  const statusLabels={queued:'导入已排队',running:'正在导入',synced:'所选范围导入完成',authentication_required:'认证待处理',pending:'导入未完成，可重试',failed:'导入失败'};
+  $('importStatus').textContent=importLocalError || (statusLabels[job.status] || '')+(job.detail ? ' · '+job.detail : '');
+
+  // Report label prevalence as an observation, without inferring semantic accuracy.
+  const qc = s.quality_cache;
+  if (qc && $('emptyRate')) {
+    const er = qc.empty_rate ?? 0;
+    setNumber('emptyRate',er,{decimals:1,delay:numberDelay});
+    setNumber('emptyCount',qc.empty_count,{delay:numberDelay});
+    setNumber('qualityCompleted',qc.completed,{delay:numberDelay});
+  }
+
+  // Gemini 原生额度定期巡检
+  const q = s.quota_snapshot;
+  const qm = s.quota_monitor || {};
+  if (q && $('quota5hVal')) {
+    const p5 = q.five_hour_remaining_percent ?? 0;
+    const pw = q.weekly_remaining_percent ?? 0;
+
+    // 5 小时配额
+    $('quota5hVal').textContent = `${p5.toFixed(1)}%`;
+    $('quota5hBar').style.width = `${Math.min(100, Math.max(0, p5))}%`;
+    $('quota5hRefresh').textContent = `${q.five_hour_refresh_in || '—'} 后重置`;
+    $('quota5hVal').closest('.quota-card').classList.toggle('low',p5<15);
+    if (p5 < 15) {
+      $('quota5hBadge').textContent = '紧张';
+      $('quota5hBadge').style.background = '#fef2f2';
+      $('quota5hBadge').style.color = '#991b1b';
+      $('quota5hBadge').style.borderColor = '#fecaca';
+      $('quota5hBar').style.background = '#ef4444';
+    } else if (p5 < 35) {
+      $('quota5hBadge').textContent = '适中';
+      $('quota5hBadge').style.background = '#fffbeb';
+      $('quota5hBadge').style.color = '#92400e';
+      $('quota5hBadge').style.borderColor = '#fde68a';
+      $('quota5hBar').style.background = '#f59e0b';
+    } else {
+      $('quota5hBadge').textContent = '充裕';
+      $('quota5hBadge').style.background = '#ecfdf5';
+      $('quota5hBadge').style.color = '#065f46';
+      $('quota5hBadge').style.borderColor = '#a7f3d0';
+      $('quota5hBar').style.background = 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)';
+    }
+
+    // 周累计配额
+    $('quotaWeeklyVal').textContent = `${pw.toFixed(1)}%`;
+    $('quotaWeeklyBar').style.width = `${Math.min(100, Math.max(0, pw))}%`;
+    $('quotaWeeklyRefresh').textContent = `${q.weekly_refresh_in || '—'} 后重置`;
+    $('quotaWeeklyVal').closest('.quota-card').classList.toggle('low',pw<15);
+    if (pw < 15) {
+      $('quotaWeeklyBadge').textContent = '紧张';
+      $('quotaWeeklyBadge').style.background = '#fef2f2';
+      $('quotaWeeklyBadge').style.color = '#991b1b';
+      $('quotaWeeklyBadge').style.borderColor = '#fecaca';
+      $('quotaWeeklyBar').style.background = '#ef4444';
+    } else {
+      $('quotaWeeklyBadge').textContent = '正常';
+      $('quotaWeeklyBadge').style.background = '#ecfdf5';
+      $('quotaWeeklyBadge').style.color = '#065f46';
+      $('quotaWeeklyBadge').style.borderColor = '#a7f3d0';
+      $('quotaWeeklyBar').style.background = 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)';
+    }
+
+    // 巡检时序与状态
+    $('quotaLastChecked').textContent = stamp(q.checked_at);
+    $('quotaNextCheck').textContent = qm.next_check_at ? stamp(qm.next_check_at) : '10分钟周期';
+    $('quotaStatusPill').textContent = qm.last_error ? '查询微异常' : (qm.status === 'ok' ? '巡检正常 (OK)' : qm.status);
+    $('quotaStatusPill').className = 'pill ' + (qm.last_error ? 'error' : 'running');
+    $('quotaMonitorMeta').textContent = `独立守护线程 · 每 ${qm.interval_minutes || 10} 分钟自动原生额度查询 (${q.source || 'native agy'})`;
+    $('quotaWorkerPid').textContent = qm.enabled ? `内置监控（PID ${qm.owner_pid || '未知'}）` : '额度监控已停止';
+  }
+
+  // 16 路 Worker 矩阵渲染
+  const workers = Object.values(s.workers || {}).sort((a,b)=>a.worker_id.localeCompare(b.worker_id));
+  $('clusterSummary').textContent = `${workers.filter(w=>w.active).length} 活跃 / ${workers.length} 会话${blockedSessions.length ? ' · '+blockedSessions.length+' 待继续' : ''}`;
+
+  const nowMs = Date.now();
+  const workerMarkup = workers.map(w => {
+    const isAct = w.active;
+    const retrying=w.status==='retry_wait';
+    const waiting=!!w.pending_resume;
+    const isolated=w.status==='session_blocked';
+    const retry=w.retry_count===0 ? null : w.continue_retry;
+    const limit=retry?.limit ?? retryLimit;
+    const retryView=retrying ? retryDisplay(w,nowMs) : null;
+    const stateLabel=retrying ? `${retryView.label} ${retry?.attempt || 1}/${limit}` : isAct ? (retry ? `重试 ${retry.attempt}/${limit}` : '运行中') : waiting ? (quotaWaiting ? '额度暂停' : '中断池') : isolated ? '已隔离' : '空闲';
+    const reason=waiting && quotaWaiting ? quotaMessage : waiting ? faultLabels[w.pending_resume.reason] || w.pending_resume.reason : w.last_session_error || stateLabel;
+
+    // 计算实时已耗时
+    let elapsedText = '00:00';
+    if (isAct && w.started_at) {
+      const startMs = new Date(w.started_at).getTime();
+      const elapsedSec = Math.max(0, Math.floor((nowMs - startMs) / 1000));
+      elapsedText = formatTime(elapsedSec);
+    }
+
+    return `
+      <div class="worker-card ${retrying ? 'retrying' : isAct ? 'active' : waiting ? 'awaiting' : isolated ? 'isolated' : 'idle'}" id="card-${w.worker_id}" role="listitem" aria-label="${w.worker_id} · ${stateLabel}" title="${escapeText(reason)}&#10;会话 ID：${escapeText(w.conversation_id || '尚未创建')}">
+        <div class="worker-top">
+          <div class="worker-heading"><span class="worker-name">${w.worker_id}</span><span class="worker-role">${w.role === 'initial_rgb' ? '初标' : '二次'}</span></div>
+          <span class="worker-state">${stateLabel}</span>
+        </div>
+        <div class="worker-stats">
+          <div title="当前会话有有效产出的任务轮次；同一任务的重试与补写只计一次"><span class="worker-stat-label">实际产出轮次</span><div class="worker-stat-value">${w.productive_rounds ?? 0}<span class="round-limit">/ 8</span></div></div>
+          <div><span class="worker-stat-label">${retrying ? retryView.detail : isAct ? '本次耗时' : '保留任务'}</span>${retrying ? `<div class="worker-stat-value worker-status-detail" id="retry-timer-${w.worker_id}">${retryView.value}</div>` : isAct ? `<div class="worker-stat-value worker-status-detail" id="timer-${w.worker_id}">${elapsedText}</div>` : `<div class="worker-stat-value worker-pending-value">${waiting ? w.pending_resume.keys.length+'<small>条</small>' : '—'}</div>`}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  // Keep card elements mounted so status polling cannot cut a completion effect short.
+  const template=document.createElement('template');template.innerHTML=workerMarkup;
+  const grid=$('workers'),ids=new Set();
+  Array.from(template.content.children).forEach((node,i)=>{
+    ids.add(node.id);
+    const old=$(node.id);
+    if(old){
+      old.className=node.className;old.title=node.title;old.setAttribute('aria-label',node.getAttribute('aria-label'));
+      if(old.innerHTML!==node.innerHTML)old.innerHTML=node.innerHTML;
+      if(grid.children[i]!==old)grid.insertBefore(old,grid.children[i] || null);
+    }else grid.insertBefore(node,grid.children[i] || null);
+  });
+  Array.from(grid.children).forEach(node=>{if(!ids.has(node.id))node.remove();});
+  if(animateCompletion) completionPulse(gains);
+}
+
+async function samples() {
+  const revision = viewRevision;
+  const q = new URLSearchParams({ page, size: 50, state: $('filter').value, query: $('search').value.trim() });
+  const data = await api('/api/samples?' + q);
+  if (revision !== viewRevision) return;
+  page = data.page;
+  $('rows').innerHTML = data.items.length ? data.items.map(r => `
+    <tr>
+      <td>${r.source_sample_key}</td>
+      <td><span class="pill" style="padding:2px 8px; font-size:11px;">${states[r.state] || r.state}</span></td>
+      <td><strong>${r.defects === null || r.defects === undefined ? '待完成' : r.defects.length}</strong></td>
+      <td>${r.qa_failures || 0}</td>
+      <td style="color:var(--text-muted); max-width:400px; overflow-wrap:anywhere;">${r.last_feedback || '—'}</td>
+    </tr>
+  `).join('') : `<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">暂无匹配样本</td></tr>`;
+
+  $('pageInfo').textContent = `第 ${page} / ${Math.max(1, Math.ceil(data.total / 50))} 页 · 匹配 ${data.total} 条`;
+  $('prev').disabled = page <= 1;
+  $('next').disabled = page * 50 >= data.total;
+}
+
+async function refreshSamples() {
+  if (sampling) { samplesNeeded = true; return; }
+  sampling = true;
+  try {
+    await samples();
+  } catch (e) {
+    $('pageInfo').textContent = '样本列表更新失败，正在重试';
+  } finally {
+    sampling = false;
+    if (samplesNeeded) { samplesNeeded = false; refreshSamples(); }
+  }
+}
+
+let polling = false;
+async function refresh() {
+  if (polling) { refreshNeeded = true; return; }
+  polling = true;
+  try {
+    const s = await api('/api/status');
+    lastState = s;
+    lastStatusAt = Date.now();
+    statusFailed = false;
+    render(s);
+  } catch (e) {
+    statusFailed = true;
+    $('phase').textContent = '看板心跳等待中';
+    $('phase').className = 'pill warning';
+  } finally {
+    polling = false;
+    paintFreshness();
+    if (refreshNeeded) { refreshNeeded = false; refresh(); }
+  }
+}
+
+async function control(action) {
+  busy = true;
+  $('start').disabled = true;
+  $('stop').disabled = true;
+  $('drain').disabled = true;
+  $('continueBlocked').disabled = true;
+  try {
+    await api('/api/action/' + action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+    pushStream('CMD', `已向执行器发送指令: ${action}`);
+    await refresh();
+  } catch (e) {
+    alert('操作未成功: ' + e.message);
+  } finally {
+    busy = false;
+    if (lastState) render(lastState);
+  }
+}
+
+$('start').onclick = () => control('start');
+$('stop').onclick = () => control('stop');
+$('drain').onclick = () => control('drain');
+$('continueBlocked').onclick = () => control('continue-blocked');
+$('previewMotion').onclick=()=>{
+  if(motionRun || !lastState) return;
+  if(innerWidth>820 && $('completed').getBoundingClientRect().top<0){
+    document.querySelector('.overview').scrollIntoView({behavior:'instant',block:'start'});
+  }
+  const ids=Object.keys(lastState.workers || {}).sort();
+  const id=ids.find(key=>{const r=$('card-'+key)?.getBoundingClientRect();return r && r.top>=0 && r.bottom<=innerHeight;}) || ids[0];
+  if(id)completionPulse([{id,stage:'secondary',count:0}],true);
+};
+
+function importSelection() {
+  return {split:$('importSplit').value,model:$('importModel').value,
+    start:$('importStart').value || '1',end:$('importEnd').value || '2147483647'};
+}
+async function previewImport() {
+  const revision=++importPreviewRevision;
+  importPreview=null;
+  $('importButton').disabled=true;
+  try {
+    const p=await api('/api/import-preview?'+new URLSearchParams(importSelection()));
+    if (revision!==importPreviewRevision) return;
+    importPreview=p;
+    $('importPreview').innerHTML=`<div class="import-preview-summary">可导入 <strong>${p.eligible.toLocaleString()}</strong> 份结果</div><div>筛选共 ${p.filtered_total} 条 · 所选 ${p.selected} 条 · 跳过未完成 ${p.excluded} 条</div>${p.first ? `<details class="range-identities"><summary>所选身份范围</summary><div>${escapeText(p.first)}<br>→ ${escapeText(p.last)}</div></details>` : ''}`;
+    if (lastState) render(lastState);
+  } catch(e) {
+    if(revision===importPreviewRevision) $('importPreview').textContent='范围无效或预览失败：'+e.message;
+  }
+}
+let previewTimer;
+['importSplit','importModel','importStart','importEnd'].forEach(id=>$(id).oninput=()=>{
+  importPreview=null;$('importButton').disabled=true;
+  clearTimeout(previewTimer);previewTimer=setTimeout(previewImport,300);
+});
+$('importButton').onclick=async()=>{
+  importBusy=true;importLocalError='';$('importButton').disabled=true;
+  try {
+    await api('/api/action/import',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(importSelection())});
+    pushStream('IMPORT','已提交所选范围的手动导入任务');
+    await refresh();
+  } catch(e) { importLocalError='导入未启动：'+e.message; }
+  finally { importBusy=false;if(lastState) render(lastState); }
+};
+previewImport();
+$('filter').onchange = () => { page = 1; viewRevision++; refreshSamples(); };
+let debounce;
+$('search').oninput = () => {
+  clearTimeout(debounce);
+  debounce = setTimeout(() => { page = 1; viewRevision++; refreshSamples(); }, 250);
+};
+$('prev').onclick = () => { page--; viewRevision++; refreshSamples(); };
+$('next').onclick = () => { page++; viewRevision++; refreshSamples(); };
+
+// 本地秒表计时器（每 1 秒微调 worker 耗时，视觉平滑）
+setInterval(() => {
+  paintFreshness();
+  if (!lastState || !lastState.workers) return;
+  const nowMs = Date.now();
+  Object.values(lastState.workers).forEach(w => {
+    if(w.status==='retry_wait' && w.continue_retry?.next_at){
+      const el=$('retry-timer-'+w.worker_id);
+      if(el){
+        const view=retryDisplay(w,nowMs),card=$('card-'+w.worker_id);
+        el.textContent=view.value;
+        el.previousElementSibling.textContent=view.detail;
+        const label=`${view.label} ${w.continue_retry.attempt}/${w.continue_retry.limit ?? 5}`;
+        card.querySelector('.worker-state').textContent=label;
+        card.setAttribute('aria-label',`${w.worker_id} · ${label}`);
+      }
+    }
+    if ((w.active || w.status === 'running') && w.started_at) {
+      const el = $(`timer-${w.worker_id}`);
+      if (el) {
+        const startMs = new Date(w.started_at).getTime();
+        const elapsedSec = Math.max(0, Math.floor((nowMs - startMs) / 1000));
+        el.textContent = formatTime(elapsedSec);
+      }
+    }
+  });
+}, 1000);
+
+// 3秒轮询一次后台真实数据
+refresh();
+refreshSamples();
+setInterval(refresh, 3000);
+setInterval(refreshSamples, 3000);
+</script>
+</body>
+</html>

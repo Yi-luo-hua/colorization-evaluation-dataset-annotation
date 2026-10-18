@@ -1,0 +1,43 @@
+{
+  "schema_version": "delivery_review_compact_v2",
+  "annotation_contract": "train_val_two_stage_NR_legacy_only_v2",
+  "stage": "initial_rgb",
+  "packet_id": "FORMAT_EXAMPLE_ONLY",
+  "prompt_revision": "NR_secondary_compact_20261016_05",
+  "reviews": {
+    "EXAMPLE_001": [
+      {
+        "id": "B",
+        "severity": "L2",
+        "object": "衣袖与手部交界",
+        "description": "衣袖的红色越过轮廓，明显侵入相邻手部皮肤区域。"
+      },
+      {
+        "id": "C",
+        "severity": "L3",
+        "object": "人物面部",
+        "description": "人物面部呈明显的蓝紫色，肤色表现违反正常肤色常识。"
+      },
+      {
+        "id": "D",
+        "severity": "L2",
+        "object": "右侧墙面",
+        "description": "画面右侧墙面呈一片不自然的青绿色，局部色调明显偏移。"
+      },
+      {
+        "id": "F",
+        "severity": "L2",
+        "object": "人物面部",
+        "description": "人物面部的颜色过渡呈突兀的块状断层，局部观感明显失真。"
+      }
+    ]
+  },
+  "category_checks": {
+    "EXAMPLE_001": {
+      "B": "hit",
+      "C": "hit",
+      "D": "hit",
+      "F": "hit"
+    }
+  }
+}

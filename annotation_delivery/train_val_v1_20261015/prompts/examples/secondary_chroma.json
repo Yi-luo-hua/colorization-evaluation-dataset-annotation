@@ -1,0 +1,90 @@
+{
+  "schema_version": "delivery_secondary_review_delta_v1",
+  "annotation_contract": "train_val_two_stage_NR_legacy_only_v2",
+  "stage": "secondary_chroma",
+  "packet_id": "FORMAT_EXAMPLE_ONLY",
+  "prompt_revision": "NR_secondary_compact_20261016_05",
+  "reviews": {
+    "EXAMPLE_001": {
+      "saturation_defects": [
+        {
+          "id": "E1",
+          "severity": "L2",
+          "object": "左侧衣袖",
+          "description": "画面左侧衣袖的红色过于浓烈刺眼，高彩度颜色掩盖了局部细节。"
+        },
+        {
+          "id": "E2",
+          "severity": "L2",
+          "object": "右侧背包",
+          "description": "画面右侧背包大面积发灰，色彩层次明显单薄。"
+        }
+      ],
+      "other_decisions": {
+        "P001": {
+          "action": "retain",
+          "object": "右侧墙面",
+          "description": "画面右侧墙面呈一片不自然的青绿色，局部色调明显偏移。",
+          "reason": "墙面区域的偏色仍清楚可见，保留原类别和等级并明确描述对象。"
+        },
+        "P002": {
+          "action": "retain",
+          "inherit": true,
+          "reason": "该项可见异常成立，原对象和描述均符合自然句要求，沿用原字段。"
+        },
+        "P003": {
+          "action": "correct",
+          "defect": {
+            "id": "B",
+            "severity": "L2",
+            "object": "衣袖与手部交界",
+            "description": "衣袖的红色越过轮廓，明显侵入相邻手部皮肤区域。"
+          },
+          "reason": "可见异常发生在衣袖与手部交界，明确纠正定位并按明显跨界侵染记录。"
+        },
+        "P004": {
+          "action": "remove",
+          "reason": "该项标注指向的红色车身并未出现在本图中，缺少对应对象。"
+        }
+      },
+      "other_additions": [
+        {
+          "id": "F",
+          "severity": "L2",
+          "object": "人物面部",
+          "description": "人物面部的颜色过渡呈突兀的块状断层，局部观感明显失真。"
+        }
+      ]
+    },
+    "EXAMPLE_002": {
+      "saturation_defects": [
+        {
+          "id": "E2",
+          "severity": "L1",
+          "object": "下方鞋面",
+          "description": "画面下方鞋面局部发灰，色彩层次略显单薄。"
+        }
+      ],
+      "other_decisions": {},
+      "other_additions": []
+    }
+  },
+  "category_checks": {
+    "EXAMPLE_001": {
+      "B": "hit",
+      "C": "hit",
+      "D": "hit",
+      "E1": "hit",
+      "E2": "hit",
+      "F": "hit"
+    },
+    "EXAMPLE_002": {
+      "B": "clear",
+      "C": "clear",
+      "D": "clear",
+      "E1": "clear",
+      "E2": "hit",
+      "F": "clear"
+    }
+  }
+}

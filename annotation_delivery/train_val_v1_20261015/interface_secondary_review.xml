@@ -1,0 +1,30 @@
+<View className="nr-review">
+  <Style>
+    .nr-review { padding: 4px 8px 14px; }
+    .nr-review .images { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .nr-review .images .lsf-object { height: 290px; display:flex; align-items:center; justify-content:center; }
+    .nr-review .options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+    .nr-review .card { border:1px solid #d9dde5; border-radius:7px; padding:8px 10px; }
+    .nr-review textarea { min-height:46px; }
+    .nr-review h4 { margin:2px 0 6px; }
+  </Style>
+  <Header value="$sample_title" size="4" />
+  <Text name="review_info" value="$review_info" />
+  <View className="images">
+    <View><Header value="参考GT（仅辅助）" size="5" /><Image name="reference" value="$reference" zoom="true" zoomControl="true" maxWidth="430px" /></View>
+    <View><Header value="待评价上色图" size="5" /><Image name="colorized" value="$image" zoom="true" zoomControl="true" maxWidth="430px" /></View>
+  </View>
+  <Text name="policy" value="按上色图自身可见质量审核；合理换色不因不同GT判错。描述为自然语言，无GT比较或对象／等级标题。各类控件显示该类最高等级，逐对象原始等级见下方明细；未重新评分。" />
+  <HyperText name="defect_details" value="$defect_details_html" />
+  <Collapse><Panel value="原B/C/D/F逐条review记录"><HyperText name="review_audit" value="$review_audit_html" /></Panel></Collapse>
+  <View className="options">
+    <View className="card"><Header value="A · 冻结人工分流" size="5" /><Choices name="severity_A" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="未命中" /><Choice value="命中" /></Choices><TextArea name="description_A" toName="colorized" editable="true" maxSubmissions="1" rows="2" /></View>
+    <View className="card"><Header value="B · 溢色" size="5" /><Choices name="severity_B" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_B" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_B" value="颜色越过边缘。L1边缘轻微可接受；L2明显进入相邻物体；L3大面积扩散整个场景。" /></Panel></Collapse></View>
+    <View className="card"><Header value="C · 错色" size="5" /><Choices name="severity_C" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_C" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_C" value="颜色语义与内容不符。L1局部光照／时间／天气冲突；L2多区域或组合不协调但非常识错误；L3违反固有色常识。" /></Panel></Collapse></View>
+    <View className="card"><Header value="D · 区域／全图偏色" size="5" /><Choices name="severity_D" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_D" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_D" value="系统性色调偏移。L1单区域轻微可接受；L2单区域明显不可接受；L3全图统一偏移、不可信。" /></Panel></Collapse></View>
+    <View className="card"><Header value="E1 · 过饱和" size="5" /><Choices name="severity_E1" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_E1" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_E1" value="L1局部轻微不影响周边；L2明显刺眼或扩大影响邻近；L3全图异常、感官极差。" /></Panel></Collapse></View>
+    <View className="card"><Header value="E2 · 欠饱和" size="5" /><Choices name="severity_E2" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_E2" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_E2" value="L1局部轻微不影响周边；L2明显发灰或扩大影响邻近；L3全图异常、感官极差。自然低彩度不自动罚。" /></Panel></Collapse></View>
+    <View className="card"><Header value="F · 视觉自然度" size="5" /><Choices name="severity_F" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="无此缺陷" /><Choice value="L1" /><Choice value="L2" /><Choice value="L3" /></Choices><TextArea name="description_F" toName="colorized" editable="true" maxSubmissions="1" rows="2" /><Collapse><Panel value="分级规则"><Text name="guide_F" value="L1仔细观察才发现；L2一眼可见、局部质量受影响；L3整体配色不像真实照片、可信度破坏。" /></Panel></Collapse></View>
+    <View className="card"><Header value="主人复核" size="5" /><Choices name="review_status" toName="colorized" choice="single-radio" showInline="true" required="true"><Choice value="待复核" /><Choice value="已核验" /></Choices><TextArea name="review_note" toName="colorized" editable="true" maxSubmissions="1" rows="2" placeholder="可填写问题或修订说明" /></View>
+  </View>
+</View>

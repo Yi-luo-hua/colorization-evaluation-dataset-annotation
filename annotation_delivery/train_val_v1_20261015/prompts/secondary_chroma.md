@@ -1,0 +1,11 @@
+提示版本NR_secondary_compact_20261016_05。本会话固定角色secondary_chroma：重点详细重新标注E1/E2，对底稿B/C/D/F逐条review，而不是把这四类清空后重新自由标一遍。A已人工分流。
+先读指定prior_reviews.json，了解每个S编号的原标注及P编号，再读取指定彩度差板逐行核对。每张板仍只读取一次。左GT、中生成、右彩度差，红增蓝减，无候选轮廓或定位叠加；差分仅辅助，标签与描述中的对象颜色取生成图。
+每个S编号先确认生成图实际出现的主体／场景，再审核该P项的对象是否确实存在。底稿的物体名称不等于本图事实；对象不在本图时明确remove并说明，不得默认retain不存在的对象。未成功读取看板时保留null并报告，不得仅凭底稿补写E或其他标签。补写时已成功读过的板不重读，尚未成功读取的板仍须各读一次。主控核对原生成功读图记录，无记录不能验收。
+E1/E2：重新完整、详细判断局部与整体，清晰L1也保留，多对象可分别标。将新结果全部写入saturation_defects；旧E只供参考，程序只替换这两类。
+B/C/D/F：以原标注为审核底稿，默认保留原类别和等级；只有生成图显示明确错误时才纠正或删除。每条原标签都有baseline_id（P编号），必须逐项给出结论，不能省略任何P编号。旧描述含GT比较或标题时，改写成自然语言并补充可靠对象，不因此把对应标签整条扔掉；若标签本身仅有参考差异而缺乏生成图质量依据，须明确记录这一错误与删除理由。不确定时写uncertain待处理，不自行删除，也不冒充已审核通过。
+格式以本轮format_example.json中的完整标注为准。other_decisions以实际底稿的全部P编号为键；示例展示retain、inherit、correct与remove的合法嵌套结构。retain由程序从底稿继承类别和等级；纠错、删除必须明确记录可见依据。无法判断时仍按uncertain并说明问题，不能照抄示例冒充已完成。reason属于这些审核决定，不属于saturation_defects、other_additions或correct.defect中的缺陷对象。
+发现底稿漏掉的明显B/C/D/F问题，可在other_additions补充，不设类别排斥或每图数量限制；不能以重新自由标注代替逐项review。
+按示例的reviews对象填入本批真实S编号。没有原B/C/D/F时other_decisions为{}；旧标签各项均须有去向。不要输出六类替换数组或[]，程序按原底稿和显式决定合并；可见缺陷数量不受示例条数限制。
+紧凑传输explicit_checks_v1：category_checks仍必须由你逐一明确填写B/C/D/E1/E2/F六个键，每个值直接用"clear"、"hit"或"uncertain"。极其谨慎判定clear/无缺陷！清晰的L1轻微缺陷也必须完整标出，多类多对象可共存；只有生成图各区域在相应类别下确无可见质量问题时，才允许判定clear。绝不可为了紧凑输出而图省事将存疑处给clear，若有可见偏色、溢色、失真或欠饱和却判定clear将被作为严重漏标打回。clear是你实际检查后的阴性判断，hit须与合并后的缺陷一致；有必要的额外观察才用{"status":"hit/clear/uncertain","evidence":"短证据"}。不遗漏任何类别、不让程序替你判断阴性；无需重复书写标签中已有的观察句。所有实际缺陷仍保留完整自然语言描述。
+逐P审核仍不可省略。prior_reviews.json中每个P项的inherit_allowed明确标示原字段是否符合当前格式；仅inherit_allowed=true且本图审核后语义成立时，才可按format_example.json的完整示例使用inherit。inherit_allowed=false的旧底稿可能只有name而缺object，或含GT／颜色历史／标题；这时按示例中的显式retain结构填写action、object、description、reason，由程序保留类别和等级，禁止inherit。inherit_error提供具体格式原因，不能仅因格式旧而删除原标签。纠正、删除和不确定仍须写具体理由。不得仅因原底稿存在而保留错误。
+保留schema_version=delivery_secondary_review_delta_v1及所有头字段，prompt_revision=NR_secondary_compact_20261016_05。description不含GT比较或对象／等级标题。保存完整合法JSON，只回复“文件已保存”。

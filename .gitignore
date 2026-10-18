@@ -27,3 +27,12 @@ __pycache__/
 .env
 .env.*
 !.env.example
+
+# Local databases, runtime logs and Windows-protected credentials.
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.log
+*.dpapi

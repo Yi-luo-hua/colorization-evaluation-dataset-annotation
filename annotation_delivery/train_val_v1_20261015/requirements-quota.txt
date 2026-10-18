@@ -1,0 +1,4 @@
+# Install into runtime/quota_dependencies with the Python used by pipeline.py.
+pywinpty==3.1.0; sys_platform == 'win32'
+pyte==0.8.2
+wcwidth==0.9.2
