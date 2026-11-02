@@ -10,6 +10,7 @@ import urllib.request
 
 from prepare import HERE, ROOT, sha, write
 from descriptions import description_only
+from gt_review import quality_for, STATUS_NAMES
 
 sys.path.insert(0, str(ROOT/'annotation_delivery/train_val_v1_20261015/scripts'))
 from pipeline_credentials import access_token, payload
@@ -55,6 +56,7 @@ def interface():
 @media(max-width:700px){.review-layout{display:block}.review-pictures{position:static}.edit-panel{max-height:none}}
 </Style><Header value="$sample_title" size="4"/>
 <View className="review-banner"><Text name="review_info" value="$review_info"/></View>
+<View className="review-banner"><Text name="gt_quality_info" value="$gt_quality_info"/></View>
 <View className="review-layout"><View className="review-pictures"><View className="picture-pair">
 <View><Header value="GT · B/D/E/F参考" size="5"/><Image name="reference" value="$reference" zoom="true" maxWidth="100%"/></View>
 <View><Header value="待评价生成图 · C只看本图" size="5"/><Image name="image" value="$image" zoom="true" maxWidth="100%"/></View>
@@ -64,6 +66,7 @@ def interface():
 <Header value="右侧以旧标注为基底；修改后选择已定稿再提交，疑点请选择保留疑点。" size="6"/>
 </View><View className="edit-panel"><Header value="旧工作流标注基底 · 在此修改" size="5"/>''' + ''.join(cards) + '''
 <Header value="人工订正状态" size="5"/><Choices name="review_status" toName="image" choice="single-radio" showInline="true" required="true"><Choice value="待人审"/><Choice value="已定稿"/><Choice value="保留疑点"/></Choices>
+<Header value="GT可用性裁决（可选，影响金标准资格）" size="5"/><Choices name="gt_review_status" toName="image" choice="single" showInline="true"><Choice value="沿用GT筛查建议"/><Choice value="GT可用"/><Choice value="GT停用"/><Choice value="GT待确认"/></Choices>
 <TextArea name="review_note" toName="image" editable="true" transcription="true" rows="3" maxSubmissions="1" placeholder="改判理由或疑点（可选）"/>
 </View></View></View>'''
 
@@ -84,11 +87,15 @@ def task(sample, revision):
         results.append({'id':f'r{i}_{cat}', 'from_name':'severity_'+cat, 'to_name':'image','type':'choices','value':{'choices':[level]}})
         results.append({'id':f't{i}_{cat}', 'from_name':'instances_'+cat, 'to_name':'image','type':'textarea', 'value':{'text':['\n'.join(description_only(d['description']) for d in selected)]}})
     results.append({'id':f's{i}', 'from_name':'review_status','to_name':'image','type':'choices','value':{'choices':['待人审']}})
+    results.append({'id':f'g{i}', 'from_name':'gt_review_status','to_name':'image','type':'choices','value':{'choices':['沿用GT筛查建议']}})
+    gt = quality_for(sample)
     role = '校准' if sample['role']=='development' else '封存评测'
     return {'data':{'review_index':i,'batch':sample['batch'],'role':sample['role'],
         'source_sample_key':sample['source_sample_key'],
         'sample_title':f"{role} · 第{sample['batch']}批 · {i:03d}/600 · {sample['source_sample_key']}",
         'review_info':'旧工作流标注为可编辑基底；洛熙11.2新标注仅供左侧参考。描述框只保留自然语言描述；等级由该类按钮记录，多条描述可分行。',
+        'gt_quality_status':gt['status'],'gt_quality':gt,
+        'gt_quality_info':f"GT复筛（AI建议）：{STATUS_NAMES[gt['status']]}。{gt['reason']}"+(' GT问题未解决前暂停缺陷定稿，可在底部单独裁决GT可用性。' if gt['status']!='keep' else ''),
         'image':'/data/local-files/?d='+quote(sample['record']['model_path'],safe='/'),
         'reference':'/data/local-files/?d='+quote(sample['record']['gt_path'],safe='/'),
         'uncertainty_note':('新标注参考疑点类别：'+ '、'.join(revision['uncertain_categories'])+'。' if revision.get('uncertain_categories') else '')+(revision['uncertainty_note'] or '新标注未另列疑点，仍需人工逐类核验。'),

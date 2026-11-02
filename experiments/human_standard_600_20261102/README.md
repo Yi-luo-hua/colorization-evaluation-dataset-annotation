@@ -4,6 +4,16 @@
 
 ## 直接开始
 
+2026-11-02 已对本600例对应的588张不重复GT逐图复筛，并对118张初筛问题图复看原尺寸。结果：**506例可继续审核、39例建议停用、55例待主人确认**（对应497/37/54张不重复GT）。校准集为256/23/21例，封存评测集为250/16/34例。
+
+本轮GT清单及逐图原因在 `local/gt_rescreen_20261102/REPORT.md`；照片、原600例抽样清单、旧57张冻结排除名单及历史标注均保留，未自动补抽。当前有效候选数不是600，后续恢复或补抽需另行记录。
+
+Label Studio默认视图为 **GT可用及已提交 · 连续审核**；另有 **GT需处理 · 停用与待确认**、**已提交 · 保留人审结果** 和 **全部样本 · 保留追溯**。已有人工提交即使GT存在疑点也继续可见。每张图显示GT筛查建议与原因。底部可单独选择GT可用、停用或待确认；这不会自动改变缺陷标签。未解决的停用、待确认GT不进入金标准，已有人工标注保留。筛查建议来自AI视觉检查，不冒充人工裁决。视图按AI筛查状态组织；人工GT裁决另存于标注结果，导出优先采用人工裁决。
+
+按主人“保留已经定稿的部分”的要求，`local/human_preserved_20261102T141538Z/` 留存当时全部600任务、38份已定稿和1份草稿的完整快照及SHA-256。编号17虽有GT疑点，其人工标签、描述与已定稿状态原样保留，不自动撤回。GT筛查同步没有写任何人工annotation或draft；后续描述清洗也跳过已定稿任务。金标准导出另外保留 `human_finalized_preserved` 原始定稿记录，GT未解决的条目仍保留在该字段和问题清单中，避免丢失人审成果。
+
+本轮实际导出核验：38份定稿的原始result与保留快照逐份完全一致；36份满足金标准导出条件。另2份只列待处理：任务49087仍有“不确定”选择，任务49090（编号17）GT待确认；二者的已定稿状态和全部内容保持原样。回执为 `local/gt_rescreen_20261102/finalized_preservation_verification.json`。
+
 | 用途 | 编号 | 项目 |
 |---|---|---|
 | 工作流校准 1/3 | 001—100 | [项目 32](http://localhost:8080/projects/32/data/?tab=32&labeling=1) |
@@ -58,6 +68,7 @@
 ```powershell
 python experiments/human_standard_600_20261102/manage.py export --role development
 python experiments/human_standard_600_20261102/manage.py export --role evaluation
+python experiments/human_standard_600_20261102/manage.py preserve-finalized
 ```
 
 默认仅导出校准集。每次导出另存带 UTC 时间戳的 JSON，不覆盖旧导出。只取实际人工 annotation 且“已定稿”的结果，保留真实审核账号/时间、原始输入、来源身份及抽样权重。多份人工提交、命中缺描述等输出任务号和具体 JSON 字段路径，不自动猜测。未提交、待人审、保留疑点和不确定不进入金标准。
@@ -66,7 +77,7 @@ python experiments/human_standard_600_20261102/manage.py export --role evaluatio
 
 ## 代码与检查
 
-`prepare.py` 可复现抽样；存在冻结清单时拒绝重抽。`revisions.py`记录本对话明确的逐张判断。`finalize.py`保留第一遍并应用明确的边界纠正。`labelstudio.py`生成编辑界面及导入。`manage.py sync`只更新本项目任务数据、旧标注 predictions 和参考展示，不修改人工 annotations 或 drafts。`manage.py clean-descriptions`另外清洗已有人工提交和草稿中描述框的标准前缀，其他文字、选择、账号、状态保留；系统会记录修改时间。Label Studio 在保存已提交标注时会删除关联草稿，脚本会按快照通过原生 API 恢复，记录新旧草稿 ID；原创建时间与原内容保存在备份中。逐批更新前另存完整备份，并逐项核对结果仅有指定格式变化。主人开始审核后无需重复运行。
+`prepare.py` 可复现抽样；存在冻结清单时拒绝重抽。`revisions.py`记录本对话明确的逐张判断。`finalize.py`保留第一遍并应用明确的边界纠正。`labelstudio.py`生成编辑界面及导入。`manage.py sync`只更新本项目任务数据、旧标注 predictions 和参考展示，不修改人工 annotations 或 drafts。`manage.py clean-descriptions`只清洗尚未定稿任务的人工提交和草稿中描述框的标准前缀，其他文字、选择、账号、状态保留；系统会记录修改时间。Label Studio 在保存已提交标注时会删除关联草稿，脚本会按快照通过原生 API 恢复，记录新旧草稿 ID；原创建时间与原内容保存在备份中。逐批更新前另存完整备份，并逐项核对结果仅有指定格式变化。主人开始审核后无需重复运行。`preserve-finalized`只读取人审数据并更新导航视图，不写人审结果。
 
 必要检查已完成：600 身份与 1,200 图像引用哈希、实际图像 HTTP、实际任务/预标注逐条比对、原库哈希、金标准零提交导出和内存往返；Python 编译通过。浏览器确认图片、逐类独立选择、可编辑描述、连续审核入口及收起侧栏。曾发现 `single-radio` 给不同类别生成相同 HTML radio name，导致界面只显示最后同值选项；已改为每控件独立单选，实测七类选择同时正确保留。
 
