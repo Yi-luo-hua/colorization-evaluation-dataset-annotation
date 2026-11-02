@@ -9,6 +9,7 @@ from urllib.parse import quote
 import urllib.request
 
 from prepare import HERE, ROOT, sha, write
+from descriptions import description_only
 
 sys.path.insert(0, str(ROOT/'annotation_delivery/train_val_v1_20261015/scripts'))
 from pipeline_credentials import access_token, payload
@@ -43,7 +44,7 @@ def interface():
         choices = ''.join(f'<Choice value="{v}"/>' for v in values)
         cards.append(f'''<View className="category-row"><Header value="{c} · {n}" size="5"/>
 <Choices name="severity_{c}" toName="image" choice="single" showInline="true" required="true">{choices}</Choices>
-<TextArea name="instances_{c}" toName="image" editable="true" transcription="true" rows="2" maxSubmissions="1" placeholder="对象｜等级｜描述；同类多个对象，每项一行。无缺陷可留空。"/>
+<TextArea name="instances_{c}" toName="image" editable="true" transcription="true" rows="2" maxSubmissions="1" placeholder="只填写自然语言描述，不加对象、等级或类别前缀；多条描述可分行。无缺陷可留空。"/>
 <Collapse><Panel value="分级标准"><Text name="guide_{c}" value="{escape(RULES[c], quote=True)}"/></Panel></Collapse></View>''')
     return '''<View><Style>
 .review-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:start}
@@ -81,13 +82,13 @@ def task(sample, revision):
         selected = [d for d in ds if d['id']==cat]
         level = ('命中' if selected else '未命中') if cat=='A' else max((d['severity'] for d in selected), default='无此缺陷')
         results.append({'id':f'r{i}_{cat}', 'from_name':'severity_'+cat, 'to_name':'image','type':'choices','value':{'choices':[level]}})
-        results.append({'id':f't{i}_{cat}', 'from_name':'instances_'+cat, 'to_name':'image','type':'textarea', 'value':{'text':['\n'.join('｜'.join([d['object'], d['severity'] or '不分级', d['description']]) for d in selected)]}})
+        results.append({'id':f't{i}_{cat}', 'from_name':'instances_'+cat, 'to_name':'image','type':'textarea', 'value':{'text':['\n'.join(description_only(d['description']) for d in selected)]}})
     results.append({'id':f's{i}', 'from_name':'review_status','to_name':'image','type':'choices','value':{'choices':['待人审']}})
     role = '校准' if sample['role']=='development' else '封存评测'
     return {'data':{'review_index':i,'batch':sample['batch'],'role':sample['role'],
         'source_sample_key':sample['source_sample_key'],
         'sample_title':f"{role} · 第{sample['batch']}批 · {i:03d}/600 · {sample['source_sample_key']}",
-        'review_info':'旧工作流标注为可编辑基底；洛熙按11.2标准的新标注仅供左侧参考。已有人工提交/草稿继续保留。每类按钮为该类最高等级；文本按“对象｜等级｜描述”逐项保存。',
+        'review_info':'旧工作流标注为可编辑基底；洛熙11.2新标注仅供左侧参考。描述框只保留自然语言描述；等级由该类按钮记录，多条描述可分行。',
         'image':'/data/local-files/?d='+quote(sample['record']['model_path'],safe='/'),
         'reference':'/data/local-files/?d='+quote(sample['record']['gt_path'],safe='/'),
         'uncertainty_note':('新标注参考疑点类别：'+ '、'.join(revision['uncertain_categories'])+'。' if revision.get('uncertain_categories') else '')+(revision['uncertainty_note'] or '新标注未另列疑点，仍需人工逐类核验。'),

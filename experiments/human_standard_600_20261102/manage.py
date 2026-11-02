@@ -7,6 +7,7 @@ import json
 
 from prepare import HERE, ROOT, sha, write
 from labelstudio import BASE, BASELINE_VERSION, NAMES, access_token, api, interface, task
+from descriptions import clean_result, description_only
 
 
 def material():
@@ -23,7 +24,7 @@ def details(batch, token):
     return project, rows
 
 
-def sync():
+def sync(clean_human=False):
     manifest, revisions = material()
     token = access_token(BASE)
     receipts = []
@@ -53,12 +54,47 @@ def sync():
             prediction = row['predictions'][0]
             if any(prediction.get(k)!=fresh['predictions'][0][k] for k in ('result','model_version')):
                 api(BASE,token,f'/api/predictions/{prediction["id"]}/','PATCH',fresh['predictions'][0])
+            changed = {'annotations':0,'drafts':0}
+            restored_drafts = {}
+            if clean_human:
+                for item in row['annotations']:
+                    cleaned = clean_result(item['result'])
+                    if cleaned!=item['result']:
+                        api(BASE,token,f'/api/annotations/{item["id"]}/','PATCH',{'result':cleaned})
+                        changed['annotations'] += 1
+                # Label Studio deletes associated drafts when an annotation is
+                # saved. Restore their content through its native draft API.
+                remaining = {d['id'] for d in api(BASE,token,f'/api/tasks/{row["id"]}/').get('drafts',[])}
+                for item in row.get('drafts',[]):
+                    cleaned = clean_result(item['result'])
+                    if item['id'] not in remaining:
+                        path = f'/api/tasks/{row["id"]}/'+(f'annotations/{item["annotation"]}/' if item.get('annotation') else '')+'drafts'
+                        data = {k:item[k] for k in ('lead_time','was_postponed')}
+                        data.update(result=cleaned,import_id=item['id'])
+                        new = api(BASE,token,path,'POST',data)
+                        restored_drafts[item['id']] = new['id']
+                    elif cleaned!=item['result']:
+                        api(BASE,token,f'/api/drafts/{item["id"]}/','PATCH',{'result':cleaned})
+                    if cleaned!=item['result']:
+                        changed['drafts'] += 1
             stored = api(BASE,token,f'/api/tasks/{row["id"]}/')
             assert stored['data']==fresh['data']
             assert stored['predictions'][0]['result']==fresh['predictions'][0]['result']
             assert stored['predictions'][0]['model_version']==BASELINE_VERSION
-            assert stored['annotations']==before_annotations[row['id']], 'Human annotation changed unexpectedly'
-            assert stored.get('drafts',[])==before_drafts[row['id']], 'Human draft changed unexpectedly'
+            for field, before in [('annotations',before_annotations[row['id']]),('drafts',before_drafts[row['id']])]:
+                actual = {item['id']:item for item in stored.get(field,[])}
+                mapped_id = lambda item: restored_drafts.get(item['id'],item['id']) if field=='drafts' else item['id']
+                assert set(actual)=={mapped_id(item) for item in before}
+                for item in before:
+                    saved = actual[mapped_id(item)]
+                    expected_result = clean_result(item['result']) if clean_human else item['result']
+                    assert saved['result']==expected_result
+                    for key in ('completed_by','user','was_cancelled','created_at','lead_time','annotation'):
+                        if key=='created_at' and field=='drafts' and item['id'] in restored_drafts:
+                            continue
+                        assert saved.get(key)==item.get(key), (field,item['id'],key)
+            stored['_format_cleaned'] = changed
+            stored['_restored_drafts'] = restored_drafts
             return stored
         with ThreadPoolExecutor(max_workers=5) as pool:
             stored = list(pool.map(update,rows))
@@ -81,8 +117,11 @@ def sync():
         (folder/'interface.xml').write_text(interface(),encoding='utf-8')
         receipt = {'batch':batch,'project_id':pid,'url':f'http://localhost:8080/projects/{pid}/data/',
             'tasks':len(stored),'predictions':sum(len(x['predictions']) for x in stored),
-            'human_annotations':sum(len(x['annotations']) for x in stored),'human_annotations_unchanged':True,
-            'human_drafts':sum(len(x.get('drafts',[])) for x in stored),'human_drafts_unchanged':True,
+            'human_annotations':sum(len(x['annotations']) for x in stored),'human_decisions_preserved':True,
+            'human_drafts':sum(len(x.get('drafts',[])) for x in stored),
+            'format_cleaned':{f:sum(x['_format_cleaned'][f] for x in stored) for f in ('annotations','drafts')},
+            'restored_draft_ids':{str(x['id']):x['_restored_drafts'] for x in stored if x['_restored_drafts']},
+            'description_format':'plain_natural_language',
             'editable_baseline':BASELINE_VERSION,'ai_revision_display':'read_only_reference','backup':str(backup/f'batch_{batch:02d}.json'),
             'uncertain_samples':sum(bool(x['data']['ai_revision']['uncertain_categories']) for x in stored),
             'payload_verified':True,'view_ids':[v['id'] for v in views]}
@@ -126,26 +165,13 @@ def parse_final(annotation, sample):
         lines = [line.strip() for value in text for line in value.splitlines() if line.strip()]
         if not lines:
             raise ValueError(f'$.result[from_name=instances_{c}].value.text: 命中缺少对象与描述')
-        items = []
-        for j,line in enumerate(lines):
-            parts = line.split('｜',2)
-            if len(parts)!=3 or not all(parts):
-                raise ValueError(f'$.result[from_name=instances_{c}].value.text[{j}]: 应为“对象｜等级｜描述”')
-            obj,item_level,description = parts
-            if c=='A':
-                item_level = ''
-            elif len(lines)==1:
-                # A single instance uses the explicit button selection, so a
-                # severity-only human edit needs no duplicate text edit.
-                item_level = level
-            elif item_level not in ['L1','L2','L3']:
-                raise ValueError(f'$.result[from_name=instances_{c}].value.text[{j}]: 等级非法')
-            items.append({'id':c,'severity':item_level,'object':obj,'description':description})
-        if c!='A' and len(items)>1 and max(d['severity'] for d in items)!=level:
-            raise ValueError(f'$.result[from_name=severity_{c}]: 按钮须等于同类多实例最高等级')
-        ds.extend(items)
+        # The UI records one severity per category. Preserve every description,
+        # without inventing object names or unrecorded per-instance severities.
+        ds.append({'id':c,'severity':'' if c=='A' else level,'object':'',
+            'description':'\n'.join(description_only(line) for line in lines)})
     return {'review_index':sample['review_index'],'source_sample_key':sample['source_sample_key'],
         'role':sample['role'],'record':sample['record'],'defects':ds,
+        'defect_granularity':'category','description_format':'plain_natural_language',
         'category_checks':{c:{'status':('not_applicable' if selected['A']=='命中' and c!='A' else 'hit' if any(d['id']==c for d in ds) else 'clear')} for c in NAMES},
         'sampling':{k:sample[k] for k in ['stratum','weight','inclusion_probability']},
         'original_defects':sample['original_defects'],
@@ -181,7 +207,7 @@ def export(role):
     folder = HERE/('local/development' if role=='development' else 'local/sealed_evaluation')
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     output = folder/f'human_gold_{stamp}.json'
-    write(output,{'schema':'human_standard_600_gold_v1','role':role,
+    write(output,{'schema':'human_standard_600_gold_v2','role':role,
         'reference_status':'human_finalized' if final else 'no_human_finalized_samples',
         'standard_sha256':manifest['standard_sha256'],'manifest_sha256':sha(HERE/'local/manifest.json'),
         'reviews':sorted(final,key=lambda x:x['review_index']),'counts':dict(counts),'issues':issues})
@@ -192,7 +218,11 @@ if __name__=='__main__':
     p=argparse.ArgumentParser()
     sub=p.add_subparsers(dest='command',required=True)
     sub.add_parser('sync')
+    sub.add_parser('clean-descriptions')
     e=sub.add_parser('export')
     e.add_argument('--role',choices=['development','evaluation'],default='development')
     args=p.parse_args()
-    sync() if args.command=='sync' else export(args.role)
+    if args.command in ('sync','clean-descriptions'):
+        sync(clean_human=args.command=='clean-descriptions')
+    else:
+        export(args.role)
