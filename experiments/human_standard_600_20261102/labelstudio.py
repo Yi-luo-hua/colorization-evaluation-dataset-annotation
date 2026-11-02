@@ -1,4 +1,4 @@
-"""Editable AI drafts, separate human submissions, provenance-preserving export."""
+"""Editable legacy baseline, read-only AI reference, separate human submissions."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from html import escape
@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT/'annotation_delivery/train_val_v1_20261015/scripts')
 from pipeline_credentials import access_token, payload
 
 BASE = 'http://127.0.0.1:8080'
+BASELINE_VERSION = 'Legacy_workflow_baseline_v1'
 
 
 def api(base, token, path, method='GET', data=None):
@@ -49,37 +50,36 @@ def interface():
 .review-pictures{position:sticky;top:8px}.picture-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .edit-panel{max-height:78vh;overflow:auto;padding-right:10px}.category-row{border-bottom:1px solid #ddd;padding:4px 4px 8px;margin-bottom:8px}
 .category-row h5{margin:3px 0}.review-banner{padding:8px;background:#eef5fa;border-radius:4px;margin-bottom:8px}
+.ai-reference{max-height:30vh;overflow:auto;background:#f5f8fc;padding:8px;margin-top:8px}.ai-reference table{width:100%;border-collapse:collapse}.ai-reference td,.ai-reference th{border:1px solid #ddd;padding:4px;text-align:left}
 @media(max-width:700px){.review-layout{display:block}.review-pictures{position:static}.edit-panel{max-height:none}}
 </Style><Header value="$sample_title" size="4"/>
 <View className="review-banner"><Text name="review_info" value="$review_info"/></View>
 <View className="review-layout"><View className="review-pictures"><View className="picture-pair">
 <View><Header value="GT · B/D/E/F参考" size="5"/><Image name="reference" value="$reference" zoom="true" maxWidth="100%"/></View>
 <View><Header value="待评价生成图 · C只看本图" size="5"/><Image name="image" value="$image" zoom="true" maxWidth="100%"/></View>
-</View><Text name="uncertainty" value="$uncertainty_note"/>
+</View><View className="ai-reference"><Header value="洛熙新标注 · 只读参考" size="5"/><HyperText name="ai_reference" value="$ai_reference_html"/><Text name="uncertainty" value="$uncertainty_note"/></View>
 <Collapse><Panel value="旧工作流原标签（只读追溯）"><HyperText name="original" value="$original_html"/></Panel>
 <Panel value="完整11.2标准"><HyperText name="standard" value="$standard_html"/></Panel></Collapse>
-<Header value="修改右侧后选择已定稿再提交；疑点请选择保留疑点。AI草稿不会自动成为人工金标准。" size="6"/>
-</View><View className="edit-panel">''' + ''.join(cards) + '''
+<Header value="右侧以旧标注为基底；修改后选择已定稿再提交，疑点请选择保留疑点。" size="6"/>
+</View><View className="edit-panel"><Header value="旧工作流标注基底 · 在此修改" size="5"/>''' + ''.join(cards) + '''
 <Header value="人工订正状态" size="5"/><Choices name="review_status" toName="image" choice="single-radio" showInline="true" required="true"><Choice value="待人审"/><Choice value="已定稿"/><Choice value="保留疑点"/></Choices>
 <TextArea name="review_note" toName="image" editable="true" transcription="true" rows="3" maxSubmissions="1" placeholder="改判理由或疑点（可选）"/>
 </View></View></View>'''
 
 
-def table(defects):
+def table(defects, empty='旧工作流未列缺陷，仍需逐类检查。'):
     if not defects:
-        return '<p>旧工作流未列缺陷，仍需逐类检查。</p>'
+        return '<p>'+escape(empty)+'</p>'
     return '<table><tr><th>类别</th><th>等级</th><th>对象</th><th>描述</th></tr>'+''.join('<tr>'+''.join('<td>'+escape(str(d.get(k,'')))+'</td>' for k in ['id','severity','object','description'])+'</tr>' for d in defects)+'</table>'
 
 
 def task(sample, revision):
     i = sample['review_index']
-    ds = revision['defects']
+    ds = sample['original_defects']
     results = []
     for cat in NAMES:
         selected = [d for d in ds if d['id']==cat]
         level = ('命中' if selected else '未命中') if cat=='A' else max((d['severity'] for d in selected), default='无此缺陷')
-        if cat in revision.get('uncertain_categories',[]):
-            level = '不确定'
         results.append({'id':f'r{i}_{cat}', 'from_name':'severity_'+cat, 'to_name':'image','type':'choices','value':{'choices':[level]}})
         results.append({'id':f't{i}_{cat}', 'from_name':'instances_'+cat, 'to_name':'image','type':'textarea', 'value':{'text':['\n'.join('｜'.join([d['object'], d['severity'] or '不分级', d['description']]) for d in selected)]}})
     results.append({'id':f's{i}', 'from_name':'review_status','to_name':'image','type':'choices','value':{'choices':['待人审']}})
@@ -87,16 +87,17 @@ def task(sample, revision):
     return {'data':{'review_index':i,'batch':sample['batch'],'role':sample['role'],
         'source_sample_key':sample['source_sample_key'],
         'sample_title':f"{role} · 第{sample['batch']}批 · {i:03d}/600 · {sample['source_sample_key']}",
-        'review_info':'11.2标准 · 本对话AI看图修订草稿 · 待主人逐类订正。每类按钮为该类最高等级；文本按“对象｜等级｜描述”逐项保存。',
+        'review_info':'旧工作流标注为可编辑基底；洛熙按11.2标准的新标注仅供左侧参考。已有人工提交/草稿继续保留。每类按钮为该类最高等级；文本按“对象｜等级｜描述”逐项保存。',
         'image':'/data/local-files/?d='+quote(sample['record']['model_path'],safe='/'),
         'reference':'/data/local-files/?d='+quote(sample['record']['gt_path'],safe='/'),
-        'uncertainty_note':revision['uncertainty_note'] or 'AI未另列疑点，仍需人工逐类核验。',
+        'uncertainty_note':('新标注参考疑点类别：'+ '、'.join(revision['uncertain_categories'])+'。' if revision.get('uncertain_categories') else '')+(revision['uncertainty_note'] or '新标注未另列疑点，仍需人工逐类核验。'),
         'original_html':table(sample['original_defects']),
+        'ai_reference_html':table(revision['defects'], '洛熙新标注暂未列缺陷；仍需人工核验。'),
         'standard_html':'<br/>'.join('<b>'+c+' '+NAMES[c]+'</b>：'+RULES[c] for c in NAMES),
         'original_defects':sample['original_defects'],'ai_revision':revision,
         'sampling':{k:sample[k] for k in ['stratum','weight','inclusion_probability']},
         'source_record':sample['record']},
-        'predictions':[{'model_version':'Codex_visual_11.2_v1', 'result':results}]}
+        'predictions':[{'model_version':BASELINE_VERSION, 'result':results}]}
 
 
 def import_batch(batch):
@@ -115,8 +116,8 @@ def import_batch(batch):
     else:
         role = '校准集' if batch<=3 else '封存评测集'
         project = api(BASE,token,'/api/projects/','POST',{'title':f'11.2人工标准 · {role} · {batch}/6 · 100张',
-            'description':'600张分层抽样；AI修订仅为prediction，人工提交且已定稿后才可作金标准。评测集不得用于修改工作流。',
-            'label_config':interface(),'show_collab_predictions':True,'model_version':'Codex_visual_11.2_v1','show_skip_button':True,
+            'description':'600张分层抽样；旧标注为编辑基底，新AI标注仅供参考。人工提交且已定稿后才可作金标准。评测集不得用于修改工作流。',
+            'label_config':interface(),'show_collab_predictions':True,'show_skip_button':True,
             'show_annotation_history':True,'evaluate_predictions_automatically':False})
         write(project_file,{'id':project['id'],'title':project['title']})
     pid = project['id']
@@ -127,6 +128,7 @@ def import_batch(batch):
     pending = [t for t in tasks if t['data']['source_sample_key'] not in keys]
     if pending:
         write(folder/'import_response.json',api(BASE,token,f'/api/projects/{pid}/import','POST',pending))
+    api(BASE,token,f'/api/projects/{pid}/','PATCH',{'model_version':BASELINE_VERSION})
     response = api(BASE,token,f'/api/tasks?project={pid}&page_size=100')
     listing = response.get('tasks',response.get('results',[])) if isinstance(response,dict) else response
     details = [api(BASE,token,f'/api/tasks/{t["id"]}/') for t in listing]
@@ -135,6 +137,7 @@ def import_batch(batch):
     for t in details:
         assert t['data']==expected[t['data']['source_sample_key']]['data']
         assert len(t['predictions'])==1 and t['predictions'][0]['result']==expected[t['data']['source_sample_key']]['predictions'][0]['result']
+        assert t['predictions'][0]['model_version']==BASELINE_VERSION
     headers = {'Authorization':('Bearer' if payload(token).get('token_type')=='access' else 'Token')+' '+token}
     def check_image(url):
         with urllib.request.urlopen(urllib.request.Request(BASE+url, headers=headers),timeout=30) as response:
