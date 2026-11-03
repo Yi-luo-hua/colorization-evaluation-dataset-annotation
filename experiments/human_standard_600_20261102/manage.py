@@ -232,7 +232,7 @@ def parse_final(annotation, sample):
             continue
         text = results.get('instances_'+c,{}).get('value',{}).get('text',[])
         lines = [line.strip() for value in text for line in value.splitlines() if line.strip()]
-        if not lines:
+        if not lines and c!='A':
             raise ValueError(f'$.result[from_name=instances_{c}].value.text: 命中缺少对象与描述')
         # The UI records one severity per category. Preserve every description,
         # without inventing object names or unrecorded per-instance severities.
