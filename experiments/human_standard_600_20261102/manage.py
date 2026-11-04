@@ -219,6 +219,8 @@ def parse_final(annotation, sample):
     if status!='已定稿':
         return None
     gt = effective_quality(annotation,sample)
+    if gt['status']=='exclude':
+        raise ValueError('$.gt_quality: GT已停用，不进入金标准；人工定稿完整保留')
     if gt['status']!='keep':
         raise ValueError(f'$.gt_quality: GT仍为{gt["status"]}，须先裁决GT可用性，不进入金标准')
     selected = {c:choice('severity_'+c) for c in NAMES}
@@ -252,7 +254,7 @@ def parse_final(annotation, sample):
 def export(role):
     manifest,_ = material()
     token = access_token(BASE)
-    final,preserved,issues,counts = [],[],[],Counter()
+    final,preserved,issues,excluded,counts = [],[],[],[],Counter()
     selected = {s['source_sample_key']:s for s in manifest['samples'] if s['role']==role}
     for batch in ([1,2,3] if role=='development' else [4,5,6]):
         _,rows = details(batch,token)
@@ -268,6 +270,12 @@ def export(role):
                 continue
             if len(submitted)!=1:
                 issues.append({'task_id':row['id'],'path':'$.annotations','reason':'存在多份有效人工提交，须明确裁决，不自动选择'})
+                continue
+            quality = effective_quality(submitted[0],sample)
+            if is_final(submitted[0]) and quality['status']=='exclude':
+                counts['submitted_gt_excluded'] += 1
+                excluded.append({'task_id':row['id'],'review_index':sample['review_index'],
+                    'source_sample_key':sample['source_sample_key'],'gt_quality':quality})
                 continue
             try:
                 result = parse_final(submitted[0],sample)
@@ -288,7 +296,7 @@ def export(role):
         'reviews':sorted(final,key=lambda x:x['review_index']),
         'human_finalized_preserved':preserved,
         'preservation_note':'All finalized human submissions retained here, including unresolved GT cases; only reviews are gold-eligible.',
-        'counts':dict(counts),'issues':issues})
+        'counts':dict(counts),'gt_excluded':excluded,'issues':issues})
     print(json.dumps({'role':role,'human_finalized':len(final),'counts':dict(counts),'issues':len(issues),'output':str(output)},ensure_ascii=False))
 
 

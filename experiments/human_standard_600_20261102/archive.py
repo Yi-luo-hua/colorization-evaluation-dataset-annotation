@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 from datetime import datetime, timezone
 import json
+from pathlib import Path
 
 from manage import material, details, parse_final, is_final
 from labelstudio import BASE, access_token, api
@@ -10,18 +11,23 @@ from prepare import HERE, sha, write
 from gt_review import effective_quality, RUN as GT_RUN
 
 
-def archive(batch):
+def archive(batch,snapshot=None):
     manifest,_ = material()
-    token = access_token(BASE)
-    project,rows = details(batch,token)
+    if snapshot:
+        raw = json.loads(snapshot.read_text(encoding='utf-8'))
+        project,rows = raw['project'],raw['tasks']
+    else:
+        token = access_token(BASE)
+        project,rows = details(batch,token)
+        raw = {'project':api(BASE,token,f'/api/projects/{project["id"]}/'),
+            'captured_at':datetime.now(timezone.utc).isoformat(),'tasks':rows}
     folder = HERE/f'local/batch_{batch:02d}'/('human_archive_'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'))
     folder.mkdir()
-    write(folder/'raw_snapshot.json',{'project':api(BASE,token,f'/api/projects/{project["id"]}/'),
-        'captured_at':datetime.now(timezone.utc).isoformat(),'tasks':rows})
+    write(folder/'raw_snapshot.json',raw)
     samples = {s['source_sample_key']:s for s in manifest['samples'] if s['batch']==batch}
     assert len(rows)==100 and {r['data']['source_sample_key'] for r in rows}==set(samples)
     counts = Counter(tasks=len(rows))
-    final,preserved,issues = [],[],[]
+    final,preserved,issues,excluded = [],[],[],[]
     for row in rows:
         sample = samples[row['data']['source_sample_key']]
         submitted = [a for a in row['annotations'] if not a.get('was_cancelled')]
@@ -34,6 +40,11 @@ def archive(batch):
         if len(submitted)!=1:
             issues.append({**identity,'reason':'$.annotations: 未提交或有多份有效提交，需明确裁决'})
             continue
+        quality = effective_quality(submitted[0],sample)
+        if is_final(submitted[0]) and quality['status']=='exclude':
+            reason = '人工裁决GT停用，优先于AI筛查建议。' if quality['human_decision']=='GT停用' else quality['screening']['reason']
+            excluded.append({**identity,'gt_quality':quality,'reason':reason})
+            continue
         try:
             result = parse_final(submitted[0],sample)
             if result is None:
@@ -43,8 +54,11 @@ def archive(batch):
         except ValueError as exc:
             issues.append({**identity,'reason':str(exc)})
     receipt = {'batch':batch,'role':'development' if batch<=3 else 'evaluation','counts':dict(counts),
-        'gold_eligible':len(final),'issues':issues,'human_endpoint_writes':0,
+        'gold_eligible':len(final),'gt_excluded':excluded,'issues':issues,'human_endpoint_writes':0,
         'raw_snapshot_sha256':sha(folder/'raw_snapshot.json')}
+    if snapshot:
+        receipt['source_snapshot'] = str(snapshot.resolve())
+        receipt['source_snapshot_sha256'] = sha(snapshot)
     write(folder/'human_gold.json',{'schema':'human_standard_600_gold_v2',**receipt,
         'standard_sha256':manifest['standard_sha256'],'manifest_sha256':sha(HERE/'local/manifest.json'),
         'gt_screening_sha256':sha(GT_RUN/'report.json'),
@@ -55,17 +69,25 @@ def archive(batch):
     write(folder/'receipt.json',receipt)
     lines = [f'# 第{batch}批人工审核归档','',
         f"共{len(rows)}张，已有人工提交{counts['submitted_tasks']}张，已定稿{counts['finalized']}份，可导出金标准{len(final)}张。",
+        f'GT已停用{len(excluded)}张（已完成处置），待处理{len(issues)}张。沿用建议停用即执行停用，不要求重复确认。',
         '','全部人工提交及草稿完整留存于raw_snapshot.json，未写入或修改任何人审结果。',
         'A类命中不分级并熔断其他类别；描述可留空，导出不补造文字。',
         '', '## 待处理项','', '| 编号 | 任务 | 原因 |','|---|---|---|']
     for item in issues:
         url = f'http://localhost:8080/projects/{project["id"]}/data/?tab={project["id"]}&labeling=1&task={item["task_id"]}'
         lines.append(f'| {item["review_index"]} | [{item["task_id"]}]({url}) | {item["reason"]} |')
+    lines += ['', '## GT已停用（已完成处置）','', '| 编号 | 原因 |','|---|---|']
+    for item in excluded:
+        lines.append(f'| {item["review_index"]} | {item["reason"]} |')
     (folder/'REPORT.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
-    print(json.dumps({'archive':str(folder),**receipt},ensure_ascii=False),flush=True)
+    print(json.dumps({'archive':str(folder),'counts':dict(counts),'gold_eligible':len(final),
+        'gt_excluded':[r['review_index'] for r in excluded],
+        'issues':issues,'human_endpoint_writes':0},ensure_ascii=False),flush=True)
 
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch',type=int,choices=range(1,7),required=True)
-    archive(parser.parse_args().batch)
+    parser.add_argument('--snapshot',type=Path,help='Rebuild reports from an existing frozen raw snapshot, without contacting Label Studio')
+    args = parser.parse_args()
+    archive(args.batch,args.snapshot)
