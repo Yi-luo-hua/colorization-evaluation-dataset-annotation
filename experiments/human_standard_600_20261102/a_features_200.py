@@ -22,7 +22,11 @@ def features(path):
     mask = (chroma>10).astype(np.uint8)
     n,_,stats,_ = cv2.connectedComponentsWithStats(mask,connectivity=8)
     q = np.percentile(chroma,[50,95,99])
+    var_c = float(np.var(chroma,dtype=np.float64))
+    var_ab = float(np.var(ab,axis=(0,1),dtype=np.float64).sum())
     return {'mean_C':float(chroma.mean()),'median_C':float(q[0]),'p95_C':float(q[1]),
+        'var_C':var_c,'std_C':float(np.sqrt(var_c)),
+        'var_a_plus_var_b':var_ab,'std_ab':float(np.sqrt(var_ab)),
         'p99_C':float(q[2]),'max_C':float(chroma.max()),
         'fraction_C_gt5':float((chroma>5).mean()),'fraction_C_gt10':float(mask.mean()),
         'fraction_C_gt20':float((chroma>20).mean()),
@@ -57,10 +61,19 @@ def main():
     p99_ceiling = max(r['features']['p99_C'] for r in positives)
     mean_overlap = [r['review_index'] for r in rows if not r['human_A'] and r['features']['mean_C']<=mean_ceiling]
     joint_overlap = [r['review_index'] for r in rows if not r['human_A'] and r['features']['mean_C']<=mean_ceiling and r['features']['p99_C']<=p99_ceiling]
+    variance_comparisons = {}
+    for key in ['var_C','var_a_plus_var_b']:
+        ceiling = max(r['features'][key] for r in positives)
+        overlap = [r['review_index'] for r in rows if not r['human_A']
+            and r['features']['mean_C']<=mean_ceiling and r['features'][key]<=ceiling]
+        variance_comparisons[key] = {'positive_maximum':ceiling,
+            'non_A_within_mean_and_variance_envelope':overlap,
+            'qualifier':'Descriptive fitting on the same 10 positive anchors; not held-out evaluation.'}
     result = {'human_A_authority':'All ten human A decisions are accepted positive anchors; earlier AI rejection suggestions withdrawn.',
         'method':'OpenCV float32 RGB [0,1] to CIELAB; C*=sqrt(a*^2+b*^2). Original generated images and GT are unchanged.',
         'sources':[{'path':str(p),'sha256':sha(p)} for p in SOURCES],
         'counts':{k:len(v) for k,v in groups.items()},'ranges':ranges,
+        'mean_plus_variance_descriptive_comparison':variance_comparisons,
         'descriptive_positive_envelope_NOT_VALIDATED_THRESHOLDS':{'max_human_A_mean_C':mean_ceiling,
             'max_human_A_p99_C':p99_ceiling,'non_A_also_below_A_mean_ceiling':mean_overlap,
             'non_A_also_below_both_ceilings':joint_overlap},'records':rows,
@@ -70,7 +83,8 @@ def main():
     write(folder/'chroma_features.json',result)
     print(json.dumps({'counts':result['counts'],'A_features':[{'index':r['review_index'],**r['features']} for r in positives],
         'E2_L3':[r for r in groups['non_A_E2_L3']],
-        'A_ranges':ranges['A'],'envelope':result['descriptive_positive_envelope_NOT_VALIDATED_THRESHOLDS']},ensure_ascii=True))
+        'A_ranges':ranges['A'],'envelope':result['descriptive_positive_envelope_NOT_VALIDATED_THRESHOLDS'],
+        'variance_comparisons':variance_comparisons},ensure_ascii=True))
 
 
 if __name__=='__main__': main()
