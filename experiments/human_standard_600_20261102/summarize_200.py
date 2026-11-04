@@ -87,8 +87,9 @@ def summarize():
         'overview':overview,'changes':changes,'categories':table,'max_severity_per_image':maxima,
         'common_combinations':combinations.most_common(),'segments':segments,
         'changed_examples':changed_examples,
-        'legacy_A_wording_indices':[r['review_index'] for r in rows if 'A' in levels(r['defects'])
+        'inherited_A_template_indices':[r['review_index'] for r in rows if 'A' in levels(r['defects'])
             and any('允许少量局部留色' in d['description'] for d in r['defects'])],
+        'A_interpretation':'Human A decisions are authoritative; faint whole-image tint and small residual color are compatible with A. Inherited wording is not a pending label error. See A_CALIBRATION_20261104.md.',
         'qualifications':['Counts are per image/category, with original multiple instances collapsed to maximum severity.',
             'A overrides other categories; absence under A is not a negative category judgment.',
             'Stratified, unweighted calibration subset; rates are not population rates or independent workflow evaluation.',

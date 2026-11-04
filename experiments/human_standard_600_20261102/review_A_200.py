@@ -21,6 +21,10 @@ DECISIONS = {
 
 
 def audit():
+    override = HERE/'local/A_gray_review_20261104/human_override.json'
+    if override.exists():
+        print('Historical AI rejection suggestions are withdrawn. All ten human A labels are authoritative; see A_CALIBRATION_20261104.md.')
+        return
     records = []
     for source in SOURCES:
         for row in json.loads(source.read_text(encoding='utf-8'))['reviews']:
