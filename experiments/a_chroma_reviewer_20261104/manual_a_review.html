@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A 缺色人工审核</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui; background: #202324; color: #f2f2f2; }
+  body { margin: 0 auto; max-width: 1440px; padding: 16px; }
+  header, nav, .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  header { justify-content: space-between; }
+  nav { margin: 12px 0; }
+  h1 { font-size: 22px; margin: 0; }
+  button, select, a.control { font: inherit; padding: 7px 12px; border: 1px solid #697174; border-radius: 5px;
+    color: inherit; background: #313638; text-decoration: none; }
+  button, select { cursor: pointer; }
+  button:disabled { opacity: .45; cursor: default; }
+  button[aria-pressed="true"] { background: #2b6156; border-color: #94d6c4; }
+  [hidden] { display: none !important; }
+  #frame { min-height: 240px; height: min(62vh, 680px); display: grid; grid-template-rows: minmax(0, 1fr);
+    place-items: center; background: #808080; }
+  #frame img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; min-height: 0; }
+  #sample, #model { overflow-wrap: anywhere; }
+  .actions { margin: 12px 0; }
+  .muted { color: #c2cbce; }
+  #empty { color: #101415; }
+  kbd { border: 1px solid #7d8586; border-radius: 3px; padding: 1px 4px; font: .85em monospace; }
+</style>
+<header>
+  <h1>A 缺色人工审核</h1>
+  <span id="progress" role="status"></span>
+  <button id="export">导出我的判断</button>
+</header>
+<nav aria-label="浏览与筛选">
+  <select id="scope" aria-label="审核范围">
+    <option value="A">模型判 A</option><option value="all">全部样本</option><option value="not_A">模型判非 A</option>
+  </select>
+  <button id="prev">上一张 <kbd>←</kbd></button><button id="next">下一张 <kbd>→</kbd></button>
+  <button id="pair" aria-pressed="false">灰阶对照 <kbd>空格</kbd></button>
+  <a id="original" class="control" target="_blank" rel="noopener">打开原尺寸图</a>
+</nav>
+<p id="sample"></p>
+<div id="frame"><img id="image" alt="生成图"><span id="empty" hidden>当前范围没有可审核的样本</span></div>
+<div class="actions" aria-label="人工判定">
+  <button data-label="A">A <kbd>1</kbd></button>
+  <button data-label="not_A">非 A <kbd>2</kbd></button>
+  <button data-label="unsure">待定 <kbd>3</kbd></button>
+  <button id="clear">撤销本张判断</button>
+  <button id="reveal" aria-pressed="false">显示模型理由</button>
+  <span id="judgment" class="muted" role="status"></span>
+</div>
+<p id="model" hidden></p>
+<p id="storage" class="muted" role="status">判断会保存在当前浏览器。导出可留一份独立记录。</p>
+<script>
+const data = /* REVIEW_DATA */;
+const get = id => document.getElementById(id);
+const storageKey = `a-manual-review:${data.shortlist}`;
+const labels = { A: 'A', not_A: '非 A', unsure: '待定' };
+let decisions = {};
+try {
+  decisions = JSON.parse(localStorage.getItem(storageKey) || '{}');
+} catch {
+  get('storage').textContent = '当前浏览器无法读取保存记录，请用导出保留本次判断。';
+}
+let rows = [];
+let index = 0;
+let paired = false;
+let reveal = false;
+const buttons = [...document.querySelectorAll('[data-label]')];
+
+function refresh() {
+  const row = rows[index];
+  const reviewed = rows.filter(item => decisions[item.id]).length;
+  get('progress').textContent = `本范围已审 ${reviewed}/${rows.length} · 全部已审 ${Object.keys(decisions).length}/${data.rows.length}`;
+  get('sample').textContent = row ? `${index + 1}/${rows.length} · ${row.id} · ${row.key}` : '';
+  get('image').hidden = !row;
+  get('empty').hidden = !!row;
+  get('original').hidden = !row;
+  get('prev').disabled = index === 0;
+  get('next').disabled = index >= rows.length - 1;
+  get('pair').disabled = !row;
+  get('reveal').disabled = !row;
+  get('clear').disabled = !row || !decisions[row.id];
+  get('pair').setAttribute('aria-pressed', paired);
+  get('reveal').setAttribute('aria-pressed', reveal);
+  get('model').hidden = !row || !reveal;
+  for (const button of buttons) {
+    button.disabled = !row;
+    button.setAttribute('aria-pressed', !!row && decisions[row.id] === button.dataset.label);
+  }
+  if (!row) return;
+  const source = paired ? row.pair : row.image;
+  if (get('image').getAttribute('src') !== source) get('image').src = source;
+  get('image').alt = paired ? '左侧生成图，右侧同图灰阶对照' : '生成图';
+  get('original').href = row.image;
+  get('model').textContent = `模型判定 ${labels[row.label] || row.label}。${row.evidence}`;
+  get('judgment').textContent = decisions[row.id] ? `我的判断 · ${labels[decisions[row.id]]}` : '尚未判断';
+}
+
+function changeScope() {
+  const scope = get('scope').value;
+  rows = data.rows.filter(row => scope === 'all' || row.label === scope);
+  if (scope === 'all') rows.sort((left, right) => left.id.localeCompare(right.id));
+  const first = rows.findIndex(row => !decisions[row.id]);
+  index = first === -1 ? 0 : first;
+  refresh();
+}
+
+function save() {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(decisions));
+    get('storage').textContent = '已自动保存到当前浏览器。';
+  } catch {
+    get('storage').textContent = '当前浏览器无法自动保存，请导出保留判断。';
+  }
+}
+
+function decide(label) {
+  const row = rows[index];
+  if (!row) return;
+  decisions[row.id] = label;
+  save();
+  const after = rows.findIndex((item, position) => position > index && !decisions[item.id]);
+  const next = after === -1 ? rows.findIndex(item => !decisions[item.id]) : after;
+  if (next !== -1) index = next;
+  refresh();
+}
+
+function move(direction) {
+  index = Math.max(0, Math.min(rows.length - 1, index + direction));
+  refresh();
+}
+
+for (const option of get('scope').options) {
+  const count = data.rows.filter(row => option.value === 'all' || row.label === option.value).length;
+  option.textContent += `（${count}）`;
+}
+for (const button of buttons) button.onclick = () => decide(button.dataset.label);
+get('scope').onchange = changeScope;
+get('prev').onclick = () => move(-1);
+get('next').onclick = () => move(1);
+get('pair').onclick = () => { paired = !paired; refresh(); };
+get('reveal').onclick = () => { reveal = !reveal; refresh(); };
+get('clear').onclick = () => { delete decisions[rows[index].id]; save(); refresh(); };
+get('export').onclick = () => {
+  const entries = data.rows.filter(row => decisions[row.id]).map(row => ({
+    review_id: row.id, sample_key: row.key, label: decisions[row.id]
+  }));
+  const file = new Blob([JSON.stringify({ shortlist_sha256: data.shortlist, reviews: entries }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(file);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'my_A_review.json';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+document.addEventListener('keydown', event => {
+  if (event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.target.tagName === 'SELECT') return;
+  const actions = { '1': () => decide('A'), '2': () => decide('not_A'), '3': () => decide('unsure'),
+    ArrowLeft: () => move(-1), ArrowRight: () => move(1), ' ': () => get('pair').click() };
+  if (Object.hasOwn(actions, event.key)) { event.preventDefault(); actions[event.key](); }
+});
+changeScope();
+</script>
+</html>

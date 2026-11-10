@@ -4,9 +4,13 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 import csv
 from hashlib import sha256
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import mimetypes
+import os
 from pathlib import Path
 from threading import Event
+from urllib.parse import quote, unquote, urlsplit
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageOps
@@ -93,7 +97,49 @@ def report(plan, directory):
               'A_with_frozen_gt_exclusion': sum(r['label'] == 'A' and r['frozen_gt_excluded'] == 'True' for r in rows),
               'audit': audit}
     write(directory / 'summary.json', result)
+    page_rows = [{'id': row['review_id'], 'key': row['sample_key'], 'label': row['label'],
+                  'evidence': row['evidence'], 'excluded': row['frozen_gt_excluded'] == 'True',
+                  'image': quote(Path(os.path.relpath(ROOT / row['generated_path'], directory)).as_posix()),
+                  'pair': quote(row['comparison_path'])} for row in rows]
+    page_data = json.dumps({'shortlist': plan['shortlist_sha256'], 'rows': page_rows}, ensure_ascii=False)
+    template = Path(__file__).with_name('manual_a_review.html').read_text(encoding='utf8')
+    (directory / 'manual_review.html').write_text(template.replace('/* REVIEW_DATA */', page_data.replace('<', '\\u003c')),
+                                                   encoding='utf8')
     print(json.dumps(result['counts']), flush=True)
+
+
+def serve(plan, directory, port):
+    page = directory / 'manual_review.html'
+    page_url = '/' + quote(page.relative_to(ROOT).as_posix())
+    assets = {page.relative_to(ROOT).as_posix(): page}
+    for row in plan['records'].values():
+        pair = directory / row['comparison_path']
+        assets[pair.relative_to(ROOT).as_posix()] = pair
+        assets[row['generated_path']] = ROOT / row['generated_path']
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, format, *args):
+            pass
+
+        def do_GET(self):
+            path = urlsplit(self.path).path
+            if path == '/':
+                self.send_response(302)
+                self.send_header('Location', page_url)
+                self.end_headers()
+                return
+            asset = assets.get(unquote(path).lstrip('/'))
+            if asset is None or not asset.is_file():
+                self.send_error(404)
+                return
+            content = asset.read_bytes()
+            self.send_response(200)
+            self.send_header('Content-Type', mimetypes.guess_type(asset.name)[0] or 'application/octet-stream')
+            self.send_header('Content-Length', str(len(content)))
+            self.end_headers()
+            self.wfile.write(content)
+
+    ThreadingHTTPServer(('127.0.0.1', port), Handler).serve_forever()
 
 
 def main():
@@ -101,7 +147,9 @@ def main():
     parser.add_argument('--workers', type=int, default=16, choices=range(1, 17))
     parser.add_argument('--source', type=Path, default=LOCAL / 'train_val_A_scan/candidates.csv')
     parser.add_argument('--output', type=Path, default=LOCAL / 'train_val_A_review')
-    parser.add_argument('--report-only', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--report-only', action='store_true')
+    mode.add_argument('--serve', type=int, metavar='PORT')
     args = parser.parse_args()
     directory = args.output.resolve()
     directory.mkdir(parents=True, exist_ok=True)
@@ -110,6 +158,9 @@ def main():
         write(path, prepare(args.source, directory))
     plan = json.loads(path.read_text(encoding='utf8'))
     print(f'{len(plan["records"])} images, {len(plan["jobs"])} native jobs', flush=True)
+    if args.serve is not None:
+        serve(plan, directory, args.serve)
+        return
     if not args.report_only:
         profile = prepare_worker_profile(directory / 'worker_profile')
         stop = Event()
