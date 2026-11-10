@@ -100,9 +100,26 @@ def reviewed(directory, sheets, cid):
     return valid, sorted(ids - valid.keys()), receipt
 
 
-def audit_access(directory, sheets, status):
+def output_check_commands(result_path):
+    if any(char in result_path for char in ('$', '`', "'", '"')):
+        return set()
+    commands = set()
+    for quote_mark in ('"', "'"):
+        quoted = f'{quote_mark}{result_path}{quote_mark}'
+        for verb in ('Test-Path', 'Get-Item'):
+            commands.update({f'{verb} {quoted}', f'{verb} -Path {quoted}'})
+        commands.update({f'Get-Content -Raw {quoted}', f'Get-Content {quoted} -Raw'})
+        for field in ('Name', 'FullName'):
+            commands.add(f'Get-Item {quoted} | Select-Object {field}, Length, LastWriteTime')
+    commands.add(f'''powershell -NoProfile -Command "Get-Item '{result_path}' | Select-Object FullName, Length, LastWriteTime"''')
+    return commands
+
+
+def audit_access(directory, sheets, status, output_checks=None):
     receipt = status['receipt']
-    result_path = path_key(str(directory / 'reviews.json'))
+    output_file = str(directory / 'reviews.json')
+    result_path = path_key(output_file)
+    permitted_checks = output_check_commands(output_file) if output_checks is not None else set()
     readable = {path_key(sheet['path']) for sheet in sheets}
     readable.update([path_key(str(directory / 'hints.json')), result_path])
     violations = []
@@ -114,6 +131,9 @@ def audit_access(directory, sheets, status):
                 if name in {'read_file', 'view_file', 'view_image'} and path in readable:
                     continue
                 if name in {'write_file', 'edit_file', 'replace_file_content', 'multi_replace_file_content'} and path == result_path:
+                    continue
+                if name == 'run_command' and args.get('CommandLine') in permitted_checks:
+                    output_checks.append(args['CommandLine'])
                     continue
                 violations.append({'tool': name, 'path': path})
     return violations
@@ -132,8 +152,11 @@ def run_job(job, profile, stop):
     command = [str(executable), '--model', MODEL, '--mode', 'accept-edits', '--disable-slash-commands',
                '--dangerously-skip-permissions', '--output-format', 'json', '--print-timeout', '0']
     path = directory / 'reviews.json'
-    prompt = PROMPT + '\n看板文件：\n' + '\n'.join(s['path'] for s in sheets)
-    prompt += f'\n彩度位置辅助：{directory / "hints.json"}\n只写此文件：{path}'
+    prompt = job.get('prompt', PROMPT) + '\n看板文件：\n' + '\n'.join(s['path'] for s in sheets)
+    hints = directory / 'hints.json'
+    if hints.is_file():
+        prompt += f'\n彩度位置辅助：{hints}'
+    prompt += f'\n只写此文件：{path}'
     cid, frozen = None, {}
     write(directory / 'prompt.json', {'prompt': prompt, 'model': MODEL})
     for attempt in range(6):
