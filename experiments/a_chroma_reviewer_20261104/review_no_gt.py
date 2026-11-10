@@ -31,9 +31,7 @@ PROMPT = '''本任务只判上色结果的 A 缺色。按中性灰背景、正�
 格式示例 {"reviews":{"EXAMPLE":{"label":"not_A","evidence":"画面右下方的窗框留有可辨的淡蓝色。"}}}。实际编号只使用板上的编号。'''
 
 
-def chroma_regions(im):
-    lab = cv2.cvtColor(np.asarray(im, dtype=np.float32) / 255, cv2.COLOR_RGB2LAB)
-    chroma = np.linalg.norm(lab[:, :, 1:], axis=2)
+def chroma_regions(chroma):
     height, width = chroma.shape
     regions = []
     for threshold in (1.5, 3, 5, 8):
@@ -72,7 +70,8 @@ def prepare(run):
                     raise ValueError(f'Changed generated image {row["id"]}')
                 with Image.open(path) as source:
                     im = ImageOps.exif_transpose(source).convert('RGB')
-                hints[row['id']] = chroma_regions(im)
+                lab = cv2.cvtColor(np.asarray(im, dtype=np.float32) / 255, cv2.COLOR_RGB2LAB)
+                hints[row['id']] = chroma_regions(np.linalg.norm(lab[:, :, 1:], axis=2))
                 im.thumbnail((432, 430), Image.Resampling.LANCZOS)
                 x, y = index % 3 * 448, index // 3 * 472
                 draw.text((x + 10, y + 8), row['id'], fill='white', font_size=21)
