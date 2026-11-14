@@ -2,6 +2,8 @@
 
 ## 项目导航与实验时间线
 
+逐阶段的工作目录、报告和样本清单见[实验阶段索引](../experiments/timeline/README.md)。其中列出旧 CV 运行区的全部一级子目录，并记录了 2026-11-14 清理旧看板后的留存范围。
+
 按实际工作的日期查阅。目录名的日期通常是建包或启动日期，后续复核、续跑和导出可能仍写在原目录。日期依据实验文档、运行记录和相关聊天交叉核对。下文的目录数量是盘点时的一级子目录数。
 
 ### 根目录
@@ -20,7 +22,7 @@
 
 | 日期（北京时间） | 工作 | 入口与产物 |
 |---|---|---|
-| 9 月 29 日起，10 月上旬继续 | V4 早期 LCAD 批次复核与交付 | [批次报告](../LS_lcad_reviewer/reports/)、[审阅看板](../LS_lcad_reviewer/intermediate/inspection_sheets/)、[历史导出](../LS_lcad_reviewer/exports/)。`inspection_sheets_1_500`、`remaining_batch_*`、`zero_defects_batch_*` 等主要按样本范围或任务目的编号。 |
+| 9 月 29 日起，10 月上旬继续 | V4 早期 LCAD 批次复核与交付 | [批次报告](../LS_lcad_reviewer/reports/)、[旧检查图目录](../LS_lcad_reviewer/intermediate/inspection_sheets/)、[历史导出](../LS_lcad_reviewer/exports/)。`inspection_sheets_1_500`、`remaining_batch_*`、`zero_defects_batch_*` 等主要按样本范围或任务目的编号，批量编号看板已清理。 |
 | 10 月 12 日 | CV 初期、真实边界和轻量文件输出试点 | [第 1～22 轮总索引](EXPERIMENTS.md)、[首轮原始报告](../LS_lcad_reviewer/intermediate/audits/cv_workflow_experiment_20261012_01/experiment_report.md)。`cv_geometry_v3_*`、`cv_models_v4_*`、`real_boundary_*` 等在旧 CV 运行目录。 |
 | 10 月 13 日 | GT 筛查、并发容量、看板布局、A/E2 和 C/D/B 对照 | 旧 CV 运行目录中的 `gt_quality_all_splits_20261013`、`parallel_*`、`capacity_round19_*`、`capacity_round20_*`、`layout_round21_*`、`cd_round22_*`。按 [逐轮报告](experiments/) 查样本和对照条件。 |
 | 10 月 14 日 | CV13 真实批次、人工 A 冻结、疑点定向重跑 | 旧 CV 运行目录中的 `annotation_real_*`、`annotation_issue_rerun_*`、`A_frozen_human_20261014_01`。详见 [10 月 14 日优化记录](real_annotation_optimization_20261014.md)。 |

@@ -1,5 +1,7 @@
 # 实验区
 
+按日期查询各阶段的目标、工作目录与留存证据，见[实验阶段索引](timeline/README.md)。以下为早期 CV13 阶段的说明。
+
 活动入口为[cv_workflow](cv_workflow/README.md)，当前CV13。本对话已获授权通过本机原生agy控制实验；Gemini High自己读本地看板、直接写结果JSON，主人需要时可通过Antigravity IDE协作。
 
 - 源码、配置和提示词在本目录，Git管理；运行产物只进LS_lcad_reviewer/intermediate/experiments/{run_id}，不覆盖旧运行。

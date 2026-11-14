@@ -1,5 +1,7 @@
 # 图像上色评价：训练集与验证集初版交付
 
+按日期查找旧实验、运行目录、人工复核和 V5 案例资料，请打开[实验阶段索引](experiments/timeline/README.md)。
+
 当前统一入口是根目录`pipeline.py`，实现位于[两阶段交付项目](annotation_delivery/train_val_v1_20261015/README.md)。实时状态以该项目的SQLite和[STATUS顶部](annotation_delivery/train_val_v1_20261015/STATUS.md)为准，下方试标数量、暂停原因和旧命令均为历史记录。
 
 当前策略为High、共享16路、每轮4板，原CID显式续接；任务完整验收后按80,000输入token轮换，缺计量时8轮兜底。普通故障每20秒原会话最多5次补试；额度暂停与恢复、人工停止及手动范围导入按[最新执行规范](AGENTS.md)处理。
