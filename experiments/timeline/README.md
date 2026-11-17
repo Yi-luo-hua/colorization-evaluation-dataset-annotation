@@ -1,14 +1,31 @@
 # 上色评价实验阶段索引
 
-更新时间为 2026-11-14。按本项目主对话、实验报告和本机运行清单归类。目录日期通常是立项或建包日，续跑、复核和导出可能发生在后面。
+更新时间为 2026-11-17。按本项目主对话、实验报告和本机运行清单归类。目录日期通常是立项或建包日，续跑、复核和导出可能发生在后面。
+
+## 工作流与成果怎么称呼
+
+两套工作流的全名是**三轮交付工作流**和**三模型证据复核工作流**，聊天里可简称**三轮交付**和**三模型复核**。工作台的“旧三轮 · 20261021 严格复现”对应前者，“上色质量 · 三模型证据复核”对应后者。完整定义见[项目术语](../../CONTEXT.md)。
+
+| 说法 | 对应记录 |
+|---|---|
+| **V4 LCAD 审阅底稿** | 早期分批审阅汇总的 [`reviewed_1_10000_clean.json`](../../LS_lcad_reviewer/exports/reviewed_1_10000_clean.json)。 |
+| **CV 第 21 轮·3/6/8 组布局对照** | 早期 CV 实验按轮次和对照条件引用，见[第 1～22 轮索引](../../docs/EXPERIMENTS.md)。 |
+| **Train/Val 交付版（2026-10-21）** | 三轮交付产生的 22,768 条记录，见[训练包四份 JSON](../../annotation_delivery/train_val_v1_20261015/exports/training_train_val_20261021/)与[最终统计](../../annotation_delivery/train_val_v1_20261015/exports/final_statistics_20261021/REPORT.md)。 |
+| **三轮交付·24 张历史回放** | 工作台 [`5e9297f5472b`](../../workflow_studio/.local/runs/5e9297f5472b/) 读取冻结结果。 |
+| **192 张可靠性试点** | [试点与对照结果](20261025-20261026_reliability/README.md)。引用具体条件时可写“192 张试点·Gemini R1”或“联合 Critic–Refiner·DeepSeek”。历史 O 是同一组图片的既有交付标签。 |
+| **三模型复核·v6 独立脚本离线检查** | [两批模拟验证](../workflow_refinement_20261026/runtime/json_delta_v6_offline/verification.json)。 |
+| **三模型复核·工作台 24 张真实试跑（10-28）** | 工作台 [`caf6823dc71c`](../../workflow_studio/.local/runs/caf6823dc71c/) 有 24 条试跑输出。另有 [2 张真实链路验证](../../workflow_studio/.local/runs/aad4ed1bc322/)。 |
+| **七类人工标准集·前 200 条人工定稿（11-11 导出）** | [人工导出](../human_standard_600_20261102/local/development/human_annotations_200_of_300_20261111.json)，属于[七类人工标准集](20261102-20261111_human_reference/README.md)的校准部分。 |
+| **600 张 A 快审 / 141 张近灰候选复核** | 两套分别保存的 [A 类复核记录](20261104-20261111_chroma_and_a/README.md)。指定“人工复核”或“模型复核”即可定位标签来源。 |
+| **V5 标签定义草案** | [标签标准与人工案例](20261109-20261114_v5_human_calibration/README.md)，单独注明标签口径。 |
 
 | 时间 | 阶段 |
 |---|---|
 | 2026-09-29 至 10 月上旬 | [V4 与 LCAD 分批审阅](20260929-20261011_v4_lcad/README.md) |
 | 2026-10-12 至 10-15 | [CV 第 1～22 轮及 CV13 真实批次](20261012-20261015_cv_rounds/README.md) |
-| 2026-10-15 至 10-21 | [Train/Val 试标与三轮交付](20261015-20261021_train_val_delivery/README.md) |
-| 2026-10-25 至 10-26 | [可靠性试点与联合复核](20261025-20261026_reliability/README.md) |
-| 2026-10-26 至 10-28 | [JSON 流程改进与工作台](20261026-20261028_workflow_refinement/README.md) |
+| 2026-10-15 至 10-21 | [三轮交付工作流与 Train/Val 交付版](20261015-20261021_train_val_delivery/README.md) |
+| 2026-10-25 至 10-26 | [192 张可靠性试点与联合 Critic–Refiner](20261025-20261026_reliability/README.md) |
+| 2026-10-26 至 10-28 | [三模型证据复核工作流与工作台](20261026-20261028_workflow_refinement/README.md) |
 | 2026-11-02 至 11-11 | [七类人工标准集](20261102-20261111_human_reference/README.md) |
 | 2026-11-04 至 11-11 | [A 快审、彩度分析与 141 张复核](20261104-20261111_chroma_and_a/README.md) |
 | 2026-11-09 标准稿，11-14 明确方向 | [V5 标签定义与精准人工案例](20261109-20261114_v5_human_calibration/README.md) |
