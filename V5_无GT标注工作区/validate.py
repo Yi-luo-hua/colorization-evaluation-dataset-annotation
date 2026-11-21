@@ -15,6 +15,10 @@ def validate(packet):
     if not expected or not result:
         raise ValueError("任务 Markdown 缺少样本或结果路径")
     rows = json.loads((packet.parent / result[1]).read_text(encoding="utf-8-sig"))
+    return validate_rows(rows, expected)
+
+
+def validate_rows(rows, expected):
     if not isinstance(rows, list) or any(not isinstance(r, dict) for r in rows):
         raise ValueError("结果应为样本对象数组")
     ids = [r.get("id") for r in rows]

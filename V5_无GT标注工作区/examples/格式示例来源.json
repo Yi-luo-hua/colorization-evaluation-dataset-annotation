@@ -1,0 +1,79 @@
+{
+  "source": "annotation_delivery/train_val_v1_20261015/runtime/recovery5000_20261016_01/state.sqlite3",
+  "selection_seed": 2026112202,
+  "source_sample_keys": [
+    "train/unicolor/000000238982",
+    "train/lcad/000000381721",
+    "train/unicolor/000000416026"
+  ],
+  "reviews": [
+    {
+      "id": "EXAMPLE001",
+      "checks": {
+        "A": "clear",
+        "B": "clear",
+        "C": "clear",
+        "D": "clear",
+        "E1": "clear",
+        "E2": "clear",
+        "F": "clear"
+      },
+      "defects": [],
+      "notes": {}
+    },
+    {
+      "id": "EXAMPLE002",
+      "checks": {
+        "A": "clear",
+        "B": "clear",
+        "C": "clear",
+        "D": "clear",
+        "E1": "clear",
+        "E2": "hit",
+        "F": "clear"
+      },
+      "defects": [
+        {
+          "category": "E2",
+          "severity": "L1",
+          "object": "人物厚外套",
+          "description": "画面左侧人物外套大面积呈现单一暗灰色，色彩层次略显单薄。"
+        }
+      ],
+      "notes": {}
+    },
+    {
+      "id": "EXAMPLE003",
+      "checks": {
+        "A": "clear",
+        "B": "hit",
+        "C": "hit",
+        "D": "clear",
+        "E1": "clear",
+        "E2": "clear",
+        "F": "hit"
+      },
+      "defects": [
+        {
+          "category": "B",
+          "severity": "L1",
+          "object": "香蕉顶端切口边缘",
+          "description": "中间香蕉顶端切口处的淡蓝色向下方绿色果皮轻微溢出，边缘分界不够干净。"
+        },
+        {
+          "category": "C",
+          "severity": "L2",
+          "object": "香蕉顶端切口与果蒂",
+          "description": "多根香蕉顶部的剪切截面与果蒂呈现不自然的淡灰蓝色，违背植物果梗干燥切口的常识固有色。"
+        },
+        {
+          "category": "F",
+          "severity": "L1",
+          "object": "香蕉切口材质观感",
+          "description": "香蕉顶端截面的蓝色调破坏了果实切面的木质干燥感，局部视觉真实度受损。"
+        }
+      ],
+      "notes": {}
+    }
+  ]
+}

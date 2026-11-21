@@ -10,6 +10,9 @@ from uuid import uuid4
 
 from PIL import Image, ImageOps
 
+from turns import EXAMPLES, FORMAT_EXAMPLES, FORMAT_LINK, verify_turn
+from validate import validate_rows
+
 ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parent
 MODELS = {REPO / dataset / "model" / model
@@ -58,13 +61,20 @@ def prepare_examples(directory):
     guide = (ROOT / "模型读本.md").read_text(encoding="utf-8-sig")
     definitions = (ROOT / "规则.md").read_text(encoding="utf-8-sig").split("## 已裁决的边界")[0]
     cards = guide.split("## 典型生成图", 1)[1].split("\n### ")[1:]
-    sections = [definitions, "## 典型样例\n\n逐张打开 R 图，把可见现象与说明对上。每张只演示标出的判断。"]
+    samples = json.loads((ROOT / "examples/格式示例来源.json").read_text(encoding="utf8"))["reviews"]
+    validate_rows(samples, [f"EXAMPLE{i:03}" for i in range(1, len(samples) + 1)])
+    sections = [
+        definitions,
+        f"## 旧标注格式示例\n\n读取 {FORMAT_LINK}。旧标注只参考写法。",
+        "## 典型样例\n\n逐张打开 R 图，把可见现象与说明对上。每张只演示标出的判断。",
+    ]
     for i, card in enumerate(cards, 1):
         heading, caption, link = card.strip().split("\n\n")
         source = ROOT / re.search(r"\((examples/[^)]+)\)", link)[1]
         label = heading.split(" · ")[0]
         url = "../_reference_images/" + publish_image(source, cache).name
         sections.append(f"R{i:03}　{label}　{caption}\n\n![R{i:03}]({url})")
+    write_text(directory / FORMAT_EXAMPLES, json.dumps(samples, ensure_ascii=False, indent=2) + "\n")
     write_text(document, "\n\n".join(sections) + "\n")
     return document
 
@@ -112,7 +122,6 @@ if __name__ == "__main__":
     if bool(args.images) != bool(args.conversation):
         parser.error("备第二轮任务必须同时提供生成图和 --conversation")
     if args.images:
-        from turns import EXAMPLES, verify_turn
         verify_turn(args.conversation, directory / "示例.md", EXAMPLES)
         print(prepare_task(directory, args.images))
     else:
