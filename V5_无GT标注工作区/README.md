@@ -34,3 +34,9 @@ python ".\V5_无GT标注工作区\validate.py" "$env:LOCALAPPDATA\MCLReview\run0
 ```
 
 旧工作台保留在 [workflow_studio](../workflow_studio/README.md)，历史流程名称与运行范围见 [项目术语](../CONTEXT.md)。当前新流程通过命令行备包、校验；看板集成和自动派发可在试跑后按入选流程接入。
+
+## 单轮 1,000 张运行
+
+本次只执行 V5 单轮。single1000.py 从既有交付库的 completed/fixed_a 范围固定抽取 train/val × LCAD/UniColor 每组 250 张，排除旧 600 清单和当前示例的同源图。旧标签不进入任务。每包 10 张，run1000.py 使用旧 SQLite 队列分配给最多 16 路，各包独立会话。后台额度检查使用 quota_watch.py。监督页面由 supervise.py 直接读取原工作台 HTML 和 DashboardState，入口 http://127.0.0.1:8947/ 。
+
+运行清单、SQLite、原始回执及最终 ZIP 位于 local/single1000。断点续接沿用同一运行目录及原 CID。验收要求实际 JSON、任务编号、七类结构和原生成功读图凭证匹配；Windows LocalAppData 重定向路径按实际文件归一。最终可报告工程稳定性、标签分布与未决数量；判断准确率仍需按 V5 人工裁决。
