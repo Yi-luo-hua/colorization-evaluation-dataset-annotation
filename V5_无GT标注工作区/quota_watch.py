@@ -7,6 +7,8 @@ import sys
 import threading
 from unittest.mock import patch
 
+from single1000 import COMPLETION_ARCHIVE, RUN
+
 WORKSPACE=Path(__file__).resolve().parent
 LEGACY=WORKSPACE.parent/"annotation_delivery/train_val_v1_20261015/scripts"
 sys.path.insert(0,str(LEGACY))
@@ -21,9 +23,9 @@ def watch(binary):
     from winpty import PtyProcess
     spawn=PtyProcess.spawn
     stopped=threading.Event()
-    store=Store(WORKSPACE/"local/single1000")
+    store=Store(RUN)
     with monitor_lock(store.run_dir):
-        while not (store.run_dir/"V5_单轮1000.zip").exists():
+        while not (store.run_dir/COMPLETION_ARCHIVE).exists():
             try:
                 with patch.object(PtyProcess,"spawn",side_effect=lambda args,**kw:spawn([binary,*args[1:]],**kw)):
                     observation=record(store,**query_native(stopped))

@@ -1,14 +1,16 @@
 import json
 import os
 import random
-import re
 import sqlite3
 from pathlib import Path
 
-from prepare import ROOT, REPO, prepare
+from prepare import ROOT, REPO
 
-RUN = ROOT / "local" / "single1000"
-PUBLIC = Path(os.environ["LOCALAPPDATA"]) / "MCLReview" / "single1000"
+RUN_NAME = "two_turn1000"
+RUN = ROOT / "local" / RUN_NAME
+PUBLIC = Path(os.environ["LOCALAPPDATA"]) / "MCLReview" / RUN_NAME
+COMPLETION_ARCHIVE = "V5_两轮1000.zip"
+PORTABLE_ARCHIVE = "V5_两轮1000_图像与标注.zip"
 MODEL = "gemini-3.8-flash-high"
 
 
@@ -39,10 +41,3 @@ def sample():
     rng.shuffle(selected)
     manifest.write_text(json.dumps(selected, ensure_ascii=False, indent=2), encoding="utf8")
     return selected
-
-
-def packet(n, samples):
-    directory = PUBLIC / f"batch{n:03}"
-    if not (directory / "任务.md").exists():
-        prepare(directory, [REPO / p for p in samples[(n-1)*10:n*10]])
-    return directory / "任务.md"

@@ -1,12 +1,12 @@
 # V5 无 GT 上色标注工作区
 
-更新于 2026-11-21。接手 agent 先读本页与《试跑方法.md》。单轮 1,000 张已完成，下一阶段进行 40 张人工盲审。
+更新于 2026-11-22。接手 agent 先读本页与《试跑方法.md》。单轮 1,000 张已归档，后续标注包采用同一会话两轮派发。
 
 ## 文件与职责
 
 - 规则.md 是备包时采用的类别定义。模型读本.md 与 examples/ 维护 26 张有标签的生成图示例。变更典型图时同步修改图、卡片和对应规则。标注步骤.md 是每包实际使用的观察顺序。
-- prepare.py 从仓库中三个数据集的 model/lcad 或 model/unicolor 目录接收真实生成图。产出单份任务.md，R 对应示例，S 对应待标图。任务使用匿名 PNG；多个任务共享同一执行根目录的 _images 与 _results。主控在本工作区 local/task_index 保留每次任务的映射。迁移前的映射在 experiments/v5_single_image/local/task_index。
-- 每包交给 agy 的内容只有任务.md 及其索引允许访问的生成图。执行时从仓库外的独立目录启动，先读规则和全部 R 图，再按 S 标注；限制工作目录及检索范围。当前匿名索引实现输入去标识，宿主机文件系统隔离需由执行器配置。
+- prepare.py 先发布示例.md 和匿名 R 图。待标图仍在主控侧。首轮确认通过后，才发布独立的任务.md、匿名 S 图和输出路径。主控在 local/task_index 保存编号映射。
+- turns.py 从原生会话日志核对图片附件和回复顺序。两个阶段都核对原 conversation_id。第二轮允许并行打开 S 图，每张图分别产出七类结论。
 - validate.py 核对交付编号、七类状态、等级、不适用理由、缺陷字段与命中一致性。实际读图凭证、判断准确性和人工裁决另行核对。
 
 ## 已确定的判定
@@ -24,22 +24,15 @@ D 先看全局照明，A 逐区域判缺色，B 追踪浸染，C/E 区分色相�
 
 典型样例可跨旧人工标注分区选择。冻结评测的独立性另按实际图像曝光记录判断。GT 质量准入属于上游，生成图工作包仅呈现生成图。单张示例只演示指定类别。新裁决以个人云文档执行版为准。[飞书执行版](https://rcnlng9s9lzm.feishu.cn/docx/WxOVdmvhNorWYrx0jrpcBvgdnbk)
 
-## 从仓库根目录运行
+## 两轮派发
 
-需要 Python 和 Pillow。下面的图片用于验证读写链路，可换成同类目录中的其他生成图。每次指定新的任务目录，向 agy 提供任务.md；模型交付 JSON 后执行第二条命令。
+1. 新 agy 会话先收到示例.md。模型逐一打开全部 26 张 R 图，再明确回复 `V5_EXAMPLES_READ`。执行器同时验收原会话里的成功读图媒体回执及确认回复。
+2. 首轮通过后，执行器生成任务.md 和 S 图，用同一会话 ID 发送第二轮。验收要求该轮全部 S 图的媒体回执早于对应 JSON 写入，并检查七类状态与样本身份。
+3. 阶段缺项在原会话补试。中断后从保存的阶段续接，两个阶段分别保留回执。每包标注 10 张，仍使用旧 SQLite 队列和最多 16 路执行器。
 
-```powershell
-python ".\V5_无GT标注工作区\prepare.py" "$env:LOCALAPPDATA\MCLReview\run01" ".\9_14_10000GT_V1\model\lcad\000000000009.png"
-python ".\V5_无GT标注工作区\validate.py" "$env:LOCALAPPDATA\MCLReview\run01\任务.md"
-```
+入口是 `run1000.py --agy <agy 路径>`。看板由 `supervise.py` 提供，地址为 http://127.0.0.1:8947/ 。额度检查由 `quota_watch.py --agy <agy 路径>` 支持。新运行用 `local/two_turn1000`。原单轮归档位于 `local/single1000`。
 
-旧工作台保留在 [workflow_studio](../workflow_studio/README.md)，历史流程名称与运行范围见 [项目术语](../CONTEXT.md)。当前新流程通过命令行备包、校验；看板集成和自动派发可在试跑后按入选流程接入。
-
-## 单轮 1,000 张运行
-
-本次只执行 V5 单轮。single1000.py 从既有交付库的 completed/fixed_a 范围固定抽取 train/val × LCAD/UniColor 每组 250 张，排除旧 600 清单和当前示例的同源图。旧标签不进入任务。每包 10 张，run1000.py 使用旧 SQLite 队列分配给最多 16 路，各包独立会话。后台额度检查使用 quota_watch.py。监督页面由 supervise.py 直接读取原工作台 HTML 和 DashboardState，入口 http://127.0.0.1:8947/ 。
-
-运行清单、SQLite、原始回执及最终 ZIP 位于 local/single1000。断点续接沿用同一运行目录及原 CID。验收要求实际 JSON、任务编号、七类结构和原生成功读图凭证匹配；Windows LocalAppData 重定向路径按实际文件归一。首轮归档保留当时的契约和结果。判断准确率仍需按 V5 人工裁决。
+手动校准时，可以先运行 `prepare.py <任务目录>`，按示例轮提示发送 `[V5 示例轮] 读取 <示例.md 的绝对路径>。`，要求读齐后回复 `V5_EXAMPLES_READ`。随后运行 `prepare.py <任务目录> --conversation <原会话 ID> <生成图路径...>`，程序核验首轮后才生成任务.md。正式批量派发统一走执行器。
 
 ## 40 张人工盲审
 

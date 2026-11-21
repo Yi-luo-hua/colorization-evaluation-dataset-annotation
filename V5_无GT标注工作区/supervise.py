@@ -29,7 +29,7 @@ class Snapshot(DashboardState):
 class Board(DashboardHandler):
     def do_GET(self):
         if self.path!="/":return super().do_GET()
-        html=(legacy/"web/index.html").read_text(encoding="utf8").replace("三阶段标注","V5 无 GT 单轮").replace(">二次标注<",">V5 单轮<")
+        html=(legacy/"web/index.html").read_text(encoding="utf8").replace("三阶段标注","V5 无 GT 两轮").replace(">二次标注<",">V5 两轮<")
         self.send_response(200)
         self.send_header("Content-Type","text/html; charset=utf-8")
         self.end_headers()

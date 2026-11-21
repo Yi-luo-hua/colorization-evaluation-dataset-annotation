@@ -7,7 +7,7 @@ import statistics
 import zipfile
 import argparse
 import time
-from pathlib import Path
+from single1000 import COMPLETION_ARCHIVE, PORTABLE_ARCHIVE
 from run1000 import RUN,REPO,ROOT,store,sample,keys
 
 
@@ -27,13 +27,19 @@ def export():
     statuses=Counter()
     severity=Counter()
     calls=list(RUN.glob("b*.jsonl"))
-    timings=[]
-    for f in RUN.glob("b*.1.jsonl"):
-        for line in f.open(encoding="utf-8-sig",errors="replace"):
-            if '"event":"result"' not in line:continue
-            result=json.loads(line)["result"]
-            if result.get("status")=="SUCCESS":timings.append(result["duration_seconds"])
-    final=RUN/"V5_单轮1000_图像与标注.zip"
+    timings={"examples": [], "label": []}
+    for n in range(1,101):
+        for phase, durations in timings.items():
+            first=min(RUN.glob(f"b{n:03}.{phase}.*.jsonl"),default=None)
+            if not first:
+                continue
+            for line in first.open(encoding="utf-8-sig",errors="replace"):
+                if '"event":"result"' not in line:
+                    continue
+                result=json.loads(line)["result"]
+                if result.get("status")=="SUCCESS":
+                    durations.append(result["duration_seconds"])
+    final=RUN/PORTABLE_ARCHIVE
     temp=final.with_suffix(".partial")
     with zipfile.ZipFile(temp,"w",compression=zipfile.ZIP_DEFLATED) as z:
         for p,key in zip(paths,ordered):
@@ -49,16 +55,17 @@ def export():
                 if d:severity[d["category"]+"-"+d["severity"]]+=1
                 writer.writerow([key,image,*(d.get(k,"") for k in ("category","severity","object","description")),
                                  json.dumps(r["checks"],ensure_ascii=False),json.dumps(review["notes"],ensure_ascii=False)])
-        facts={"样本数":len(reviews),"单轮任务包":100,"有原生调用日志的尝试数":len(calls),
-               "含后续调用的任务包数":sum(len(list(RUN.glob(f"b{n:03}.*.jsonl")))>1 for n in range(1,101)),
-               "首次成功调用耗时中位数_秒":statistics.median(timings) if timings else None,
-               "五小时额度暂停":"运行中曾暂停，后经原生额度确认恢复",
+        facts={"样本数":len(reviews),"两轮任务包":100,"有原生调用日志的尝试数":len(calls),
+               "含补试的任务包数":sum(any(len(list(RUN.glob(f"b{n:03}.{phase}.*.jsonl")))>1
+                                             for phase in timings) for n in range(1,101)),
+               "首次成功调用耗时中位数_秒":{phase:statistics.median(values) if values else None
+                                          for phase,values in timings.items()},
                "样本统计":dict(summary),"类别状态计数":dict(statuses),"缺陷条目等级计数":dict(severity),
                "口径":"按可见证据逐类判定。执行指标和模型判定均不代表人工准确率。"}
         z.writestr("reviews.json",json.dumps(reviews,ensure_ascii=False,indent=2))
         z.writestr("summary.json",json.dumps(facts,ensure_ascii=False,indent=2))
         z.writestr("标注明细.csv",table.getvalue().encode("utf-8-sig"))
-        for p in [ROOT/"规则.md",ROOT/"标注步骤.md",RUN/"samples.json",RUN/"spotcheck.md",RUN/"spotcheck.jpg"]:
+        for p in [ROOT/"规则.md",ROOT/"标注步骤.md",RUN/"samples.json"]:
             z.write(p,p.name)
         for p in sorted(RUN.glob("*.receipts.json")):z.write(p,"receipts/"+p.name)
     with zipfile.ZipFile(temp) as z:
@@ -72,6 +79,6 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument("--when-ready",action="store_true")
     if parser.parse_args().when_ready:
-        while not (RUN/"V5_单轮1000.zip").is_file():
+        while not (RUN/COMPLETION_ARCHIVE).is_file():
             time.sleep(30)
     print(export())
