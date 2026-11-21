@@ -22,7 +22,7 @@ def export():
     reviews=[]
     table=io.StringIO(newline="")
     writer=csv.writer(table)
-    writer.writerow(["源编号","生成图","类别","等级","对象","描述","七类状态","未决或不适用理由"])
+    writer.writerow(["源编号","生成图","类别","等级","对象","描述","七类状态","不适用理由"])
     summary=Counter()
     statuses=Counter()
     severity=Counter()
@@ -43,8 +43,7 @@ def export():
                         conversation_id=r["provenance"]["conversation_id"])
             reviews.append(review)
             summary["有已确认缺陷"]+=bool(r["defects"])
-            summary["含未决"]+="uncertain" in r["checks"].values()
-            summary["无缺陷且无未决"]+=not r["defects"] and "uncertain" not in r["checks"].values()
+            summary["无缺陷"]+=not r["defects"]
             for cat,state in r["checks"].items():statuses[cat+" "+state]+=1
             for d in r["defects"] or [{}]:
                 if d:severity[d["category"]+"-"+d["severity"]]+=1
@@ -55,7 +54,7 @@ def export():
                "首次成功调用耗时中位数_秒":statistics.median(timings) if timings else None,
                "五小时额度暂停":"运行中曾暂停，后经原生额度确认恢复",
                "样本统计":dict(summary),"类别状态计数":dict(statuses),"缺陷条目等级计数":dict(severity),
-               "口径":"未决与有确认缺陷可在同图共存。执行指标和模型判定均不代表人工准确率。"}
+               "口径":"按可见证据逐类判定。执行指标和模型判定均不代表人工准确率。"}
         z.writestr("reviews.json",json.dumps(reviews,ensure_ascii=False,indent=2))
         z.writestr("summary.json",json.dumps(facts,ensure_ascii=False,indent=2))
         z.writestr("标注明细.csv",table.getvalue().encode("utf-8-sig"))

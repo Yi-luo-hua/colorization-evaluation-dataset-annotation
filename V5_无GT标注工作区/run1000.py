@@ -165,7 +165,6 @@ def pack():
     if len(rows)!=1000 or any(r["state"]!="completed" for r in rows):return
     report={"completed":len(rows),"categories":dict(Counter(d["category"] for r in rows for d in r["defects"])),
             "empty_defects":sum(not r["defects"] for r in rows),
-            "uncertain_images":sum("uncertain" in r["checks"].values() for r in rows),
             "retried_images":sum(bool(r.get("qa_failures")) for r in rows)}
     for file,data in [("reviews.json",rows),("summary.json",report)]:
         (RUN/file).write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf8")
