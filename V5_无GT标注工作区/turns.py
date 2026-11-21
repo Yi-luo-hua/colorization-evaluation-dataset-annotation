@@ -31,14 +31,14 @@ def tool_path(args):
 def prompt_for(phase, document, feedback):
     if phase == EXAMPLES:
         instruction = (
-            "只读定义和示例。用 read_file 完整读取文档链接的格式示例 JSON，旧标注只参考写法。"
-            "逐张打开 R 图，核对对象、现象与示例说明。"
+            "只读定义和示例。用 read_file 逐张打开 R 图，核对对象、现象与示例说明。"
             f"全部读完后只回复 {CONFIRMED}。遇到无法打开的图，报告其 R 编号。"
         )
     else:
         instruction = (
             "沿用本会话已经阅读的 V5 定义与示例，只打开任务列出的 S 图，逐张评定。"
-            "用 read_file 看图，按首轮格式示例的写法，用 write_file 直接写入任务指定的 JSON 文件。"
+            "用 read_file 读本轮任务链接的格式示例 JSON 和待标图。"
+            "按格式示例的写法，用 write_file 直接写入任务指定的 JSON 文件。"
             "写完即结束，标注结果只放在文件里。"
         )
     return f"{phase} 读取 {document}。\n{instruction}\n只访问本轮列出的文件，不使用终端或其他工具。\n{feedback}".strip()
@@ -57,7 +57,7 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
         raise ValueError(f"{document.name} 缺少 {prefix} 图索引")
     paths = {alias: label for label, path in targets.items() for alias in path_aliases(path)}
     example_path = document.parent / FORMAT_EXAMPLES
-    format_paths = path_aliases(example_path) if phase == EXAMPLES and FORMAT_LINK in body else set()
+    format_paths = path_aliases(example_path) if FORMAT_LINK in body else set()
     format_read = not format_paths
     cwd = document.parent if phase == EXAMPLES else document.parent.parent
     output_paths = path_aliases(result) if result else set()
@@ -94,7 +94,7 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
                     label = paths.get(key) if name in READ_TOOLS else None
                     reads_format = name in READ_TOOLS and key in format_paths
                     matches = False
-                    if key in output_paths and name in WRITE_TOOLS and seen == targets.keys():
+                    if key in output_paths and name in WRITE_TOOLS and format_read and seen == targets.keys():
                         try:
                             matches = json.loads(args.get("Content") or args.get("CodeContent")) == expected
                         except (TypeError, ValueError):
@@ -127,7 +127,7 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
     if phase == EXAMPLES and (accepted is None or last_reply != CONFIRMED):
         raise ValueError("本轮材料已齐，请明确回复 " + CONFIRMED)
     if accepted is None:
-        raise ValueError("请在读齐 S 图后用 write_file 重新写入完整结果")
+        raise ValueError("请在读齐本轮材料后用 write_file 重新写入完整结果")
     proof = {
         "conversation_id": cid, "seen": [str(targets[label].resolve()) for label in sorted(seen)],
         "missing": [], "transcript": str(source), "step": accepted,

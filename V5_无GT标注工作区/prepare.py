@@ -61,11 +61,8 @@ def prepare_examples(directory):
     guide = (ROOT / "模型读本.md").read_text(encoding="utf-8-sig")
     definitions = (ROOT / "规则.md").read_text(encoding="utf-8-sig").split("## 已裁决的边界")[0]
     cards = guide.split("## 典型生成图", 1)[1].split("\n### ")[1:]
-    samples = json.loads((ROOT / "examples/格式示例来源.json").read_text(encoding="utf8"))["reviews"]
-    validate_rows(samples, [f"EXAMPLE{i:03}" for i in range(1, len(samples) + 1)])
     sections = [
         definitions,
-        f"## 旧标注格式示例\n\n读取 {FORMAT_LINK}。旧标注只参考写法。",
         "## 典型样例\n\n逐张打开 R 图，把可见现象与说明对上。每张只演示标出的判断。",
     ]
     for i, card in enumerate(cards, 1):
@@ -74,7 +71,6 @@ def prepare_examples(directory):
         label = heading.split(" · ")[0]
         url = "../_reference_images/" + publish_image(source, cache).name
         sections.append(f"R{i:03}　{label}　{caption}\n\n![R{i:03}]({url})")
-    write_text(directory / FORMAT_EXAMPLES, json.dumps(samples, ensure_ascii=False, indent=2) + "\n")
     write_text(document, "\n\n".join(sections) + "\n")
     return document
 
@@ -99,7 +95,14 @@ def prepare_task(directory, images):
     private = ROOT / "local" / "task_index"
     for folder in (cache, results, document.parent, private):
         folder.mkdir(parents=True, exist_ok=True)
-    packet = [(ROOT / "标注步骤.md").read_text(encoding="utf-8-sig"), "## 本轮待标图"]
+    samples = json.loads((ROOT / "examples/格式示例来源.json").read_text(encoding="utf8"))["reviews"]
+    validate_rows(samples, [f"EXAMPLE{i:03}" for i in range(1, len(samples) + 1)])
+    write_text(document.parent / FORMAT_EXAMPLES, json.dumps(samples, ensure_ascii=False, indent=2) + "\n")
+    packet = [
+        (ROOT / "标注步骤.md").read_text(encoding="utf-8-sig"),
+        f"## 格式参考\n\n读取 {FORMAT_LINK}。旧标注只参考写法。",
+        "## 本轮待标图",
+    ]
     mapping = {}
     for i, path in enumerate(paths, 1):
         alias = f"S{i:03}"
