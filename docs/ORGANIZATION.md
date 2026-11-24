@@ -13,10 +13,12 @@
 | [`9_14_10000GT_V1`](../9_14_10000GT_V1/)、[`10_5_val_V1`](../10_5_val_V1/)、[`10_5_test_V1`](../10_5_test_V1/) | Train、Val、Test 的 GT、LCAD/UniColor 生成图及随附数据。数字属于数据包命名。 |
 | [`LS_lcad_reviewer`](../LS_lcad_reviewer/) | 早期 V4 审阅工具、Label Studio 本机库、任务池、审阅导出，以及后来借用此处存放的 CV 实验产物。 |
 | [`annotation_delivery/train_val_v1_20261015`](../annotation_delivery/train_val_v1_20261015/) | 训练集和验证集交付。根 [`pipeline.py`](../pipeline.py) 转入该项目。这里的 `data/` 存准备清单，`runtime/` 存任务与运行库，`exports/` 存成品与统计。 |
+| [V5 无 GT 标注工作区](../V5_无GT标注工作区/README.md) | 生成图单图标注的规则、固定读本、两轮派发与校验。`local/` 保存试跑、盲审和回执，入口见 [V5 试跑索引](../experiments/timeline/20261121-20261124_v5_annotation/README.md)。 |
 | [`experiments`](../experiments/) | CV 共享实现及独立研究分支。各分支的运行位置见下表。 |
 | [`workflow_studio`](../workflow_studio/) | 10 月下旬开发的可视化工作台。代码在 `src/`、`backend/`，草稿、运行与本机库在 `.local/`，历史兼容模板在 `legacy/`。 |
 | [`人工标注`](../人工标注/) | 较早的 101 条人工核验记录与来源压缩包，10 月 25 日有单独的离线核查。 |
-| [`docs`](./)、[`references`](../references/)、[`showcase`](../showcase/)、[`output`](../output/) | 项目文档及旧实验报告、外部参考资料、历史成果展示、截图和图稿。 |
+| [`docs`](./)、[`references`](../references/)、[`showcase`](../showcase/) | 项目文档、外部参考资料和历史成果展示。 |
+| `scratch/`、`output/`、`.playwright-cli/` | 本机查样脚本、临时预览、截图和浏览器调试输出。`scratch/e2-case-search/` 保存实验区顶层归拢的查样脚本。 |
 
 ### 按时间查找
 

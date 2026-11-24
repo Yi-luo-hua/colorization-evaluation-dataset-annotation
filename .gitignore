@@ -2,6 +2,12 @@
 /9_14_10000GT_V1/
 /10_5_val_V1/
 /10_5_test_V1/
+/人工标注/
+
+# Local previews, browser snapshots and one-off investigations.
+/.playwright-cli/
+/output/
+/scratch/
 
 # Local runtimes, Label Studio state, task pools and delivered datasets.
 /LS_lcad_reviewer/.python/
@@ -14,6 +20,9 @@
 /LS_lcad_reviewer/legacy_archive/root_entrypoints_20261012/
 
 # Generated experiment artifacts; scripts and historical reports are versioned.
+/docs/diagrams/colorization_annotation_workflow_v4.png
+/docs/diagrams/colorization_annotation_workflow_v4_detailed.png
+/annotation_delivery/train_val_v1_20261015/scripts/no_browser/rundll32.exe
 /LS_lcad_reviewer/intermediate/audits/
 /LS_lcad_reviewer/intermediate/inspection_sheets/
 /LS_lcad_reviewer/intermediate/scratch/

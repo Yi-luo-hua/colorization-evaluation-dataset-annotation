@@ -1,8 +1,17 @@
 # 实验区
 
-按日期查询各阶段的目标、工作目录与留存证据，见[实验阶段索引](timeline/README.md)。以下为早期 CV13 阶段的说明。
+按日期查询各阶段的目标、工作目录与留存证据，见[实验阶段索引](timeline/README.md)。
 
-活动入口为[cv_workflow](cv_workflow/README.md)，当前CV13。本对话已获授权通过本机原生agy控制实验；Gemini High自己读本地看板、直接写结果JSON，主人需要时可通过Antigravity IDE协作。
+| 实验方向 | 入口 |
+|---|---|
+| V5 无 GT 单图标注 | [执行工作区](../V5_无GT标注工作区/README.md) · [11 月试跑](timeline/20261121-20261124_v5_annotation/README.md) |
+| 人工标准集与 A 类快审 | [七类标准集](human_standard_600_20261102/README.md) · [A 类快审](a_chroma_reviewer_20261104/README.md) |
+| 三模型证据复核 | [工作流记录](timeline/20261026-20261028_workflow_refinement/README.md) |
+| CV 第 1～22 轮及 CV13 | [CV 工具](cv_workflow/README.md) · [逐轮沿革](../docs/EXPERIMENTS.md) |
+
+本机一次性查样脚本和预览位于 `scratch/`，其中 `scratch/e2-case-search/` 汇集原先散放在实验区顶层的 13 个脚本。从仓库根目录执行，保留其相对数据路径。
+
+## CV13 历史说明
 
 - 源码、配置和提示词在本目录，Git管理；运行产物只进LS_lcad_reviewer/intermediate/experiments/{run_id}，不覆盖旧运行。
 - 当前事实查[STATUS](../docs/STATUS.md)，任务和改进方向查[PLAN](../docs/PLAN.md)，第1～22轮沿革查[EXPERIMENTS](../docs/EXPERIMENTS.md)。

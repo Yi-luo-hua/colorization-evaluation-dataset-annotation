@@ -4,7 +4,7 @@
 
 根仓库统一管理当前两阶段工作流、共享CV工具与历史迁移。根`pipeline.py`是当前执行入口，`annotation_delivery/train_val_v1_20261015/`保存执行器、看板、契约、提示、配置和离线检查。`experiments/cv_workflow/`仍有共享依赖，不能只备份交付目录就认为源码完整。
 
-纳入Git：源码、配置、提示、格式示例、Label Studio界面、检查脚本、设计与历史文档。后台浏览器拦截器的Go源码和现用`rundll32.exe`一起保存，构建方法见其同目录README；本地运行指纹包含该二进制，标注运行中不要重建。
+纳入 Git 的内容包括源码、配置、提示、格式示例、V5 固定读本图、Label Studio 界面、检查脚本、流程图源文件和历史文档。流程图的 PNG 导出、后台浏览器拦截器的 Windows 编译产物留在本机。新环境可按[构建说明](../annotation_delivery/train_val_v1_20261015/scripts/no_browser/README.md)从 Go 源码构建拦截器。本机运行指纹包含该二进制，标注运行中保留当前版本。
 
 留在本机：原始数据集、人工冻结清单所在的数据目录、reviewed底稿、任务池、Label Studio数据库、交付exports，以及交付项目的`data/`和`runtime/`。环境文件、SQLite、日志和DPAPI凭据由忽略规则排除，不用`git add -f`绕过。
 
@@ -14,7 +14,7 @@
 
 提交前查看`git status --short`、`git diff`和`git diff --cached`。按改动主题选择路径暂存，确认没有运行产物或凭据，再运行`git diff --cached --check`并提交。提交迁移时同时记录原路径删除与归档目标，便于Git识别重命名。
 
-历史文档中的“未提交”“未推送”描述的是当时的操作，当前Git状态用`git log`、`git status`和`git remote -v`核对。本次维护只建立本地提交；仓库没有远端，发布与推送另行明确。
+历史文档中的“未提交”“未推送”描述的是当时的操作。当前 Git 状态用 `git log`、`git status` 和 `git remote -v` 核对。私有 GitHub 仓库的首次上传从隔离副本过滤历史中的派生文件。后续对 GitHub 提交应从 `origin/main` 建分支，以继承已过滤的历史。
 
 `docs/archive/`、实验`archive/`与`baselines/`、旧入口归档使用`-text`属性，避免Git行尾转换改变已有字节哈希。不要为消除格式提示而批量重写这些历史快照。活动文本继续使用既有行尾约定。
 
