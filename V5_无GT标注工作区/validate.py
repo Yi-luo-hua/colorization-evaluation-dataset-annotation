@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 CATEGORIES = {"A", "B", "C", "D", "E1", "E2", "F"}
-STATUSES = {"hit", "clear", "not_applicable"}
+STATUSES = {"hit", "clear"}
 
 
 def validate(packet):
@@ -31,12 +31,6 @@ def validate_rows(rows, expected):
             s not in STATUSES for s in checks.values()
         ):
             raise ValueError(f"{key}.checks 七类状态不完整或不合法")
-        notes = row.get("notes", {})
-        for cat, state in checks.items():
-            if state == "not_applicable" and not (
-                isinstance(notes, dict) and isinstance(notes.get(cat), str) and notes[cat].strip()
-            ):
-                raise ValueError(f"{key}.notes.{cat} 缺理由")
         defects = row.get("defects")
         if not isinstance(defects, list):
             raise ValueError(f"{key}.defects 应为数组")

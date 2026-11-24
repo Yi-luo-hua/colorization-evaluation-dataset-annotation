@@ -22,7 +22,7 @@ def export():
     reviews=[]
     table=io.StringIO(newline="")
     writer=csv.writer(table)
-    writer.writerow(["源编号","生成图","类别","等级","对象","描述","七类状态","不适用理由"])
+    writer.writerow(["源编号","生成图","类别","等级","对象","描述","七类状态","判定备注"])
     summary=Counter()
     statuses=Counter()
     severity=Counter()
