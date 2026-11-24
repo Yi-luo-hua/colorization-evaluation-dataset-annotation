@@ -2,7 +2,7 @@
 
 更新于 2026-11-24。接手 agent 先读本页与《试跑方法.md》。单轮 1,000 张已归档，后续标注包采用同一会话两轮派发。
 
-历史试跑、原始结果及人工样例对照见 [V5 试跑索引](../experiments/timeline/20261121-20261124_v5_annotation/README.md)。
+历史试跑、原始结果及人工样例对照见 [V5 试跑索引](../experiments/timeline/20261121-20261124_v5_annotation/README.md)。11 月 24 日的[单轮、三轮和看板对照实验](../experiments/timeline/20261121-20261124_v5_annotation/20261124_40张对照.md)记录了同一批 40 张的对比结果。
 
 ## 文件与职责
 

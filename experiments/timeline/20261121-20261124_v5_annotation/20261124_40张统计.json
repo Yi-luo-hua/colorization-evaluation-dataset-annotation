@@ -1,0 +1,1117 @@
+{
+  "experiment_date": "2026-11-24",
+  "model_for_live_runs": "gemini-3.8-flash-high",
+  "v5_definition_revision": 48,
+  "cohort": {
+    "images": 40,
+    "lcad": 20,
+    "unicolor": 20,
+    "v5_adjudicated_17": {
+      "images": 17,
+      "reference_categories": 38
+    },
+    "q_draft_23": {
+      "images": 23,
+      "reference_categories": 46
+    },
+    "human_reference_sha256": "8290274a2156d7b80a15932990c32be496211f7e47b011601773b1f142d6c77c"
+  },
+  "runs": {
+    "single_turn": {
+      "source_directory": "one_turn_blind40_r48_20261124_01",
+      "source_summary_sha256": "e220edc748572b681adc6bc320160df7b8ba7b32f34701ae11950fa843395c60",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 9,
+          "same_category": 7,
+          "same_level": 6,
+          "reference_L2plus": 22,
+          "same_L2plus": 6,
+          "missing_categories": 31,
+          "extra_categories": 2,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 5,
+          "reference_positive_predicted_empty": 11,
+          "reference_empty_predicted_positive": 0,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 1
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 1,
+              "hit": 1,
+              "same_level": 1
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 2,
+              "hit": 2,
+              "same_level": 2
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 3,
+              "same_level": 2
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 12,
+          "same_category": 6,
+          "same_level": 5,
+          "reference_L2plus": 19,
+          "same_L2plus": 2,
+          "missing_categories": 40,
+          "extra_categories": 6,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 5,
+          "reference_positive_predicted_empty": 15,
+          "reference_empty_predicted_positive": 0,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 1,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 2,
+              "hit": 2,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 3,
+              "same_level": 2
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 5,
+              "hit": 1,
+              "same_level": 1
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 466.7,
+        "final_empty": 30,
+        "defect_entries": 21,
+        "clear_notes_present": 259,
+        "clear_notes_expected": 259
+      }
+    },
+    "single_turn_followup": {
+      "source_directory": "second_pass_blind40_r48_20261124_01",
+      "source_summary_sha256": "543fdc7faf0a880437ac764328fc1ba7be52af8197b8b8495236056c02bbbec9",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 9,
+          "same_category": 7,
+          "same_level": 6,
+          "reference_L2plus": 22,
+          "same_L2plus": 6,
+          "missing_categories": 31,
+          "extra_categories": 2,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 5,
+          "reference_positive_predicted_empty": 11,
+          "reference_empty_predicted_positive": 0,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 1
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 1,
+              "hit": 1,
+              "same_level": 1
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 2,
+              "hit": 2,
+              "same_level": 2
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 3,
+              "same_level": 2
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 12,
+          "same_category": 6,
+          "same_level": 5,
+          "reference_L2plus": 19,
+          "same_L2plus": 2,
+          "missing_categories": 40,
+          "extra_categories": 6,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 5,
+          "reference_positive_predicted_empty": 15,
+          "reference_empty_predicted_positive": 0,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 1,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 2,
+              "hit": 2,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 3,
+              "same_level": 2
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 5,
+              "hit": 1,
+              "same_level": 1
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 264.9,
+        "final_empty": 30,
+        "defect_entries": 21,
+        "identical_records": 37,
+        "changed_state_images": 0,
+        "clear_notes_present": 259,
+        "clear_notes_expected": 259
+      }
+    },
+    "legacy_v5_definition": {
+      "source_directory": "legacy3_v5_definition_blind40_20261124_01",
+      "source_summary_sha256": "015dbd5ea3515ca02c640342b0b85e298d8959169e85a1bd7e7c36490fc11072",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 30,
+          "same_category": 13,
+          "same_level": 7,
+          "reference_L2plus": 22,
+          "same_L2plus": 10,
+          "missing_categories": 25,
+          "extra_categories": 17,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 16,
+          "reference_positive_predicted_empty": 1,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 7,
+              "hit": 6,
+              "same_level": 3
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 3,
+              "hit": 2,
+              "same_level": 2
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 7,
+              "hit": 1,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 3,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 4,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 6,
+              "hit": 4,
+              "same_level": 2
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 31,
+          "same_category": 15,
+          "same_level": 6,
+          "reference_L2plus": 19,
+          "same_L2plus": 11,
+          "missing_categories": 31,
+          "extra_categories": 16,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 16,
+          "reference_positive_predicted_empty": 7,
+          "reference_empty_predicted_positive": 3,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 6,
+              "hit": 6,
+              "same_level": 1
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 3,
+              "hit": 1,
+              "same_level": 0
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 3,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 4,
+              "hit": 2,
+              "same_level": 2
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 7,
+              "hit": 2,
+              "same_level": 2
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 8,
+              "hit": 4,
+              "same_level": 1
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 792.0,
+        "final_empty": 8,
+        "defect_entries": 62,
+        "third_positive_images": 4,
+        "third_reviewed_images": 12,
+        "stages": {
+          "initial": {
+            "cli_invocations": 3,
+            "continuations": 1,
+            "packets": 2,
+            "boards": 4,
+            "accepted": 20,
+            "span_seconds": 277.5
+          },
+          "secondary": {
+            "cli_invocations": 4,
+            "continuations": 1,
+            "packets": 3,
+            "boards": 8,
+            "accepted": 40,
+            "span_seconds": 605.8
+          },
+          "tertiary": {
+            "cli_invocations": 2,
+            "continuations": 0,
+            "packets": 2,
+            "boards": 6,
+            "accepted": 12,
+            "span_seconds": 471.1
+          }
+        },
+        "prompt_sha256": {
+          "initial_rgb.md": "644eebfb1b7f31027b4d158fb2d65f30fb350779f57fa6b75cb56d1e7d16d850",
+          "secondary_chroma.md": "30acfa85b5e05859b47795665894a5038b32fa25d290a5bad5cdac2d489ae557",
+          "session.md": "76d663a79dc6742712bcdc1641efe897fc453c936af886c0087c3074083ff649",
+          "tertiary_empty.md": "09909a6dfa303cfd4d73897269e60297ca626a1cb02d5d14afa0742c43091d77"
+        }
+      }
+    },
+    "adapted_three_columns": {
+      "source_directory": "legacy3_v5_adapted40_20261124_01",
+      "source_summary_sha256": "b9a3ba9b46c4b434bec5c847b093fbb7fe8e17ff7ac039bebddf0322978118aa",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 31,
+          "same_category": 14,
+          "same_level": 6,
+          "reference_L2plus": 22,
+          "same_L2plus": 9,
+          "missing_categories": 24,
+          "extra_categories": 17,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 16,
+          "reference_positive_predicted_empty": 1,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 4,
+              "hit": 2,
+              "same_level": 2
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 3,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 6,
+              "hit": 3,
+              "same_level": 0
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 6,
+              "hit": 1,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 4,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 5,
+              "hit": 4,
+              "same_level": 1
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 33,
+          "same_category": 10,
+          "same_level": 6,
+          "reference_L2plus": 19,
+          "same_L2plus": 7,
+          "missing_categories": 36,
+          "extra_categories": 23,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 19,
+          "reference_positive_predicted_empty": 4,
+          "reference_empty_predicted_positive": 3,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 5,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 4,
+              "hit": 4,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 3,
+              "hit": 1,
+              "same_level": 1
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 4,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 7,
+              "hit": 1,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 8,
+              "hit": 3,
+              "same_level": 2
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 760.5,
+        "final_empty": 5,
+        "defect_entries": 64,
+        "third_positive_images": 5,
+        "third_reviewed_images": 10,
+        "stages": {
+          "initial": {
+            "cli_invocations": 2,
+            "continuations": 0,
+            "packets": 2,
+            "boards": 4,
+            "accepted": 20,
+            "span_seconds": 270.6
+          },
+          "secondary": {
+            "cli_invocations": 3,
+            "continuations": 0,
+            "packets": 3,
+            "boards": 8,
+            "accepted": 40,
+            "span_seconds": 521.5
+          },
+          "tertiary": {
+            "cli_invocations": 3,
+            "continuations": 1,
+            "packets": 2,
+            "boards": 6,
+            "accepted": 10,
+            "span_seconds": 400.5
+          }
+        },
+        "prompt_sha256": {
+          "initial_rgb.md": "699f9a753405a50b0ae904905ff557a03ffafd6de0f2bb285a36534070017fa2",
+          "secondary_chroma.md": "c2430e8659639ef00064c042b6f0bc51fd239ca0cf35fd51ce2400227a839059",
+          "session.md": "1747dd6708ff6b71c26523f5258fd6d2812efa148f78c86a993ca28f19e47a77",
+          "tertiary_empty.md": "cd4b7d2bcc2c820054fccc2261eb9b5081fe128d0e67c66c0385c108fa3aedfa"
+        }
+      }
+    },
+    "generated_2x2": {
+      "source_directory": "legacy3_v5_2x2_40_20261124_01",
+      "source_summary_sha256": "fc13be96353a29ae46b77391cac15a28b121d1dbf8429937c272bed1558a1217",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 20,
+          "same_category": 9,
+          "same_level": 6,
+          "reference_L2plus": 22,
+          "same_L2plus": 6,
+          "missing_categories": 29,
+          "extra_categories": 11,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 9,
+          "reference_positive_predicted_empty": 8,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 1,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 5,
+              "hit": 4,
+              "same_level": 3
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 1,
+              "hit": 1,
+              "same_level": 1
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 4,
+              "hit": 1,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 3,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 4,
+              "hit": 2,
+              "same_level": 1
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 16,
+          "same_category": 6,
+          "same_level": 3,
+          "reference_L2plus": 19,
+          "same_L2plus": 6,
+          "missing_categories": 40,
+          "extra_categories": 10,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 9,
+          "reference_positive_predicted_empty": 12,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 3,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 3,
+              "hit": 3,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 1,
+              "hit": 0,
+              "same_level": 0
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 1,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 4,
+              "hit": 1,
+              "same_level": 0
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 761.9,
+        "final_empty": 22,
+        "defect_entries": 37,
+        "third_positive_images": 1,
+        "third_reviewed_images": 23,
+        "stages": {
+          "initial": {
+            "cli_invocations": 2,
+            "continuations": 0,
+            "packets": 2,
+            "boards": 5,
+            "accepted": 20,
+            "span_seconds": 285.1
+          },
+          "secondary": {
+            "cli_invocations": 3,
+            "continuations": 0,
+            "packets": 3,
+            "boards": 10,
+            "accepted": 40,
+            "span_seconds": 484.1
+          },
+          "tertiary": {
+            "cli_invocations": 3,
+            "continuations": 0,
+            "packets": 3,
+            "boards": 7,
+            "accepted": 23,
+            "span_seconds": 419.8
+          }
+        },
+        "prompt_sha256": {
+          "initial_rgb.md": "117f2b6f595d5fc9442b86102fe9f6a5f894fca403aa90a16c5f7f34f284398e",
+          "secondary_chroma.md": "93c742d6e01730192e4507bb5e315df802bc39eae18873c6614d0210285e8fda",
+          "session.md": "0e82a7cc032ed58808f19be7c1095f328fbee8764715f508f8b9927c25b7b80c",
+          "tertiary_empty.md": "c89433668856f13e71b1c6f3259811889c25a2aab370b57bf017657c78b4d1d2"
+        }
+      },
+      "secondary_metrics": {
+        "v5_adjudicated_17": {
+          "same_category": 9,
+          "same_level": 6,
+          "extra_categories": 11,
+          "reference_positive_predicted_empty": 8
+        },
+        "q_draft_23": {
+          "same_category": 6,
+          "same_level": 3,
+          "extra_categories": 9,
+          "reference_positive_predicted_empty": 12
+        }
+      }
+    },
+    "single_png": {
+      "source_directory": "legacy3_v5_single_image40_20261124_01",
+      "source_summary_sha256": "99d5538ce9f864ff2e1ecac57925d41350c30d9a7bb406599a3490bf8736440c",
+      "run_type": "live",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 19,
+          "same_category": 12,
+          "same_level": 8,
+          "reference_L2plus": 22,
+          "same_L2plus": 9,
+          "missing_categories": 26,
+          "extra_categories": 7,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 10,
+          "reference_positive_predicted_empty": 6,
+          "reference_empty_predicted_positive": 0,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 1,
+              "hit": 1,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 3,
+              "hit": 3,
+              "same_level": 2
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 3,
+              "hit": 3,
+              "same_level": 3
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 6,
+              "hit": 4,
+              "same_level": 3
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 24,
+          "same_category": 10,
+          "same_level": 4,
+          "reference_L2plus": 19,
+          "same_L2plus": 7,
+          "missing_categories": 36,
+          "extra_categories": 14,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 13,
+          "reference_positive_predicted_empty": 9,
+          "reference_empty_predicted_positive": 2,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 2,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 3,
+              "hit": 2,
+              "same_level": 0
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 3,
+              "hit": 1,
+              "same_level": 1
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 1,
+              "hit": 1,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 2,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 4,
+              "hit": 1,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 9,
+              "hit": 4,
+              "same_level": 2
+            }
+          }
+        }
+      },
+      "execution": {
+        "completed": 40,
+        "wall_seconds": 842.0,
+        "final_empty": 17,
+        "defect_entries": 45,
+        "third_positive_images": 2,
+        "third_reviewed_images": 19,
+        "stages": {
+          "initial": {
+            "cli_invocations": 4,
+            "continuations": 2,
+            "packets": 2,
+            "boards": 20,
+            "accepted": 20,
+            "span_seconds": 459.1
+          },
+          "secondary": {
+            "cli_invocations": 3,
+            "continuations": 0,
+            "packets": 3,
+            "boards": 40,
+            "accepted": 40,
+            "span_seconds": 642.1
+          },
+          "tertiary": {
+            "cli_invocations": 3,
+            "continuations": 0,
+            "packets": 3,
+            "boards": 19,
+            "accepted": 19,
+            "span_seconds": 479.1
+          }
+        },
+        "prompt_sha256": {
+          "initial_rgb.md": "04ac9885ab16eb6a7172ce3dcf5f62790ab538ef8e5d044780fdc95e04f76e22",
+          "secondary_chroma.md": "449de9194f6fb481bc6dcabcc4e33b370624b279a0f5311106e4975967d899e5",
+          "session.md": "f17975b1bb4abe1316f142f390a493be4bf3f2d19645e43206dbe029d555c270",
+          "tertiary_empty.md": "9a571633aa9ee28c8d75e3258c0602d2d7b554ab548fcefe841f651873887e95"
+        },
+        "pixel_verified_png_files": 79
+      },
+      "secondary_metrics": {
+        "v5_adjudicated_17": {
+          "same_category": 12,
+          "same_level": 8,
+          "extra_categories": 7,
+          "reference_positive_predicted_empty": 6
+        },
+        "q_draft_23": {
+          "same_category": 10,
+          "same_level": 4,
+          "extra_categories": 9,
+          "reference_positive_predicted_empty": 9
+        }
+      }
+    },
+    "historical_delivery": {
+      "source_directory": "legacy3_v5_definition_blind40_20261124_01",
+      "source_summary_sha256": "015dbd5ea3515ca02c640342b0b85e298d8959169e85a1bd7e7c36490fc11072",
+      "run_type": "historical_readonly",
+      "metrics": {
+        "v5_adjudicated_17": {
+          "scope": 17,
+          "evaluated": 17,
+          "reference_categories": 38,
+          "prediction_categories": 63,
+          "same_category": 27,
+          "same_level": 12,
+          "reference_L2plus": 22,
+          "same_L2plus": 17,
+          "missing_categories": 11,
+          "extra_categories": 36,
+          "reference_positive_images": 16,
+          "predicted_positive_images": 17,
+          "reference_positive_predicted_empty": 0,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 3,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 12,
+              "predicted": 12,
+              "hit": 9,
+              "same_level": 3
+            },
+            "C": {
+              "reference": 8,
+              "predicted": 13,
+              "hit": 7,
+              "same_level": 4
+            },
+            "D": {
+              "reference": 2,
+              "predicted": 11,
+              "hit": 2,
+              "same_level": 1
+            },
+            "E1": {
+              "reference": 1,
+              "predicted": 9,
+              "hit": 1,
+              "same_level": 1
+            },
+            "E2": {
+              "reference": 0,
+              "predicted": 6,
+              "hit": 0,
+              "same_level": 0
+            },
+            "F": {
+              "reference": 12,
+              "predicted": 12,
+              "hit": 8,
+              "same_level": 3
+            }
+          }
+        },
+        "q_draft_23": {
+          "scope": 23,
+          "evaluated": 23,
+          "reference_categories": 46,
+          "prediction_categories": 47,
+          "same_category": 21,
+          "same_level": 9,
+          "reference_L2plus": 19,
+          "same_L2plus": 11,
+          "missing_categories": 25,
+          "extra_categories": 26,
+          "reference_positive_images": 20,
+          "predicted_positive_images": 13,
+          "reference_positive_predicted_empty": 8,
+          "reference_empty_predicted_positive": 1,
+          "categories": {
+            "A": {
+              "reference": 1,
+              "predicted": 0,
+              "hit": 0,
+              "same_level": 0
+            },
+            "B": {
+              "reference": 13,
+              "predicted": 7,
+              "hit": 7,
+              "same_level": 4
+            },
+            "C": {
+              "reference": 12,
+              "predicted": 7,
+              "hit": 2,
+              "same_level": 0
+            },
+            "D": {
+              "reference": 3,
+              "predicted": 9,
+              "hit": 2,
+              "same_level": 0
+            },
+            "E1": {
+              "reference": 4,
+              "predicted": 5,
+              "hit": 2,
+              "same_level": 2
+            },
+            "E2": {
+              "reference": 2,
+              "predicted": 7,
+              "hit": 1,
+              "same_level": 1
+            },
+            "F": {
+              "reference": 11,
+              "predicted": 12,
+              "hit": 7,
+              "same_level": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}
