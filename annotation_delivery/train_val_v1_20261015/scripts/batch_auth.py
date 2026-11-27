@@ -1,21 +1,33 @@
 """Block agy's Windows browser opener only in workflow-owned child processes."""
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import json
 import time
 
 GUARD = Path(__file__).with_name('no_browser')/'rundll32.exe'
+CLI_STATIC_FILES = ('settings.json', 'installation_id', 'jetski_state.pbtxt')
 
 
-def prepare_worker_profile(profile):
-    """Isolate global customizations while retaining the original CLI session store."""
+def prepare_worker_profile(profile, *, isolate_cli_store=False):
+    """Isolate global customizations while retaining auth and optional CLI store."""
     profile=Path(profile).resolve()
     config=profile/'.gemini/config'
     config.mkdir(parents=True,exist_ok=True)
     for relative in ['antigravity-cli','config/projects']:
         original=Path.home()/'.gemini'/relative
         shared=profile/'.gemini'/relative
+        if relative=='antigravity-cli' and isolate_cli_store:
+            if shared.exists() and shared.resolve()==original.resolve():
+                continue
+            shared.mkdir(parents=True,exist_ok=True)
+            for fname in CLI_STATIC_FILES:
+                src=original/fname
+                dst=shared/fname
+                if src.is_file() and not dst.exists():
+                    shutil.copy2(src,dst)
+            continue
         if relative=='config/projects' and shared.exists() and shared.resolve()!=original.resolve():
             backup=shared.with_name('projects.local-backup-'+str(time.time_ns()))
             if not shared.resolve().is_relative_to(profile) or not backup.resolve().is_relative_to(profile):

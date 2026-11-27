@@ -3,87 +3,47 @@
 import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from hashlib import sha256
-import json
-import os
 from pathlib import Path
 import random
 import shutil
-import subprocess
-import sys
 from threading import Event
-import time
 
-from prepare import publish_image, write_text
-from turns import FORMAT_EXAMPLES, FORMAT_LINK, LABEL, verify_turn
+from v5_pipeline.io_utils import publish_image
+from v5_pipeline.stage_runner import (
+    ALLOWED,
+    BLIND,
+    CATEGORIES,
+    DRAFT_MODEL,
+    FIELDS,
+    FINAL,
+    FIRST,
+    MODEL,
+    QUOTA_INTERRUPTED,
+    READS,
+    ROOT,
+    SECOND,
+    SESSION_START_LOCK,
+    OwnerLock,
+    batch_auth,
+    digest,
+    empty_session_start,
+    load,
+    native_log,
+    output_at,
+    public_inputs,
+    render,
+    run_batch,
+    run_stage,
+    save,
+    snapshot,
+    stage_paths,
+    validate,
+    wait_for_session,
+)
 
-ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT.parent / "annotation_delivery/train_val_v1_20261015/scripts"))
-import batch_auth
-from pipeline_store import OwnerLock
-from quota_control import explicit_exhaustion
-
-MODEL = "gemini-4-hydrogen-high"
 HUMAN = Path("V5_无GT标注工作区/local/human_annotations_merged_20261124/人工标注合并.json")
-FIRST, SECOND, BLIND, FINAL = "01_initial", "02_color_and_distribution", "03a_independent_review", "03b_finalize_review"
-CATEGORIES = set("ABCD") | {"E1", "E2", "F"}
-ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, BLIND: CATEGORIES, FINAL: CATEGORIES}
-READS = {FIRST: (), SECOND: (FIRST,), BLIND: (), FINAL: (BLIND, FIRST, SECOND)}
-FIELDS = {"id", "severity", "object", "description"}
 SEED = 2026112440
 BATCH_SIZE = 5
-
-
-def load(path):
-    return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
-def save(path, value):
-    write_text(path, json.dumps(value, ensure_ascii=False, indent=2) + "\n")
-
-
-def digest(path):
-    return sha256(path.read_bytes()).hexdigest()
-
-
-def output_at(folder, stage):
-    return folder / stage / "结果.json"
-
-
-def stage_paths(folder, stage):
-    stage_dir = folder / stage
-    return stage_dir / "任务.md", stage_dir / FORMAT_EXAMPLES, output_at(folder, stage)
-
-
-def public_inputs(folder, stage):
-    return [folder / stage / f"前轮_{previous}.json" for previous in READS[stage]]
-
-
-def render(folder, stage, labels, template, common):
-    task, example, result = stage_paths(folder, stage)
-    task.parent.mkdir(exist_ok=True)
-    save(example, template["example"])
-    if not result.exists():
-        save(result, dict.fromkeys(labels))
-    dependencies = [
-        f"- {previous} 的普通标注结果：{path}"
-        for previous, path in zip(READS[stage], public_inputs(folder, stage))
-    ]
-    listing = []
-    for sid in labels:
-        relative = f"../images/{sid}.png"
-        listing.append(f"- ![{sid}]({relative})  文件位置：{(task.parent / relative).resolve()}")
-    write_text(task, "\n".join([
-        f"# {template['title']}", "",
-        f"- 结果 JSON 格式示例：{FORMAT_LINK}，完整路径：{example}",
-        f"- 结果骨架与唯一写入位置：{result}",
-        *dependencies, "", "## 待标图文件", "", *listing, "",
-        "## 本轮要求", "", template["instruction"], "",
-        "只读取本任务列出的文件，图像用 read_file 打开。完成后用 write_file 一次写入完整结果 JSON。",
-        "最终对照承接同一会话的独立看图。其余轮次各打开本包每张图一次。", "",
-        common, "", "## 本轮结果 JSON 格式示例", "",
-        chr(96) * 3 + "json", json.dumps(template["example"], ensure_ascii=False, indent=2), chr(96) * 3, "",
-    ]))
 
 
 def prepare(args):
@@ -141,131 +101,6 @@ def prepare(args):
     return plan
 
 
-def validate(rows, sample_ids, stage):
-    if not isinstance(rows, dict) or rows.keys() != sample_ids.keys():
-        raise ValueError("结果编号与本包任务不符")
-    for sid, defects in rows.items():
-        if not isinstance(defects, list):
-            raise ValueError(f"{sid} 仍为待处理或缺陷列表无效")
-        for defect in defects:
-            if not isinstance(defect, dict) or defect.keys() != FIELDS:
-                raise ValueError(f"{sid} 缺陷须包含且只包含四个指定字段")
-            if any(not isinstance(value, str) or not value.strip() for value in defect.values()):
-                raise ValueError(f"{sid} 有空的或不合法的缺陷字段")
-            if defect["id"] not in ALLOWED[stage] or defect["severity"] not in {"L1", "L2", "L3"}:
-                raise ValueError(f"{sid} 类别不属本轮或严重程度无效")
-
-
-def snapshot(private, stage):
-    return private / f"{stage}.accepted.json"
-
-
-def native_log(out):
-    cid = None
-    errors = []
-    for line in out.read_text(encoding="utf-8-sig", errors="replace").splitlines():
-        try:
-            event = json.loads(line)
-        except ValueError:
-            continue
-        cid = cid or event.get("conversation_id")
-        if event.get("is_error") is True or event.get("type") == "error":
-            errors.append(line)
-    return cid, errors
-
-
-def run_stage(args, private, folder, stage, cases, env, quota_stop):
-    proof_file = private / f"{stage}.proof.json"
-    if proof_file.exists():
-        proof = load(proof_file)
-        if "step" in proof:
-            if not snapshot(private, stage).exists():
-                save(snapshot(private, stage), load(output_at(folder, stage)))
-            if digest(snapshot(private, stage)) != proof["result_sha256"]:
-                raise ValueError(f"{stage} 已验收结果发生变化")
-            return proof
-    else:
-        proof = {}
-
-    document, _, result = stage_paths(folder, stage)
-    upstream = public_inputs(folder, stage)
-    for previous, public_file in zip(READS[stage], upstream):
-        save(public_file, load(snapshot(private, previous)))
-    blind = load(private / f"{BLIND}.proof.json") if stage == FINAL else {}
-    cid = proof.get("conversation_id") or blind.get("conversation_id")
-    feedback = proof.get("problem", "")
-    for attempt in range(6):
-        if quota_stop.is_set():
-            return None
-        tag = f"{stage}.{time.time_ns()}"
-        stdout, stderr = private / f"{tag}.jsonl", private / f"{tag}.err"
-        command = [str(args.agy), "--model", args.model, "--mode", "accept-edits",
-                   "--output-format", "stream-json", "--print-timeout", "0"]
-        if cid:
-            command += ["--conversation", cid]
-        prompt = (
-            f"{LABEL} 完整读取 {document}，其中有完整七类定义、适用关系、文件路径和 JSON 示例。"
-            "只访问任务列出的文件，逐图用 read_file 查看，完成后用 write_file 写入结果 JSON。"
-        )
-        if feedback:
-            prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
-        with stdout.open("wb") as out, stderr.open("wb") as err:
-            child = subprocess.Popen(command + ["--print", prompt], cwd=folder, env=env,
-                                     stdout=out, stderr=err, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            save(private / "status.json", {"stage": stage, "state": "running", "pid": child.pid,
-                                         "attempt": attempt + 1, "log": stdout.name, "model": args.model})
-            while child.poll() is None:
-                if quota_stop.wait(1):
-                    child.terminate()
-                    child.wait()
-                    return None
-
-        actual_cid, native_errors = native_log(stdout)
-        fault = stderr.read_text(encoding="utf-8-sig", errors="replace") + "\n" + "\n".join(native_errors)
-        if explicit_exhaustion(fault):
-            save(args.run / "quota_pause.json", {"batch": private.name, "stage": stage, "log": stdout.name})
-            quota_stop.set()
-        try:
-            if not actual_cid or (cid and cid != actual_cid):
-                raise ValueError("缺少原生会话身份或续接身份不一致")
-            cid = actual_cid
-            rows = load(result)
-            validate(rows, cases, stage)
-            proof = verify_turn(cid, document, LABEL, result=result, after_step=blind.get("step", -1),
-                                required_reads=[document, *upstream],
-                                previous_images=map(Path, blind.get("seen", [])))
-            save(snapshot(private, stage), rows)
-            proof.update(result_sha256=digest(snapshot(private, stage)), log=stdout.name)
-            save(proof_file, proof)
-            return proof
-        except (ValueError, KeyError, OSError, TypeError) as exc:
-            feedback = str(exc)
-            save(proof_file, {"conversation_id": cid, "problem": feedback, "log": stdout.name})
-            if quota_stop.is_set() or not cid or attempt == 5:
-                break
-            save(private / "status.json", {"stage": stage, "state": "retry_wait", "problem": feedback})
-            if quota_stop.wait(20):
-                break
-    save(private / "status.json", {"stage": stage, "state": "quota_wait" if quota_stop.is_set() else "needs_review",
-                                  "problem": feedback})
-    return None
-
-
-def run_batch(args, name, cases, quota_stop):
-    private, folder = args.run / name, args.packets / name
-    if quota_stop.is_set():
-        return
-    profile = batch_auth.prepare_worker_profile(private / "worker_profile")
-    env = batch_auth.batch_environment(private / "auth_browser.json", profile)
-    for stage in ALLOWED:
-        proof = run_stage(args, private, folder, stage, cases, env, quota_stop)
-        if proof is None:
-            print(f"{name} {stage} paused", flush=True)
-            return
-        print(f"{name} {stage} accepted {len(cases)}/{len(cases)}", flush=True)
-    save(private / "status.json", {"stage": FINAL, "state": "completed"})
-
-
 def comparison(args, plan):
     metrics = Counter()
     result = {}
@@ -302,7 +137,7 @@ def comparison(args, plan):
         for group in ("adjudicated", "draft", "combined")
     }
     save(args.run / "comparison.json", {"model": args.model, "completed": len(result), "expected": 40,
-                                       "metrics": grouped, "images": result})
+                                        "metrics": grouped, "images": result})
 
 
 def main():
@@ -311,12 +146,14 @@ def main():
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--agy", type=Path, default=Path(shutil.which("agy") or "agy"))
     parser.add_argument("--model", default=MODEL)
+    parser.add_argument("--draft-model", default=DRAFT_MODEL)
     parser.add_argument("--workers", type=int, default=8, choices=range(1, 17), metavar="1..16")
-    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, choices=(5, 10, 20))
+    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, choices=(5, 10, 15, 20))
     parser.add_argument("--prepare-only", action="store_true")
     args = parser.parse_args()
     for name in ("source_root", "run", "packets", "agy"):
         setattr(args, name, getattr(args, name).resolve())
+    args.stage_models = {FIRST: args.draft_model, SECOND: args.draft_model, BLIND: args.model, FINAL: args.model}
     if args.run.is_relative_to(args.packets) or args.packets.is_relative_to(args.run):
         parser.error("主控结果和匿名执行目录必须分别存放")
     args.run.mkdir(parents=True, exist_ok=True)
@@ -325,7 +162,6 @@ def main():
         print(f"prepared {sum(map(len, plan['batches'].values()))} anonymous images in {len(plan['batches'])} batches", flush=True)
         if args.prepare_only:
             return
-
         if not batch_auth.GUARD.is_file():
             batch_auth.GUARD = args.source_root / "annotation_delivery/train_val_v1_20261015/scripts/no_browser/rundll32.exe"
         quota_stop = Event()
@@ -338,4 +174,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
