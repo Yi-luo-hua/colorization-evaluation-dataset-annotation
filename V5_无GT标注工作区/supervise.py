@@ -1,6 +1,8 @@
 """Reuse the original dashboard UI, sample list and live worker statistics."""
+import argparse
 from functools import partial
 from http.server import ThreadingHTTPServer
+from pathlib import Path
 import sys
 import os
 import shutil
@@ -40,7 +42,7 @@ class Board(DashboardHandler):
         super().do_POST()
 
 
-if __name__=="__main__":
+def serve_two_turn(port):
     store=Store(RUN)
     snapshot=Snapshot(store)
     snapshot.refresh_metrics()
@@ -49,5 +51,16 @@ if __name__=="__main__":
         binary=os.environ.get("MCL_AGY") or shutil.which("agy") or str(Path(sys.executable).parent/"agy/bin/agy.exe")
         kwargs["cwd"]=str(Path(__file__).resolve().parent)
         return subprocess.Popen([sys.executable,"-X","utf8","run1000.py","--agy",binary],**kwargs)
-    from pathlib import Path
-    ThreadingHTTPServer(("127.0.0.1",8947),partial(Board,store=store,snapshot=snapshot,launcher=launch)).serve_forever()
+    ThreadingHTTPServer(("127.0.0.1",port),partial(Board,store=store,snapshot=snapshot,launcher=launch)).serve_forever()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--full-run", type=Path)
+    parser.add_argument("--port", type=int, default=8947)
+    args = parser.parse_args()
+    if args.full_run:
+        from full_board_adapter import serve_full
+        serve_full(args.full_run, args.port)
+    else:
+        serve_two_turn(args.port)
