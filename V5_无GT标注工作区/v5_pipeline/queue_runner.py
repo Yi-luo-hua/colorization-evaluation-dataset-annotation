@@ -47,6 +47,7 @@ MODELS = ("lcad", "unicolor")
 EXTENSIONS = {".jpg", ".jpeg", ".png"}
 PROMPTS = ("common.md", "stages.json")
 BATCH_SIZE, WORKERS, SEED = 15, 8, 20261127
+QUOTA_POLL_SECONDS = 120
 
 
 def inventory(source):
@@ -281,7 +282,7 @@ def quota_read(args):
 
 
 def watch_quota(args, stop, done, signal):
-    next_check = time.monotonic() + 600
+    next_check = time.monotonic() + QUOTA_POLL_SECONDS
     while not done.wait(1):
         if (args.run / "stop.request").is_file():
             signal["manual"] = True
@@ -295,7 +296,7 @@ def watch_quota(args, stop, done, signal):
                 signal["quota"] = values
                 stop.set()
                 return
-            next_check = time.monotonic() + 600
+            next_check = time.monotonic() + QUOTA_POLL_SECONDS
 
 
 def seconds_until_reset(value):

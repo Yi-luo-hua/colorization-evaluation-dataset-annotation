@@ -130,7 +130,7 @@ class FullQueue:
                 "five_hour_refresh_in": quota["five_reset"], "weekly_refresh_in": quota["weekly_reset"],
                 "checked_at": quota["observed_at"], "source": "native agy /usage",
             }
-            data["quota_monitor"] = {"status": "ok", "interval_minutes": 10,
+            data["quota_monitor"] = {"status": "ok", "interval_minutes": 2,
                                      "enabled": bool(running or (waiting_quota and engine_alive))}
         if waiting_quota:
             data["quota_guard"] = {"waiting_for_recovery": True, "triggered_at": guard["at"],
