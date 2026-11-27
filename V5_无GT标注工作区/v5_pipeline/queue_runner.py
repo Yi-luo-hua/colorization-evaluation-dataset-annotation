@@ -47,7 +47,7 @@ DATASETS = {"train": "9_14_10000GT_V1", "val": "10_5_val_V1", "test": "10_5_test
 MODELS = ("lcad", "unicolor")
 EXTENSIONS = {".jpg", ".jpeg", ".png"}
 PROMPTS = ("common.md", "stages.json")
-BATCH_SIZE, WORKERS, SEED = 10, 8, 20261127
+BATCH_SIZE, WORKERS, SEED = 5, 8, 20261127
 QUOTA_POLL_SECONDS = 120
 
 
@@ -204,8 +204,7 @@ def run_lanes(args, planned, quota_stop):
             pending.put(batch)
     worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
                                 model=args.model,
-                                stage_models={FIRST: args.draft_model, SECOND: args.draft_model,
-                                              BLIND: args.model, FINAL: args.model},
+                                stage_models={FINAL: args.model},
                                 serialize_session_start=True,
                                 isolate_cli_store=True)
 

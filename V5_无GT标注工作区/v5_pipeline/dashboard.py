@@ -16,7 +16,7 @@ from .stage_runner import BLIND, FINAL, FIRST, SECOND
 ensure_legacy_scripts(include_delivery_root=True)
 from dashboard_server import DashboardHandler, pid_alive
 
-ROLES = {FIRST: "initial_rgb", SECOND: "secondary_chroma", BLIND: "tertiary_empty", FINAL: "tertiary_empty"}
+ROLES = {FINAL: "tertiary_empty"}
 
 
 def _load(path):
@@ -65,7 +65,7 @@ class FullQueue:
         observed = datetime.now().astimezone().isoformat()
         progress = Counter({stage: completed for stage in ROLES})
         workers = {f"W{i:02d}": {"worker_id": f"W{i:02d}", "active": False, "status": "idle",
-                                 "role": ROLES[FIRST], "productive_rounds": 0}
+                                 "role": ROLES[FINAL], "productive_rounds": 0}
                    for i in range(1, worker_limit + 1)}
         batch_rounds = Counter()
         for batch, size, state in in_flight:
@@ -90,7 +90,7 @@ class FullQueue:
                     status = info["state"]
                     live = bool(info.get("pid") and pid_alive(info["pid"]))
             worker.update(active=live, status=status, batch_id=batch, productive_rounds=batch_rounds[batch],
-                          role=ROLES.get(info.get("stage"), ROLES[FIRST]),
+                          role=ROLES.get(info.get("stage"), ROLES[FINAL]),
                           last_session_error=info.get("problem"), conversation_id=info.get("conversation_id"),
                           started_at=info.get("started_at"))
             if status == "retry_wait":
@@ -108,9 +108,9 @@ class FullQueue:
                  else "quota_wait" if waiting_quota and engine_alive
                  else "needs_attention" if totals.get("paused") else "prepared")
         stage_progress = {
-            "total": total * 3, "completed": progress[FIRST] + progress[SECOND] + progress[FINAL],
-            "initial": {"total": total, "completed": progress[FIRST]},
-            "secondary": {"total": total, "completed": progress[SECOND]},
+            "total": total, "completed": progress[FINAL],
+            "initial": {"total": 0, "completed": 0},
+            "secondary": {"total": 0, "completed": 0},
             "tertiary": {"total": total, "completed": progress[FINAL]},
         }
         data = {
@@ -142,7 +142,7 @@ class FullQueue:
         page = max(1, page)
         with self.db() as db:
             db.execute("BEGIN")
-            roles = {batch: ROLES.get(self.info(batch).get("stage"), ROLES[FIRST])
+            roles = {batch: ROLES.get(self.info(batch).get("stage"), ROLES[FINAL])
                      for batch, in db.execute("SELECT batch_id FROM batches WHERE status='running'")}
 
             def sample_state(batch, current):
@@ -194,8 +194,8 @@ class FullBoard(DashboardHandler):
             source = Path(self.store.cfg["source_root"])
             template = source / "annotation_delivery/train_val_v1_20261015/web/index.html"
             html = template.read_text(encoding="utf-8")
-            batch_size = self.store.cfg.get("batch_size", 15)
-            html = html.replace("三阶段标注", f"V5 全量三轮 · 每包 {batch_size} 张")
+            batch_size = self.store.cfg.get("batch_size", 5)
+            html = html.replace("三阶段标注", f"V5 单轮 High 盲标 · 每包 {batch_size} 张")
             html = html.replace('<div class="control-actions">', '<div class="control-actions" style="display:none">')
             html = html.replace("等待本次页面的操作与新增完成事件。", "全量上色图队列，等待新增完成事件。")
             html = html.replace("const stateLabel=", """const laneLabel = {

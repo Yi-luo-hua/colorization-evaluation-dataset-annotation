@@ -24,12 +24,12 @@ from pipeline_store import OwnerLock
 from quota_control import explicit_exhaustion
 
 MODEL = "gemini-4-hydrogen-high"
-DRAFT_MODEL = "gemini-4-hydrogen-medium"
+DRAFT_MODEL = MODEL
 FIRST, SECOND, BLIND, FINAL = "01_initial", "02_color_and_distribution", "03a_independent_review", "03b_finalize_review"
 CATEGORIES = set("ABCD") | {"E1", "E2", "F"}
-ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, BLIND: CATEGORIES, FINAL: CATEGORIES}
-READS = {FIRST: (), SECOND: (FIRST,), BLIND: (), FINAL: (BLIND, FIRST, SECOND)}
-PARENT_STAGE = {SECOND: FIRST, FINAL: BLIND}
+ALLOWED = {FINAL: CATEGORIES}
+READS = {FINAL: ()}
+PARENT_STAGE = {}
 FIELDS = {"id", "severity", "object", "description"}
 QUOTA_INTERRUPTED = "因额度暂停中断，待恢复继续"
 SESSION_START_LOCK = Lock()
@@ -79,7 +79,7 @@ def render(folder, stage, labels, template, common):
         *dependencies, "", "## 待标图文件", "", *listing, "",
         "## 本轮要求", "", template["instruction"], "",
         "只读取本任务列出的文件，图像用 read_file 打开。完成后用 write_file 一次写入完整结果 JSON。",
-        "第一轮和第三轮第一条各打开本包每张图一次；第二轮与第三轮第二条承接各自同会话已打开的图。", "",
+        "每张图各打开一次。", "",
         common, "", "## 本轮结果 JSON 格式示例", "",
         chr(96) * 3 + "json", json.dumps(template["example"], ensure_ascii=False, indent=2), chr(96) * 3, "",
     ]))
