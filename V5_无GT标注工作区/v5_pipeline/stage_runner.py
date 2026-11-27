@@ -25,10 +25,11 @@ from quota_control import explicit_exhaustion
 
 MODEL = "gemini-4-hydrogen-high"
 DRAFT_MODEL = "gemini-4-hydrogen-medium"
-FIRST, SECOND, FINAL = "01_initial", "02_color_and_distribution", "03b_finalize_review"
+FIRST, SECOND, BLIND, FINAL = "01_initial", "02_color_and_distribution", "03a_independent_review", "03b_finalize_review"
 CATEGORIES = set("ABCD") | {"E1", "E2", "F"}
-ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, FINAL: CATEGORIES}
-READS = {FIRST: (), SECOND: (FIRST,), FINAL: (FIRST, SECOND)}
+ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, BLIND: CATEGORIES, FINAL: CATEGORIES}
+READS = {FIRST: (), SECOND: (FIRST,), BLIND: (), FINAL: (BLIND, FIRST, SECOND)}
+PARENT_STAGE = {SECOND: FIRST, FINAL: BLIND}
 FIELDS = {"id", "severity", "object", "description"}
 QUOTA_INTERRUPTED = "因额度暂停中断，待恢复继续"
 SESSION_START_LOCK = Lock()
@@ -78,7 +79,7 @@ def render(folder, stage, labels, template, common):
         *dependencies, "", "## 待标图文件", "", *listing, "",
         "## 本轮要求", "", template["instruction"], "",
         "只读取本任务列出的文件，图像用 read_file 打开。完成后用 write_file 一次写入完整结果 JSON。",
-        "第一轮和第三轮各打开本包每张图一次；第二轮承接第一轮同一会话已打开的图。", "",
+        "第一轮和第三轮第一条各打开本包每张图一次；第二轮与第三轮第二条承接各自同会话已打开的图。", "",
         common, "", "## 本轮结果 JSON 格式示例", "",
         chr(96) * 3 + "json", json.dumps(template["example"], ensure_ascii=False, indent=2), chr(96) * 3, "",
     ]))
@@ -163,7 +164,8 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
     upstream = public_inputs(folder, stage)
     for previous, public_file in zip(READS[stage], upstream):
         save_json(public_file, load_json(snapshot(private, previous)))
-    previous_proof = load_json(private / f"{FIRST}.proof.json") if stage == SECOND else {}
+    parent = PARENT_STAGE.get(stage)
+    previous_proof = load_json(private / f"{parent}.proof.json") if parent else {}
     cid = proof.get("conversation_id") or previous_proof.get("conversation_id")
     feedback = proof.get("problem", "")
     stage_model = getattr(args, "stage_models", {}).get(stage, args.model)
@@ -180,7 +182,7 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             command += ["--log-file", str(native)]
         if cid:
             command += ["--conversation", cid]
-        read_hint = "沿用第一轮已打开的图" if stage == SECOND else "逐图用 read_file 查看"
+        read_hint = "沿用本会话已打开的图" if parent else "逐图用 read_file 查看"
         prompt = (
             f"{LABEL} 完整读取 {document}，其中有完整七类定义、适用关系、文件路径和 JSON 示例。"
             f"只访问任务列出的文件，{read_hint}，完成后用 write_file 写入结果 JSON。"

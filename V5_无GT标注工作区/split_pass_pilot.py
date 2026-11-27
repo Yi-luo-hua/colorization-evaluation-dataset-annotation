@@ -11,6 +11,7 @@ from threading import Event
 from v5_pipeline.io_utils import publish_image
 from v5_pipeline.stage_runner import (
     ALLOWED,
+    BLIND,
     CATEGORIES,
     DRAFT_MODEL,
     FIELDS,
@@ -152,7 +153,7 @@ def main():
     args = parser.parse_args()
     for name in ("source_root", "run", "packets", "agy"):
         setattr(args, name, getattr(args, name).resolve())
-    args.stage_models = {FIRST: args.draft_model, SECOND: args.draft_model, FINAL: args.model}
+    args.stage_models = {FIRST: args.draft_model, SECOND: args.draft_model, BLIND: args.model, FINAL: args.model}
     if args.run.is_relative_to(args.packets) or args.packets.is_relative_to(args.run):
         parser.error("主控结果和匿名执行目录必须分别存放")
     args.run.mkdir(parents=True, exist_ok=True)

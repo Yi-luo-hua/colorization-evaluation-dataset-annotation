@@ -11,12 +11,12 @@ import sqlite3
 from urllib.parse import parse_qs, urlparse
 
 from .io_utils import ensure_legacy_scripts
-from .stage_runner import FINAL, FIRST, SECOND
+from .stage_runner import BLIND, FINAL, FIRST, SECOND
 
 ensure_legacy_scripts(include_delivery_root=True)
 from dashboard_server import DashboardHandler, pid_alive
 
-ROLES = {FIRST: "initial_rgb", SECOND: "secondary_chroma", FINAL: "tertiary_empty"}
+ROLES = {FIRST: "initial_rgb", SECOND: "secondary_chroma", BLIND: "tertiary_empty", FINAL: "tertiary_empty"}
 
 
 def _load(path):
