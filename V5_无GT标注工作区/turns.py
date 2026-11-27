@@ -44,7 +44,8 @@ def prompt_for(phase, document, feedback):
     return f"{phase} 读取 {document}。\n{instruction}\n只访问本轮列出的文件，不使用终端或其他工具。\n{feedback}".strip()
 
 
-def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=None):
+def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=None,
+                required_reads=(), previous_images=()):
     """Count successful image attachments in the intended turn and retries only."""
     source = transcript or (
         Path.home() / ".gemini/antigravity-cli/brain" / cid / ".system_generated/logs/transcript_full.jsonl"
@@ -59,11 +60,15 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
     example_path = document.parent / FORMAT_EXAMPLES
     format_paths = path_aliases(example_path) if FORMAT_LINK in body else set()
     format_read = not format_paths
+    required = {path.resolve() for path in required_reads}
+    required_paths = {alias: path for path in required for alias in path_aliases(path)}
+    read_files = set()
     cwd = document.parent if phase == EXAMPLES else document.parent.parent
     output_paths = path_aliases(result) if result else set()
     expected = json.loads(result.read_text(encoding="utf-8-sig")) if result else None
     waiting = deque()
-    seen = set()
+    previous = {alias for path in previous_images for alias in path_aliases(path)}
+    seen = {label for alias, label in paths.items() if alias in previous}
     started = False
     accepted = None
     last_reply = None
@@ -93,25 +98,29 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
                     key = os.path.normcase(os.path.abspath(cwd / path)) if path else ""
                     label = paths.get(key) if name in READ_TOOLS else None
                     reads_format = name in READ_TOOLS and key in format_paths
+                    reads_required = required_paths.get(key) if name in READ_TOOLS else None
                     matches = False
-                    if key in output_paths and name in WRITE_TOOLS and format_read and seen == targets.keys():
+                    if key in output_paths and name in WRITE_TOOLS and format_read and seen == targets.keys() and read_files == required:
                         try:
                             matches = json.loads(args.get("Content") or args.get("CodeContent")) == expected
                         except (TypeError, ValueError):
                             pass
-                    waiting.append((label, matches, reads_format))
+                    waiting.append((label, matches, reads_format, reads_required))
             elif started and kind == "GENERIC" and waiting:
-                label, matches, reads_format = waiting.popleft()
+                label, matches, reads_format, reads_required = waiting.popleft()
                 if step.get("status") == "DONE" and "Error:" not in content:
                     if label and "Showing binary file of type image/" in content and any(
                         m.get("mime_type", "").startswith("image/") for m in step.get("media", [])
                     ):
                         seen.add(label)
-                    if reads_format and (
+                    if (reads_format or reads_required) and (
                         "entire, complete content of the requested file" in content
                         or re.search(r"Showing lines 1-(\d+) of \1\b", content)
                     ):
-                        format_read = True
+                        if reads_format:
+                            format_read = True
+                        if reads_required:
+                            read_files.add(reads_required)
                     if matches:
                         accepted = index
             elif started and kind == "PLANNER_RESPONSE" and step.get("status") == "DONE" and content:
@@ -124,6 +133,8 @@ def verify_turn(cid, document, phase, *, after_step=-1, result=None, transcript=
         raise ValueError("缺少本轮成功读图凭证 " + "、".join(missing))
     if not format_read:
         raise ValueError(f"缺少完整读取 {FORMAT_EXAMPLES} 的回执")
+    if missing_files := required - read_files:
+        raise ValueError("缺少完整读文件回执：" + "、".join(sorted(str(path) for path in missing_files)))
     if phase == EXAMPLES and (accepted is None or last_reply != CONFIRMED):
         raise ValueError("本轮材料已齐，请明确回复 " + CONFIRMED)
     if accepted is None:
