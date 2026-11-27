@@ -47,7 +47,7 @@ DATASETS = {"train": "9_14_10000GT_V1", "val": "10_5_val_V1", "test": "10_5_test
 MODELS = ("lcad", "unicolor")
 EXTENSIONS = {".jpg", ".jpeg", ".png"}
 PROMPTS = ("common.md", "stages.json")
-BATCH_SIZE, WORKERS, SEED = 5, 8, 20261127
+BATCH_SIZE, WORKERS, SEED = 10, 8, 20261127
 QUOTA_POLL_SECONDS = 120
 
 

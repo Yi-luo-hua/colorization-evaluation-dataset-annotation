@@ -194,7 +194,7 @@ class FullBoard(DashboardHandler):
             source = Path(self.store.cfg["source_root"])
             template = source / "annotation_delivery/train_val_v1_20261015/web/index.html"
             html = template.read_text(encoding="utf-8")
-            batch_size = self.store.cfg.get("batch_size", 5)
+            batch_size = self.store.cfg.get("batch_size", 10)
             html = html.replace("三阶段标注", f"V5 单轮 High 盲标 · 每包 {batch_size} 张")
             html = html.replace('<div class="control-actions">', '<div class="control-actions" style="display:none">')
             html = html.replace("等待本次页面的操作与新增完成事件。", "全量上色图队列，等待新增完成事件。")
