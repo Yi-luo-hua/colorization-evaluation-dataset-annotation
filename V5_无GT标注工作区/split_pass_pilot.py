@@ -171,6 +171,11 @@ def native_log(out):
         cid = cid or event.get("conversation_id")
         if event.get("is_error") is True or event.get("type") == "error":
             errors.append(line)
+        if event.get("event") == "result":
+            result = event.get("result") or {}
+            status = result.get("status")
+            if status and status != "SUCCESS":
+                errors.extend((str(status), str(result.get("error") or "")))
     return cid, errors
 
 
@@ -216,9 +221,10 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
                                          "attempt": attempt + 1, "log": stdout.name, "model": args.model})
             while child.poll() is None:
                 if quota_stop.wait(1):
-                    child.terminate()
-                    child.wait()
-                    return None
+                    if child.poll() is None:
+                        child.terminate()
+                        child.wait()
+                    break
 
         actual_cid, native_errors = native_log(stdout)
         fault = stderr.read_text(encoding="utf-8-sig", errors="replace") + "\n" + "\n".join(native_errors)
