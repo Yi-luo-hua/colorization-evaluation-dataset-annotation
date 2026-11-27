@@ -42,7 +42,15 @@ class FullQueue:
             db.execute("BEGIN")
             totals = dict(db.execute("SELECT status,SUM(size) FROM batches GROUP BY status"))
             in_flight = list(db.execute(
-                "SELECT batch_id,size,status FROM batches WHERE status IN ('running','paused') ORDER BY seq"))
+                "SELECT batch_id,size,status FROM batches WHERE status IN ('running','paused')"))
+            have_lanes = db.execute("SELECT 1 FROM sqlite_master WHERE name='worker_lanes'").fetchone()
+            lanes = list(db.execute("""SELECT slot,b.batch_id,b.status,assigned_at
+                FROM worker_lanes JOIN batches AS b USING(batch_id)""")) if have_lanes else []
+            pending = {}
+            for _, batch, state, _ in lanes:
+                if state == "paused":
+                    pending[batch] = [sid for sid, in db.execute(
+                        "SELECT sid FROM samples WHERE batch_id=? ORDER BY sid", (batch,))]
         total = sum(totals.values())
         completed = totals.get("completed", 0)
         worker_limit = self.cfg["default_workers"]
@@ -51,34 +59,41 @@ class FullQueue:
         workers = {f"W{i:02d}": {"worker_id": f"W{i:02d}", "active": False, "status": "idle",
                                  "role": ROLES[FIRST], "productive_rounds": 0}
                    for i in range(1, worker_limit + 1)}
-        active = []
-        paused = []
+        batch_rounds = Counter()
         for batch, size, state in in_flight:
             directory = self.run_dir / "batches" / batch
-            info = self.info(batch)
-            rounds = 0
             for stage in ROLES:
                 receipt = directory / f"{stage}.proof.json"
                 if receipt.is_file() and "step" in load(receipt):
                     progress[stage] += size
-                    rounds += 1
-            role = ROLES.get(info.get("stage"), ROLES[FIRST])
-            live = state == "running" and bool(info.get("pid") and pid_alive(info["pid"]))
-            worker = {"active": live, "status": "running" if live else "session_blocked",
-                      "role": role, "productive_rounds": rounds,
-                      "last_session_error": info.get("problem")}
-            if live and info.get("log"):
-                log = directory / info["log"]
-                if log.is_file():
-                    stamp = int(log.stem.rsplit(".", 1)[1]) / 1e9
-                    worker["started_at"] = datetime.fromtimestamp(stamp).astimezone().isoformat()
-            (active if live else paused).append(worker)
+                    batch_rounds[batch] += 1
 
-        for worker_id, worker in zip(workers, active + paused):
-            workers[worker_id].update(worker)
+        for slot, batch, state, assigned_at in lanes:
+            worker = workers.get(f"W{slot:02d}")
+            if worker is None or state == "completed":
+                continue
+            path = self.run_dir / "batches" / batch / "status.json"
+            info = self.info(batch)
+            live = False
+            status = "session_blocked"
+            if state == "running":
+                status = "preparing"
+                if info and path.stat().st_mtime >= datetime.fromisoformat(assigned_at).timestamp():
+                    status = info["state"]
+                    live = bool(info.get("pid") and pid_alive(info["pid"]))
+            worker.update(active=live, status=status, batch_id=batch, productive_rounds=batch_rounds[batch],
+                          role=ROLES.get(info.get("stage"), ROLES[FIRST]),
+                          last_session_error=info.get("problem"), conversation_id=info.get("conversation_id"),
+                          started_at=info.get("started_at"))
+            if status == "retry_wait":
+                worker["continue_retry"] = {"attempt": info["retry_attempt"], "limit": 5, "next_at": info["next_at"]}
+            if state == "paused":
+                worker["pending_resume"] = {"keys": pending[batch], "reason": info.get("problem") or "批次已保留"}
 
-        running = len(active)
-        phase = "running" if running else "completed" if total == completed else "needs_attention" if paused else "prepared"
+        running = sum(w["active"] for w in workers.values())
+        assigned = totals.get("running", 0)
+        phase = ("running" if assigned else "completed" if total == completed
+                 else "needs_attention" if totals.get("paused") else "prepared")
         stage_progress = {
             "total": total * 3, "completed": progress[FIRST] + progress[SECOND] + progress[FINAL],
             "initial": {"total": total, "completed": progress[FIRST]},
@@ -90,7 +105,7 @@ class FullQueue:
                       "fixed_a": 0, "needs_manual": totals.get("paused", 0), "initial_ready": totals.get("queued", 0),
                       "secondary_ready": 0, "tertiary_ready": 0, "running": totals.get("running", 0)},
             "stage_progress": stage_progress, "workers": workers,
-            "phase": phase, "active_calls": running, "engine_alive": bool(running), "heartbeat_healthy": bool(running),
+            "phase": phase, "active_calls": running, "engine_alive": bool(assigned), "heartbeat_healthy": bool(assigned),
             "worker_limit": worker_limit, "observed_at": observed,
             "preflight": {"ready": False, "data_prepared": True}, "delivery": {"detail": "全量结果尚未导入"},
         }
@@ -171,6 +186,15 @@ class FullBoard(DashboardHandler):
             # not operate on the separate full-image queue.
             html = html.replace('<div class="control-actions">', '<div class="control-actions" style="display:none">')
             html = html.replace("等待本次页面的操作与新增完成事件。", "全量上色图队列，等待新增完成事件。")
+            html = html.replace("const stateLabel=retrying ?", """const laneLabel = {
+              preparing: '备包中', waiting_to_start: '等待创建会话', starting_session: '创建会话中'
+            }[w.status];
+    const stateLabel=laneLabel || (retrying ?""").replace("isolated ? '已隔离' : '空闲';",
+                                                           "isolated ? '已隔离' : '空闲');")
+            html = html.replace("会话 ID：${escapeText(w.conversation_id || '尚未创建')}",
+                                "批次：${escapeText(w.batch_id || '未派发')}&#10;会话 ID：${escapeText(w.conversation_id || '尚未创建')}")
+            html = html.replace("w.role === 'initial_rgb' ? '初标' : '二次'",
+                                "w.role === 'initial_rgb' ? '初标' : w.role === 'tertiary_empty' ? '检查' : '二次'")
             payload = html.encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")

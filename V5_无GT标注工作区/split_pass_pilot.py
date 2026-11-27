@@ -3,6 +3,8 @@
 import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import nullcontext
+from datetime import datetime, timedelta
 from hashlib import sha256
 import json
 import os
@@ -190,19 +192,22 @@ def empty_session_start(expected_cid, actual_cid, fault, result):
     return isinstance(rows, dict) and bool(rows) and all(value is None for value in rows.values())
 
 
-def start_worker(command, folder, env, out, err, fresh, spacing, stop):
-    def spawn():
-        return subprocess.Popen(command, cwd=folder, env=env, stdout=out, stderr=err,
-                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-
-    if not fresh or not spacing:
-        return None if stop.is_set() else spawn()
-    with SESSION_START_LOCK:
-        if stop.is_set():
-            return None
-        child = spawn()
-        stop.wait(spacing)
-        return child
+def wait_for_session(child, stdout, stop):
+    with stdout.open("rb") as stream:
+        while True:
+            offset = stream.tell()
+            line = stream.readline()
+            if line.endswith(b"\n"):
+                try:
+                    event = json.loads(line)
+                except ValueError:
+                    continue
+                if event.get("event") == "init" and event.get("conversation_id"):
+                    return event["conversation_id"]
+                continue
+            if child.poll() is not None or stop.wait(0.2):
+                return None
+            stream.seek(offset)
 
 
 def run_stage(args, private, folder, stage, cases, env, quota_stop):
@@ -225,13 +230,17 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
     blind = load(private / f"{BLIND}.proof.json") if stage == FINAL else {}
     cid = proof.get("conversation_id") or blind.get("conversation_id")
     feedback = proof.get("problem", "")
+    serialize_start = getattr(args, "serialize_session_start", False)
     for attempt in range(6):
         if quota_stop.is_set():
             return None
         tag = f"{stage}.{time.time_ns()}"
         stdout, stderr = private / f"{tag}.jsonl", private / f"{tag}.err"
+        native = private / f"{tag}.native.log"
         command = [str(args.agy), "--model", args.model, "--mode", "accept-edits",
                    "--output-format", "stream-json", "--print-timeout", "0"]
+        if serialize_start:
+            command += ["--log-file", str(native)]
         if cid:
             command += ["--conversation", cid]
         prompt = (
@@ -240,13 +249,24 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
         )
         if feedback and cid:
             prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
+        gated = serialize_start and not cid
+        status_path = private / "status.json"
+        attempt_status = {"stage": stage, "attempt": attempt + 1, "log": stdout.name, "model": args.model}
+        if gated:
+            save(status_path, dict(attempt_status, state="waiting_to_start"))
         with stdout.open("wb") as out, stderr.open("wb") as err:
-            child = start_worker(command + ["--print", prompt], folder, env, out, err, not cid,
-                                 getattr(args, "session_start_spacing", 0), quota_stop)
-            if child is None:
-                return None
-            save(private / "status.json", {"stage": stage, "state": "running", "pid": child.pid,
-                                         "attempt": attempt + 1, "log": stdout.name, "model": args.model})
+            with SESSION_START_LOCK if gated else nullcontext():
+                if quota_stop.is_set():
+                    return None
+                child = subprocess.Popen(command + ["--print", prompt], cwd=folder, env=env, stdout=out,
+                                         stderr=err, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+                attempt_status.update(pid=child.pid, state="starting_session" if gated else "running",
+                                      conversation_id=cid,
+                                      started_at=datetime.now().astimezone().isoformat())
+                save(status_path, attempt_status)
+                if gated and (created := wait_for_session(child, stdout, quota_stop)):
+                    attempt_status.update(state="running", conversation_id=created)
+                    save(status_path, attempt_status)
             while child.poll() is None:
                 if quota_stop.wait(1):
                     if child.poll() is None:
@@ -274,17 +294,21 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             return proof
         except (ValueError, KeyError, OSError, TypeError) as exc:
             feedback = str(exc)
-            save(proof_file, {"conversation_id": cid, "problem": feedback, "log": stdout.name})
             fresh_retry = empty_session_start(cid, actual_cid, fault, result)
+            if fresh_retry:
+                feedback = "agy 创建会话时返回空 ID"
+                if native.is_file() and b"its database was initialized by another opener" in native.read_bytes():
+                    feedback = "agy 会话数据库初始化冲突，返回空 ID"
+            save(proof_file, {"conversation_id": cid, "problem": feedback, "log": stdout.name})
             if quota_stop.is_set() or (not cid and not fresh_retry) or attempt == 5:
                 break
-            if fresh_retry:
-                feedback = "后端尚未创建会话，等待重新派发同一个任务"
-            save(private / "status.json", {"stage": stage, "state": "retry_wait", "problem": feedback})
+            next_at = (datetime.now().astimezone() + timedelta(seconds=20)).isoformat()
+            save(status_path, {"stage": stage, "state": "retry_wait", "problem": feedback,
+                               "conversation_id": cid, "retry_attempt": attempt + 1, "next_at": next_at})
             if quota_stop.wait(20):
                 break
-    save(private / "status.json", {"stage": stage, "state": "quota_wait" if quota_stop.is_set() else "needs_review",
-                                  "problem": feedback})
+    save(status_path, {"stage": stage, "state": "quota_wait" if quota_stop.is_set() else "needs_review",
+                       "problem": feedback, "conversation_id": cid})
     return None
 
 

@@ -5,6 +5,7 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from pathlib import Path
+from queue import Empty, SimpleQueue
 from threading import Event, Thread
 import hashlib
 import json
@@ -171,6 +172,51 @@ def status_for(run, batch, value):
         db.execute("UPDATE batches SET status=?, updated_at=? WHERE batch_id=?", (value, stamp(), batch))
 
 
+def run_lanes(args, planned, quota_stop):
+    planned_set = set(planned)
+    with connect(args.run) as db:
+        retained = {slot: batch for slot, batch in db.execute(
+            "SELECT slot,batch_id FROM worker_lanes WHERE slot<=?", (args.workers,))
+                    if batch in planned_set}
+    reserved = set(retained.values())
+    pending = SimpleQueue()
+    for batch in planned:
+        if batch not in reserved:
+            pending.put(batch)
+    worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
+                                model=args.model, serialize_session_start=True)
+
+    def lane(slot, batch):
+        while not quota_stop.is_set():
+            if batch is None:
+                try:
+                    batch = pending.get_nowait()
+                except Empty:
+                    return
+            now = stamp()
+            with connect(args.run) as db:
+                db.execute("DELETE FROM worker_lanes WHERE batch_id=? AND slot!=?", (batch, slot))
+                db.execute("""INSERT INTO worker_lanes(slot,batch_id,assigned_at) VALUES (?,?,?)
+                              ON CONFLICT(slot) DO UPDATE SET batch_id=excluded.batch_id,
+                              assigned_at=excluded.assigned_at""", (slot, batch, now))
+                db.execute("UPDATE batches SET status='running', updated_at=? WHERE batch_id=?", (now, batch))
+            try:
+                cases = materialize(args, batch)
+                run_batch(worker, batch, cases, quota_stop)
+                latest = args.run / "batches" / batch / "status.json"
+                complete = latest.is_file() and load(latest)["state"] == "completed"
+                status_for(args.run, batch, "completed" if complete else "paused")
+            except Exception:
+                status_for(args.run, batch, "paused")
+                raise
+            batch = None
+
+    with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        futures = [pool.submit(lane, slot, retained.get(slot)) for slot in range(1, args.workers + 1)]
+        for future in as_completed(futures):
+            future.result()
+
+
 def collect(run):
     out = run / "final_reviews.jsonl"
     temporary = out.with_suffix(".tmp")
@@ -286,6 +332,10 @@ def execute(args):
         batch_auth.GUARD = args.source_root / "annotation_delivery/train_val_v1_20261015/scripts/no_browser/rundll32.exe"
 
     with OwnerLock(args.run):
+        with connect(args.run) as db:
+            db.execute("""CREATE TABLE IF NOT EXISTS worker_lanes (
+                slot INTEGER PRIMARY KEY, batch_id TEXT NOT NULL UNIQUE, assigned_at TEXT NOT NULL
+            )""")
         quota_path = args.run / "quota_wait.json"
         wait = load(quota_path) if quota_path.is_file() else {}
         if wait.get("state") == "five_hour":
@@ -308,27 +358,8 @@ def execute(args):
             watcher = Thread(target=watch_quota, args=(args, quota_stop, finished, signal), daemon=True)
             watcher.start()
 
-            def lane(batch):
-                if quota_stop.is_set():
-                    return
-                cases = materialize(args, batch)
-                status_for(args.run, batch, "running")
-                worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
-                                            model=args.model, session_start_spacing=2)
-                try:
-                    run_batch(worker, batch, cases, quota_stop)
-                    latest = args.run / "batches" / batch / "status.json"
-                    complete = latest.is_file() and load(latest)["state"] == "completed"
-                    status_for(args.run, batch, "completed" if complete else "paused")
-                except Exception:
-                    status_for(args.run, batch, "paused")
-                    raise
-
             try:
-                with ThreadPoolExecutor(max_workers=args.workers) as pool:
-                    futures = [pool.submit(lane, batch) for batch in planned]
-                    for future in as_completed(futures):
-                        future.result()
+                run_lanes(args, planned, quota_stop)
             finally:
                 finished.set()
 
