@@ -186,11 +186,10 @@ class FullBoard(DashboardHandler):
             # not operate on the separate full-image queue.
             html = html.replace('<div class="control-actions">', '<div class="control-actions" style="display:none">')
             html = html.replace("等待本次页面的操作与新增完成事件。", "全量上色图队列，等待新增完成事件。")
-            html = html.replace("const stateLabel=retrying ?", """const laneLabel = {
+            html = html.replace("const stateLabel=", """const laneLabel = {
               preparing: '备包中', waiting_to_start: '等待创建会话', starting_session: '创建会话中'
             }[w.status];
-    const stateLabel=laneLabel || (retrying ?""").replace("isolated ? '已隔离' : '空闲';",
-                                                           "isolated ? '已隔离' : '空闲');")
+    const stateLabel=laneLabel ? laneLabel : """, 1)
             html = html.replace("会话 ID：${escapeText(w.conversation_id || '尚未创建')}",
                                 "批次：${escapeText(w.batch_id || '未派发')}&#10;会话 ID：${escapeText(w.conversation_id || '尚未创建')}")
             html = html.replace("w.role === 'initial_rgb' ? '初标' : '二次'",
