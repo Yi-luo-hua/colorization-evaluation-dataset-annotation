@@ -184,10 +184,11 @@ def run_lanes(args, planned, quota_stop):
         if batch not in reserved:
             pending.put(batch)
     worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
-                                model=args.model, serialize_session_start=True)
+                                model=args.model, serialize_session_start=True,
+                                isolate_cli_store=True)
 
     def lane(slot, batch):
-        while not quota_stop.is_set():
+        while not quota_stop.is_set() and not (args.run / "drain.request").is_file():
             if batch is None:
                 try:
                     batch = pending.get_nowait()

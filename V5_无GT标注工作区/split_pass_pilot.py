@@ -285,7 +285,13 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             cid = actual_cid
             rows = load(result)
             validate(rows, cases, stage)
-            proof = verify_turn(cid, document, LABEL, result=result, after_step=blind.get("step", -1),
+            local_transcript = (
+                private / "worker_profile/.gemini/antigravity-cli/brain" / cid
+                / ".system_generated/logs/transcript_full.jsonl"
+            )
+            proof = verify_turn(cid, document, LABEL, result=result,
+                                transcript=local_transcript if local_transcript.is_file() else None,
+                                after_step=blind.get("step", -1),
                                 required_reads=[document, *upstream],
                                 previous_images=map(Path, blind.get("seen", [])))
             save(snapshot(private, stage), rows)
@@ -316,7 +322,10 @@ def run_batch(args, name, cases, quota_stop):
     private, folder = args.run / name, args.packets / name
     if quota_stop.is_set():
         return
-    profile = batch_auth.prepare_worker_profile(private / "worker_profile")
+    profile = batch_auth.prepare_worker_profile(
+        private / "worker_profile",
+        isolate_cli_store=getattr(args, "isolate_cli_store", False),
+    )
     env = batch_auth.batch_environment(private / "auth_browser.json", profile)
     for stage in ALLOWED:
         proof = run_stage(args, private, folder, stage, cases, env, quota_stop)
