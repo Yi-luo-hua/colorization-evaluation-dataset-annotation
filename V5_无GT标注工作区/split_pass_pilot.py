@@ -90,8 +90,9 @@ def prepare(args):
     manifest_path = args.run / "manifest.json"
     if manifest_path.exists():
         previous = load(manifest_path)
-        if previous["packets"] != str(args.packets) or previous["model"] != args.model:
-            raise ValueError("续跑须使用原任务目录与原模型")
+        if (previous["packets"] != str(args.packets) or previous["model"] != args.model
+                or previous.get("batch_size", BATCH_SIZE) != args.batch_size):
+            raise ValueError("续跑须使用原任务目录、模型和每包图数")
         return previous
 
     human = args.source_root / HUMAN
@@ -108,13 +109,13 @@ def prepare(args):
     templates = load(ROOT / "split_pass_prompts/stages.json")
     common = (ROOT / "split_pass_prompts/common.md").read_text(encoding="utf-8").strip()
     batches = {}
-    for offset in range(0, len(rows), BATCH_SIZE):
-        name = f"batch{offset // BATCH_SIZE + 1:02d}"
+    for offset in range(0, len(rows), args.batch_size):
+        name = f"batch{offset // args.batch_size + 1:02d}"
         folder = args.packets / name
         images = folder / "images"
         images.mkdir(parents=True, exist_ok=True)
         references = {}
-        for index, row in enumerate(rows[offset:offset + BATCH_SIZE], offset + 1):
+        for index, row in enumerate(rows[offset:offset + args.batch_size], offset + 1):
             sid = f"S{index:03d}"
             anonymous = images / f"{sid}.png"
             pixels = publish_image(args.source_root / row["image"], cache)
@@ -132,7 +133,8 @@ def prepare(args):
         (args.run / name).mkdir(exist_ok=True)
         batches[name] = references
     plan = {
-        "packets": str(args.packets), "model": args.model, "seed": SEED, "human_source_sha256": digest(human),
+        "packets": str(args.packets), "model": args.model, "seed": SEED,
+        "batch_size": args.batch_size, "human_source_sha256": digest(human),
         "batches": batches, "source_counts": counts,
     }
     save(manifest_path, plan)
@@ -310,6 +312,7 @@ def main():
     parser.add_argument("--agy", type=Path, default=Path(shutil.which("agy") or "agy"))
     parser.add_argument("--model", default=MODEL)
     parser.add_argument("--workers", type=int, default=8, choices=range(1, 17), metavar="1..16")
+    parser.add_argument("--batch-size", type=int, default=BATCH_SIZE, choices=(5, 10, 20))
     parser.add_argument("--prepare-only", action="store_true")
     args = parser.parse_args()
     for name in ("source_root", "run", "packets", "agy"):
