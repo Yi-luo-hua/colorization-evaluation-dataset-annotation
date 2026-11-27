@@ -36,6 +36,7 @@ FIELDS = {"id", "severity", "object", "description"}
 SEED = 2026112440
 BATCH_SIZE = 5
 SESSION_START_LOCK = Lock()
+QUOTA_INTERRUPTED = "因额度暂停中断，待恢复继续"
 
 
 def load(path):
@@ -251,12 +252,16 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             f"只访问任务列出的文件，{read_hint}，完成后用 write_file 写入结果 JSON。"
         )
         if feedback and cid:
-            prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
+            if feedback == QUOTA_INTERRUPTED:
+                prompt += "\n继续原任务，完成后用 write_file 写入结果 JSON。"
+            else:
+                prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
         gated = serialize_start and not cid
         status_path = private / "status.json"
         attempt_status = {"stage": stage, "attempt": attempt + 1, "log": stdout.name, "model": stage_model}
         if gated:
             save(status_path, dict(attempt_status, state="waiting_to_start"))
+        terminated_by_quota = False
         with stdout.open("wb") as out, stderr.open("wb") as err:
             with SESSION_START_LOCK if gated else nullcontext():
                 if quota_stop.is_set():
@@ -273,6 +278,7 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             while child.poll() is None:
                 if quota_stop.wait(1):
                     if child.poll() is None:
+                        terminated_by_quota = True
                         child.terminate()
                         child.wait()
                     break
@@ -302,8 +308,8 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             save(proof_file, proof)
             return proof
         except (ValueError, KeyError, OSError, TypeError) as exc:
-            feedback = str(exc)
-            fresh_retry = empty_session_start(cid, actual_cid, fault, result)
+            feedback = QUOTA_INTERRUPTED if terminated_by_quota else str(exc)
+            fresh_retry = False if terminated_by_quota else empty_session_start(cid, actual_cid, fault, result)
             if fresh_retry:
                 feedback = "agy 创建会话时返回空 ID"
                 if native.is_file() and b"its database was initialized by another opener" in native.read_bytes():

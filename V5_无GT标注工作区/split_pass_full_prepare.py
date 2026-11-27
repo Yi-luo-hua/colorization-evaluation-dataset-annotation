@@ -9,6 +9,7 @@ from queue import Empty, SimpleQueue
 from threading import Event, Thread
 import hashlib
 import json
+import os
 import random
 import re
 import shutil
@@ -335,6 +336,7 @@ def execute(args):
         batch_auth.GUARD = args.source_root / "annotation_delivery/train_val_v1_20261015/scripts/no_browser/rundll32.exe"
 
     with OwnerLock(args.run):
+        (args.run / "executor.pid").write_text(f"{os.getpid()}\n", encoding="utf-8")
         with connect(args.run) as db:
             db.execute("""CREATE TABLE IF NOT EXISTS worker_lanes (
                 slot INTEGER PRIMARY KEY, batch_id TEXT NOT NULL UNIQUE, assigned_at TEXT NOT NULL

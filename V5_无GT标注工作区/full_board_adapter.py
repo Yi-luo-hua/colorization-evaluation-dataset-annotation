@@ -36,6 +36,15 @@ class FullQueue:
         path = self.run_dir / "batches" / batch / "status.json"
         return load(path) if path.is_file() else {}
 
+    def engine_live(self):
+        pid_path = self.run_dir / "executor.pid"
+        if not pid_path.is_file():
+            return False
+        try:
+            return bool(pid_alive(int(pid_path.read_text(encoding="utf-8").strip())))
+        except (OSError, ValueError):
+            return False
+
     def summary(self):
         with self.db() as db:
             db.execute("BEGIN")
@@ -91,7 +100,12 @@ class FullQueue:
 
         running = sum(w["active"] for w in workers.values())
         assigned = totals.get("running", 0)
+        engine_alive = bool(assigned) or self.engine_live()
+        wait = self.run_dir / "quota_wait.json"
+        guard = load(wait) if wait.is_file() else {}
+        waiting_quota = guard.get("state") in {"five_hour", "weekly_manual"}
         phase = ("running" if assigned else "completed" if total == completed
+                 else "quota_wait" if waiting_quota and engine_alive
                  else "needs_attention" if totals.get("paused") else "prepared")
         stage_progress = {
             "total": total * 3, "completed": progress[FIRST] + progress[SECOND] + progress[FINAL],
@@ -104,7 +118,7 @@ class FullQueue:
                       "fixed_a": 0, "needs_manual": totals.get("paused", 0), "initial_ready": totals.get("queued", 0),
                       "secondary_ready": 0, "tertiary_ready": 0, "running": totals.get("running", 0)},
             "stage_progress": stage_progress, "workers": workers,
-            "phase": phase, "active_calls": running, "engine_alive": bool(assigned), "heartbeat_healthy": bool(assigned),
+            "phase": phase, "active_calls": running, "engine_alive": engine_alive, "heartbeat_healthy": engine_alive,
             "worker_limit": worker_limit, "observed_at": observed,
             "preflight": {"ready": False, "data_prepared": True}, "delivery": {"detail": "全量结果尚未导入"},
         }
@@ -116,13 +130,10 @@ class FullQueue:
                 "five_hour_refresh_in": quota["five_reset"], "weekly_refresh_in": quota["weekly_reset"],
                 "checked_at": quota["observed_at"], "source": "native agy /usage",
             }
-            data["quota_monitor"] = {"status": "ok", "interval_minutes": 10, "enabled": bool(running)}
-        wait = self.run_dir / "quota_wait.json"
-        if wait.is_file():
-            guard = load(wait)
-            if guard["state"] in {"five_hour", "weekly_manual"}:
-                data["quota_guard"] = {"waiting_for_recovery": True, "triggered_at": guard["at"],
-                                       "weekly_manual_hold": guard["state"] == "weekly_manual"}
+            data["quota_monitor"] = {"status": "ok", "interval_minutes": 10, "enabled": bool(running or (waiting_quota and engine_alive))}
+        if waiting_quota:
+            data["quota_guard"] = {"waiting_for_recovery": True, "triggered_at": guard["at"],
+                                   "weekly_manual_hold": guard["state"] == "weekly_manual"}
         return data
 
     def page(self, page, size, state, query):
@@ -180,7 +191,8 @@ class FullBoard(DashboardHandler):
             source = Path(self.store.cfg["source_root"])
             template = source / "annotation_delivery/train_val_v1_20261015/web/index.html"
             html = template.read_text(encoding="utf-8")
-            html = html.replace("三阶段标注", "V5 全量三轮 · 每包 10 张")
+            batch_size = self.store.cfg.get("batch_size", 10)
+            html = html.replace("三阶段标注", f"V5 全量三轮 · 每包 {batch_size} 张")
             # Keep the existing workbench and DOM. Its legacy dispatch actions do
             # not operate on the separate full-image queue.
             html = html.replace('<div class="control-actions">', '<div class="control-actions" style="display:none">')
