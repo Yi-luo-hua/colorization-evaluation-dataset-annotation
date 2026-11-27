@@ -26,6 +26,7 @@ from pipeline_store import OwnerLock
 from quota_control import explicit_exhaustion
 
 MODEL = "gemini-4-hydrogen-high"
+DRAFT_MODEL = "gemini-4-hydrogen-medium"
 HUMAN = Path("V5_无GT标注工作区/local/human_annotations_merged_20261124/人工标注合并.json")
 FIRST, SECOND, FINAL = "01_initial", "02_color_and_distribution", "03b_finalize_review"
 CATEGORIES = set("ABCD") | {"E1", "E2", "F"}
@@ -83,7 +84,7 @@ def render(folder, stage, labels, template, common):
         *dependencies, "", "## 待标图文件", "", *listing, "",
         "## 本轮要求", "", template["instruction"], "",
         "只读取本任务列出的文件，图像用 read_file 打开。完成后用 write_file 一次写入完整结果 JSON。",
-        "每轮各打开本包每张图一次。", "",
+        "第一轮和第三轮各打开本包每张图一次；第二轮承接第一轮同一会话已打开的图。", "",
         common, "", "## 本轮结果 JSON 格式示例", "",
         chr(96) * 3 + "json", json.dumps(template["example"], ensure_ascii=False, indent=2), chr(96) * 3, "",
     ]))
@@ -227,8 +228,10 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
     upstream = public_inputs(folder, stage)
     for previous, public_file in zip(READS[stage], upstream):
         save(public_file, load(snapshot(private, previous)))
-    cid = proof.get("conversation_id")
+    previous_proof = load(private / f"{FIRST}.proof.json") if stage == SECOND else {}
+    cid = proof.get("conversation_id") or previous_proof.get("conversation_id")
     feedback = proof.get("problem", "")
+    stage_model = getattr(args, "stage_models", {}).get(stage, args.model)
     serialize_start = getattr(args, "serialize_session_start", False)
     for attempt in range(6):
         if quota_stop.is_set():
@@ -236,21 +239,22 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
         tag = f"{stage}.{time.time_ns()}"
         stdout, stderr = private / f"{tag}.jsonl", private / f"{tag}.err"
         native = private / f"{tag}.native.log"
-        command = [str(args.agy), "--model", args.model, "--mode", "accept-edits",
+        command = [str(args.agy), "--model", stage_model, "--mode", "accept-edits",
                    "--output-format", "stream-json", "--print-timeout", "0"]
         if serialize_start:
             command += ["--log-file", str(native)]
         if cid:
             command += ["--conversation", cid]
+        read_hint = "沿用第一轮已打开的图" if stage == SECOND else "逐图用 read_file 查看"
         prompt = (
             f"{LABEL} 完整读取 {document}，其中有完整七类定义、适用关系、文件路径和 JSON 示例。"
-            "只访问任务列出的文件，逐图用 read_file 查看，完成后用 write_file 写入结果 JSON。"
+            f"只访问任务列出的文件，{read_hint}，完成后用 write_file 写入结果 JSON。"
         )
         if feedback and cid:
             prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
         gated = serialize_start and not cid
         status_path = private / "status.json"
-        attempt_status = {"stage": stage, "attempt": attempt + 1, "log": stdout.name, "model": args.model}
+        attempt_status = {"stage": stage, "attempt": attempt + 1, "log": stdout.name, "model": stage_model}
         if gated:
             save(status_path, dict(attempt_status, state="waiting_to_start"))
         with stdout.open("wb") as out, stderr.open("wb") as err:
@@ -290,7 +294,9 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             )
             proof = verify_turn(cid, document, LABEL, result=result,
                                 transcript=local_transcript if local_transcript.is_file() else None,
-                                required_reads=[document, *upstream])
+                                after_step=previous_proof.get("step", -1),
+                                required_reads=[document, *upstream],
+                                previous_images=map(Path, previous_proof.get("seen", [])))
             save(snapshot(private, stage), rows)
             proof.update(result_sha256=digest(snapshot(private, stage)), log=stdout.name)
             save(proof_file, proof)

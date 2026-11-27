@@ -19,13 +19,13 @@ import time
 
 from PIL import Image
 from prepare import publish_image
-from split_pass_pilot import ALLOWED, FINAL, MODEL, ROOT, OwnerLock, batch_auth, digest, load, render, run_batch, save, snapshot
+from split_pass_pilot import ALLOWED, DRAFT_MODEL, FINAL, FIRST, MODEL, ROOT, SECOND, OwnerLock, batch_auth, digest, load, render, run_batch, save, snapshot
 
 DATASETS = {"train": "9_14_10000GT_V1", "val": "10_5_val_V1", "test": "10_5_test_V1"}
 MODELS = ("lcad", "unicolor")
 EXTENSIONS = {".jpg", ".jpeg", ".png"}
 PROMPTS = ("common.md", "stages.json")
-BATCH_SIZE, WORKERS, SEED = 10, 16, 20261127
+BATCH_SIZE, WORKERS, SEED = 15, 8, 20261127
 
 
 def stamp():
@@ -184,7 +184,9 @@ def run_lanes(args, planned, quota_stop):
         if batch not in reserved:
             pending.put(batch)
     worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
-                                model=args.model, serialize_session_start=True,
+                                model=args.model,
+                                stage_models={FIRST: args.draft_model, SECOND: args.draft_model, FINAL: args.model},
+                                serialize_session_start=True,
                                 isolate_cli_store=True)
 
     def lane(slot, batch):
@@ -385,6 +387,7 @@ def main():
     for name in ("source-root", "run", "packets"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--model", default=MODEL)
+    parser.add_argument("--draft-model", default=DRAFT_MODEL)
     parser.add_argument("--agy", type=Path)
     parser.add_argument("--workers", type=int, choices=range(1, 17), default=WORKERS, metavar="1..16")
     parser.add_argument("--starter", type=int, choices=range(17), default=WORKERS, metavar="0..16")
