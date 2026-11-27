@@ -23,13 +23,16 @@ def observe_quota(args, directory):
     script = ROOT.parent / "annotation_delivery/train_val_v1_20261015/scripts/native_quota_monitor.py"
     runtime = args.source_root / "annotation_delivery/train_val_v1_20261015"
     cmd = [sys.executable, "-B", "-X", "utf8", str(script), "--agy", str(args.agy),
-           "--cwd", str(args.packets), "--guard-dir", str(directory),
+           "--cwd", str(args.source_root), "--guard-dir", str(directory),
            "--dependencies", str(runtime / "runtime/quota_dependencies"),
            "--browser-guard", str(runtime / "scripts/no_browser/rundll32.exe")]
     try:
         result = subprocess.run(cmd, capture_output=True, encoding="utf-8", check=True)
         return {"observed_at": now(), **json.loads(result.stdout)}
-    except (OSError, ValueError, subprocess.CalledProcessError) as error:
+    except subprocess.CalledProcessError as error:
+        detail = error.stderr.strip().splitlines()[-1:] if error.stderr else []
+        return {"observed_at": now(), "error": detail[0] if detail else str(error)}
+    except (OSError, ValueError) as error:
         return {"observed_at": now(), "error": str(error)}
 
 

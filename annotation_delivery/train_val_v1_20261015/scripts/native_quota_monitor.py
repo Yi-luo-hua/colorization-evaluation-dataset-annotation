@@ -37,12 +37,12 @@ def parse_gemini(text):
 
 
 class NativeTerminal:
-    def __init__(self, stop, cwd=None):
+    def __init__(self, stop, cwd=None, guard_dir=None, agy=None):
         sys.path.insert(0,str(DEPENDENCIES))
         import pyte
         from winpty import PtyProcess
         agy = agy or Path.home()/'AppData/Local/agy/bin/agy.exe'
-        checks=PROJECT/'runtime/recovery5000_20261016_01/quota_checks'
+        checks=Path(guard_dir) if guard_dir is not None else PROJECT/'runtime/recovery5000_20261016_01/quota_checks'
         checks.mkdir(parents=True,exist_ok=True)
         self.auth_marker=checks/('auth_guard_'+uuid.uuid4().hex+'.json')
         self.proc = PtyProcess.spawn([str(agy),'--model','gemini-3.8-flash-high'],
