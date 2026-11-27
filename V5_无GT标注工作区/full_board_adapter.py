@@ -14,9 +14,8 @@ from dashboard_server import DashboardHandler, pid_alive
 
 FIRST = "01_initial"
 SECOND = "02_color_and_distribution"
-BLIND = "03a_independent_review"
 FINAL = "03b_finalize_review"
-ROLES = {FIRST: "initial_rgb", SECOND: "secondary_chroma", BLIND: "tertiary_empty", FINAL: "tertiary_empty"}
+ROLES = {FIRST: "initial_rgb", SECOND: "secondary_chroma", FINAL: "tertiary_empty"}
 
 
 def load(path):

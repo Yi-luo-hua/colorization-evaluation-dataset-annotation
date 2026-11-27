@@ -27,10 +27,10 @@ from quota_control import explicit_exhaustion
 
 MODEL = "gemini-4-hydrogen-high"
 HUMAN = Path("V5_无GT标注工作区/local/human_annotations_merged_20261124/人工标注合并.json")
-FIRST, SECOND, BLIND, FINAL = "01_initial", "02_color_and_distribution", "03a_independent_review", "03b_finalize_review"
+FIRST, SECOND, FINAL = "01_initial", "02_color_and_distribution", "03b_finalize_review"
 CATEGORIES = set("ABCD") | {"E1", "E2", "F"}
-ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, BLIND: CATEGORIES, FINAL: CATEGORIES}
-READS = {FIRST: (), SECOND: (FIRST,), BLIND: (), FINAL: (BLIND, FIRST, SECOND)}
+ALLOWED = {FIRST: set("ABD"), SECOND: {"C", "E1", "E2", "F"}, FINAL: CATEGORIES}
+READS = {FIRST: (), SECOND: (FIRST,), FINAL: (FIRST, SECOND)}
 FIELDS = {"id", "severity", "object", "description"}
 SEED = 2026112440
 BATCH_SIZE = 5
@@ -83,7 +83,7 @@ def render(folder, stage, labels, template, common):
         *dependencies, "", "## 待标图文件", "", *listing, "",
         "## 本轮要求", "", template["instruction"], "",
         "只读取本任务列出的文件，图像用 read_file 打开。完成后用 write_file 一次写入完整结果 JSON。",
-        "最终对照承接同一会话的独立看图。其余轮次各打开本包每张图一次。", "",
+        "每轮各打开本包每张图一次。", "",
         common, "", "## 本轮结果 JSON 格式示例", "",
         chr(96) * 3 + "json", json.dumps(template["example"], ensure_ascii=False, indent=2), chr(96) * 3, "",
     ]))
@@ -227,8 +227,7 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
     upstream = public_inputs(folder, stage)
     for previous, public_file in zip(READS[stage], upstream):
         save(public_file, load(snapshot(private, previous)))
-    blind = load(private / f"{BLIND}.proof.json") if stage == FINAL else {}
-    cid = proof.get("conversation_id") or blind.get("conversation_id")
+    cid = proof.get("conversation_id")
     feedback = proof.get("problem", "")
     serialize_start = getattr(args, "serialize_session_start", False)
     for attempt in range(6):
@@ -291,9 +290,7 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             )
             proof = verify_turn(cid, document, LABEL, result=result,
                                 transcript=local_transcript if local_transcript.is_file() else None,
-                                after_step=blind.get("step", -1),
-                                required_reads=[document, *upstream],
-                                previous_images=map(Path, blind.get("seen", [])))
+                                required_reads=[document, *upstream])
             save(snapshot(private, stage), rows)
             proof.update(result_sha256=digest(snapshot(private, stage)), log=stdout.name)
             save(proof_file, proof)
