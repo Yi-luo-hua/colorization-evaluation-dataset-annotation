@@ -37,12 +37,12 @@ def parse_gemini(text):
 
 
 class NativeTerminal:
-    def __init__(self, stop, cwd=None):
+    def __init__(self, stop, cwd=None, guard_dir=None, agy=None):
         sys.path.insert(0,str(DEPENDENCIES))
         import pyte
         from winpty import PtyProcess
-        agy = Path.home()/'AppData/Local/agy/bin/agy.exe'
-        checks=PROJECT/'runtime/recovery5000_20261016_01/quota_checks'
+        agy = agy or Path.home()/'AppData/Local/agy/bin/agy.exe'
+        checks=Path(guard_dir) if guard_dir is not None else PROJECT/'runtime/recovery5000_20261016_01/quota_checks'
         checks.mkdir(parents=True,exist_ok=True)
         self.auth_marker=checks/('auth_guard_'+uuid.uuid4().hex+'.json')
         self.proc = PtyProcess.spawn([str(agy),'--model','gemini-3.8-flash-high'],
@@ -192,3 +192,30 @@ class QuotaMonitor:
         self.stop.set()
         self.thread.join(timeout=10)
 
+
+
+def main():
+    """Read a quota snapshot without importing the annotation runtime from another workflow."""
+    import argparse
+    from functools import partial
+    import json
+    import batch_auth
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--agy", type=Path, required=True)
+    parser.add_argument("--cwd", type=Path, required=True)
+    parser.add_argument("--guard-dir", type=Path, required=True)
+    parser.add_argument("--dependencies", type=Path, default=DEPENDENCIES)
+    parser.add_argument("--browser-guard", type=Path, default=batch_auth.GUARD)
+    args = parser.parse_args()
+    sys.path.insert(0, str(args.dependencies))
+    batch_auth.GUARD = args.browser_guard
+    factory = partial(NativeTerminal, cwd=args.cwd, guard_dir=args.guard_dir, agy=args.agy)
+    try:
+        print(json.dumps(query_native(threading.Event(), terminal_factory=factory), ensure_ascii=False))
+    except (ImportError, OSError, ValueError, RuntimeError, InterruptedError) as error:
+        print(json.dumps({"error": str(error)}, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()
