@@ -85,7 +85,7 @@ class FullQueue:
             "secondary": {"total": total, "completed": progress[SECOND]},
             "tertiary": {"total": total, "completed": progress[FINAL]},
         }
-        return {
+        data = {
             "stats": {"total": total, "completed": completed, "program_validated": completed,
                       "fixed_a": 0, "needs_manual": totals.get("paused", 0), "initial_ready": totals.get("queued", 0),
                       "secondary_ready": 0, "tertiary_ready": 0, "running": totals.get("running", 0)},
@@ -94,6 +94,22 @@ class FullQueue:
             "worker_limit": worker_limit, "observed_at": observed,
             "preflight": {"ready": False, "data_prepared": True}, "delivery": {"detail": "全量结果尚未导入"},
         }
+        quota_path = self.run_dir / "quota_snapshot.json"
+        if quota_path.is_file():
+            quota = load(quota_path)
+            data["quota_snapshot"] = {
+                "five_hour_remaining_percent": quota["five_hour"], "weekly_remaining_percent": quota["weekly"],
+                "five_hour_refresh_in": quota["five_reset"], "weekly_refresh_in": quota["weekly_reset"],
+                "checked_at": quota["observed_at"], "source": "native agy /usage",
+            }
+            data["quota_monitor"] = {"status": "ok", "interval_minutes": 10, "enabled": bool(running)}
+        wait = self.run_dir / "quota_wait.json"
+        if wait.is_file():
+            guard = load(wait)
+            if guard["state"] in {"five_hour", "weekly_manual"}:
+                data["quota_guard"] = {"waiting_for_recovery": True, "triggered_at": guard["at"],
+                                       "weekly_manual_hold": guard["state"] == "weekly_manual"}
+        return data
 
     def page(self, page, size, state, query):
         size = max(1, min(size, 100))

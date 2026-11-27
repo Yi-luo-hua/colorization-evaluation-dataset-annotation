@@ -5,12 +5,16 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
-from threading import Event
+from threading import Event, Thread
 import hashlib
 import json
 import random
+import re
 import shutil
 import sqlite3
+import subprocess
+import sys
+import time
 
 from PIL import Image
 from prepare import publish_image
@@ -192,6 +196,71 @@ def collect(run):
         temporary.unlink(missing_ok=True)
 
 
+def quota_read(args):
+    legacy = args.source_root / "annotation_delivery/train_val_v1_20261015"
+    helper = ROOT.parent / "annotation_delivery/train_val_v1_20261015/scripts/native_quota_monitor.py"
+    command = [sys.executable, "-B", "-X", "utf8", str(helper), "--agy", str(args.agy),
+               "--cwd", str(args.source_root), "--guard-dir", str(args.run / "quota_checks"),
+               "--dependencies", str(legacy / "runtime/quota_dependencies"),
+               "--browser-guard", str(batch_auth.GUARD)]
+    try:
+        response = subprocess.run(command, capture_output=True, encoding="utf8", check=True)
+        result = json.loads(response.stdout)
+    except (OSError, ValueError, subprocess.CalledProcessError) as error:
+        result = {"error": str(error)}
+    result["observed_at"] = stamp()
+    dest = "quota_read_error.json" if "error" in result else "quota_snapshot.json"
+    save(args.run / dest, result)
+    return result
+
+
+def watch_quota(args, stop, done, signal):
+    next_check = time.monotonic() + 600
+    while not done.wait(1):
+        if (args.run / "stop.request").is_file():
+            signal["manual"] = True
+            stop.set()
+            return
+        if time.monotonic() >= next_check:
+            values = quota_read(args)
+            if done.is_set():
+                return
+            if 0 in (values.get("five_hour"), values.get("weekly")):
+                signal["quota"] = values
+                stop.set()
+                return
+            next_check = time.monotonic() + 600
+
+
+def seconds_until_reset(value):
+    units = {"d": 86400, "h": 3600, "m": 60, "s": 1}
+    return sum(int(amount) * units[unit] for amount, unit in re.findall(r"(\d+)\s*([dhms])", value))
+
+
+def wait_for_quota(args, values):
+    if values.get("weekly") == 0:
+        save(args.run / "quota_wait.json", {"state": "weekly_manual", "quota": values, "at": stamp()})
+        return False
+    last_snapshot = args.run / "quota_snapshot.json"
+    previous = load(last_snapshot) if last_snapshot.is_file() else {}
+    delay = seconds_until_reset(values.get("five_reset", previous.get("five_reset", "")))
+    earliest = time.monotonic() + delay
+    save(args.run / "quota_wait.json", {"state": "five_hour", "quota": values, "at": stamp()})
+    while not (args.run / "stop.request").is_file():
+        for _ in range(600):
+            if (args.run / "stop.request").is_file():
+                return False
+            time.sleep(1)
+        values = quota_read(args)
+        if values.get("weekly") == 0:
+            save(args.run / "quota_wait.json", {"state": "weekly_manual", "quota": values, "at": stamp()})
+            return False
+        if time.monotonic() >= earliest and values.get("five_hour", 0) > 0 and values.get("weekly", 0) > 0:
+            save(args.run / "quota_wait.json", {"state": "resumed", "quota": values, "at": stamp()})
+            return True
+    return False
+
+
 def execute(args):
     cfg = load(args.run / "preparation.json")
     if (cfg["source_root"], cfg["packet_root"], cfg["model"]) != (str(args.source_root), str(args.packets), args.model):
@@ -207,29 +276,50 @@ def execute(args):
         with connect(args.run) as db:
             selection = list(db.execute("SELECT batch_id FROM batches WHERE status!='completed' ORDER BY seq LIMIT ?",
                                         (args.limit if args.limit is not None else -1,)))
-        quota_stop = Event()
+        planned = [row["batch_id"] for row in selection]
+        pause_file = args.run / "batches/quota_pause.json"
+        while planned and not (args.run / "stop.request").is_file():
+            quota_stop, finished = Event(), Event()
+            signal = {}
+            watcher = Thread(target=watch_quota, args=(args, quota_stop, finished, signal), daemon=True)
+            watcher.start()
 
-        def lane(batch):
-            if quota_stop.is_set():
-                return
-            cases = materialize(args, batch)
-            status_for(args.run, batch, "running")
-            worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy, model=args.model)
+            def lane(batch):
+                if quota_stop.is_set():
+                    return
+                cases = materialize(args, batch)
+                status_for(args.run, batch, "running")
+                worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy, model=args.model)
+                try:
+                    run_batch(worker, batch, cases, quota_stop)
+                    latest = args.run / "batches" / batch / "status.json"
+                    complete = latest.is_file() and load(latest)["state"] == "completed"
+                    status_for(args.run, batch, "completed" if complete else "paused")
+                except Exception:
+                    status_for(args.run, batch, "paused")
+                    raise
+
             try:
-                run_batch(worker, batch, cases, quota_stop)
-                finished = args.run / "batches" / batch / "status.json"
-                completed = finished.is_file() and load(finished)["state"] == "completed"
-                status_for(args.run, batch, "completed" if completed else "paused")
-            except Exception:
-                status_for(args.run, batch, "paused")
-                raise
+                with ThreadPoolExecutor(max_workers=args.workers) as pool:
+                    futures = [pool.submit(lane, batch) for batch in planned]
+                    for future in as_completed(futures):
+                        future.result()
+            finally:
+                finished.set()
 
-        with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            futures = [pool.submit(lane, row["batch_id"]) for row in selection]
-            for future in as_completed(futures):
-                future.result()
-        collect(args.run)
-        print(json.dumps(summary(args.run), ensure_ascii=False))
+            collect(args.run)
+            print(json.dumps(summary(args.run), ensure_ascii=False), flush=True)
+            if signal.get("manual") or not quota_stop.is_set():
+                break
+            if pause_file.is_file():
+                archive = pause_file.with_name(f"quota_pause.{time.time_ns()}.json")
+                pause_file.replace(archive)
+            values = signal.get("quota") or quota_read(args)
+            if not wait_for_quota(args, values):
+                break
+            with connect(args.run) as db:
+                complete = {row["batch_id"] for row in db.execute("SELECT batch_id FROM batches WHERE status='completed'")}
+            planned = [batch for batch in planned if batch not in complete]
 
 
 def main():
