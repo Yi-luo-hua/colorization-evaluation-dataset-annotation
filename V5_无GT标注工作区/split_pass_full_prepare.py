@@ -3,7 +3,7 @@
 import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from threading import Event, Thread
 import hashlib
@@ -237,26 +237,39 @@ def seconds_until_reset(value):
     return sum(int(amount) * units[unit] for amount, unit in re.findall(r"(\d+)\s*([dhms])", value))
 
 
-def wait_for_quota(args, values):
+def wait_for_quota(args, values, not_before=None):
+    path = args.run / "quota_wait.json"
     if values.get("weekly") == 0:
-        save(args.run / "quota_wait.json", {"state": "weekly_manual", "quota": values, "at": stamp()})
+        save(path, {"state": "weekly_manual", "quota": values, "at": stamp()})
         return False
     last_snapshot = args.run / "quota_snapshot.json"
     previous = load(last_snapshot) if last_snapshot.is_file() else {}
-    delay = seconds_until_reset(values.get("five_reset", previous.get("five_reset", "")))
-    earliest = time.monotonic() + delay
-    save(args.run / "quota_wait.json", {"state": "five_hour", "quota": values, "at": stamp()})
-    while not (args.run / "stop.request").is_file():
-        for _ in range(600):
-            if (args.run / "stop.request").is_file():
+    if not_before is None:
+        reported = values if "five_reset" in values else previous
+        observed = datetime.fromisoformat(reported.get("observed_at", stamp()))
+        not_before = observed + timedelta(seconds=seconds_until_reset(reported.get("five_reset", "")))
+
+    save(path, {"state": "five_hour", "quota": values, "at": stamp(),
+                "resume_not_before": not_before.isoformat()})
+    first = True
+    stop_request = args.run / "stop.request"
+    while not stop_request.is_file():
+        remaining = (not_before - datetime.now().astimezone()).total_seconds()
+        delay = min(600, max(1, int(remaining) + 1)) if remaining > 0 else (0 if first else 600)
+        first = False
+        for _ in range(delay):
+            if stop_request.is_file():
                 return False
             time.sleep(1)
         values = quota_read(args)
-        if values.get("weekly") == 0:
-            save(args.run / "quota_wait.json", {"state": "weekly_manual", "quota": values, "at": stamp()})
+        if stop_request.is_file():
             return False
-        if time.monotonic() >= earliest and values.get("five_hour", 0) > 0 and values.get("weekly", 0) > 0:
-            save(args.run / "quota_wait.json", {"state": "resumed", "quota": values, "at": stamp()})
+        if values.get("weekly") == 0:
+            save(path, {"state": "weekly_manual", "quota": values, "at": stamp()})
+            return False
+        fresh = datetime.fromisoformat(values["observed_at"]) >= not_before
+        if fresh and values.get("five_hour", 0) > 0 and values.get("weekly", 0) > 0:
+            save(path, {"state": "resumed", "quota": values, "at": stamp()})
             return True
     return False
 
@@ -273,6 +286,17 @@ def execute(args):
         batch_auth.GUARD = args.source_root / "annotation_delivery/train_val_v1_20261015/scripts/no_browser/rundll32.exe"
 
     with OwnerLock(args.run):
+        quota_path = args.run / "quota_wait.json"
+        wait = load(quota_path) if quota_path.is_file() else {}
+        if wait.get("state") == "five_hour":
+            deadline = datetime.fromisoformat(wait["resume_not_before"]) if "resume_not_before" in wait else None
+            if not wait_for_quota(args, wait["quota"], deadline):
+                return
+        elif wait.get("state") == "weekly_manual":
+            values = quota_read(args)
+            if values.get("weekly", 0) <= 0 or values.get("five_hour", 0) <= 0:
+                return
+            save(quota_path, {"state": "resumed", "quota": values, "at": stamp()})
         with connect(args.run) as db:
             selection = list(db.execute("SELECT batch_id FROM batches WHERE status!='completed' ORDER BY seq LIMIT ?",
                                         (args.limit if args.limit is not None else -1,)))
@@ -289,7 +313,8 @@ def execute(args):
                     return
                 cases = materialize(args, batch)
                 status_for(args.run, batch, "running")
-                worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy, model=args.model)
+                worker = argparse.Namespace(run=args.run / "batches", packets=args.packets, agy=args.agy,
+                                            model=args.model, session_start_spacing=2)
                 try:
                     run_batch(worker, batch, cases, quota_stop)
                     latest = args.run / "batches" / batch / "status.json"

@@ -11,7 +11,7 @@ import random
 import shutil
 import subprocess
 import sys
-from threading import Event
+from threading import Event, Lock
 import time
 
 from prepare import publish_image, write_text
@@ -32,6 +32,7 @@ READS = {FIRST: (), SECOND: (FIRST,), BLIND: (), FINAL: (BLIND, FIRST, SECOND)}
 FIELDS = {"id", "severity", "object", "description"}
 SEED = 2026112440
 BATCH_SIZE = 5
+SESSION_START_LOCK = Lock()
 
 
 def load(path):
@@ -179,6 +180,31 @@ def native_log(out):
     return cid, errors
 
 
+def empty_session_start(expected_cid, actual_cid, fault, result):
+    if expected_cid or actual_cid or "backend returned an empty conversation id" not in fault.lower():
+        return False
+    try:
+        rows = load(result)
+    except (OSError, ValueError):
+        return False
+    return isinstance(rows, dict) and bool(rows) and all(value is None for value in rows.values())
+
+
+def start_worker(command, folder, env, out, err, fresh, spacing, stop):
+    def spawn():
+        return subprocess.Popen(command, cwd=folder, env=env, stdout=out, stderr=err,
+                                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+
+    if not fresh or not spacing:
+        return None if stop.is_set() else spawn()
+    with SESSION_START_LOCK:
+        if stop.is_set():
+            return None
+        child = spawn()
+        stop.wait(spacing)
+        return child
+
+
 def run_stage(args, private, folder, stage, cases, env, quota_stop):
     proof_file = private / f"{stage}.proof.json"
     if proof_file.exists():
@@ -212,11 +238,13 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
             f"{LABEL} 完整读取 {document}，其中有完整七类定义、适用关系、文件路径和 JSON 示例。"
             "只访问任务列出的文件，逐图用 read_file 查看，完成后用 write_file 写入结果 JSON。"
         )
-        if feedback:
+        if feedback and cid:
             prompt += f"\n继续原任务，核对问题并补齐文件。上次未验收原因：{feedback}"
         with stdout.open("wb") as out, stderr.open("wb") as err:
-            child = subprocess.Popen(command + ["--print", prompt], cwd=folder, env=env,
-                                     stdout=out, stderr=err, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            child = start_worker(command + ["--print", prompt], folder, env, out, err, not cid,
+                                 getattr(args, "session_start_spacing", 0), quota_stop)
+            if child is None:
+                return None
             save(private / "status.json", {"stage": stage, "state": "running", "pid": child.pid,
                                          "attempt": attempt + 1, "log": stdout.name, "model": args.model})
             while child.poll() is None:
@@ -247,8 +275,11 @@ def run_stage(args, private, folder, stage, cases, env, quota_stop):
         except (ValueError, KeyError, OSError, TypeError) as exc:
             feedback = str(exc)
             save(proof_file, {"conversation_id": cid, "problem": feedback, "log": stdout.name})
-            if quota_stop.is_set() or not cid or attempt == 5:
+            fresh_retry = empty_session_start(cid, actual_cid, fault, result)
+            if quota_stop.is_set() or (not cid and not fresh_retry) or attempt == 5:
                 break
+            if fresh_retry:
+                feedback = "后端尚未创建会话，等待重新派发同一个任务"
             save(private / "status.json", {"stage": stage, "state": "retry_wait", "problem": feedback})
             if quota_stop.wait(20):
                 break
